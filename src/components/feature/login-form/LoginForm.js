@@ -1,4 +1,5 @@
 import { Button, FormControl, OutlinedInput } from "@mui/material";
+import "./LoginForm.scss";
 
 const LoginForm = () => {
   return (
@@ -7,12 +8,15 @@ const LoginForm = () => {
         <strong className="text-3xl">Dashboard Login</strong>
         <form className="flex flex-col gap-2 mt-4">
           <FormControl>
-            <label>Username</label>
-            <OutlinedInput placeholder="abc@gmail.com" />
+            <label className="text-inputLabel font-medium">Username</label>
+            <OutlinedInput
+              placeholder="abc@gmail.com"
+              className="[&_input]:p-2"
+            />
           </FormControl>
           <FormControl>
-            <label>Password</label>
-            <OutlinedInput placeholder="pa****rd" />
+            <label className="text-inputLabel font-medium">Password</label>
+            <OutlinedInput placeholder="pa****rd" className="[&_input]:p-2" />
           </FormControl>
         </form>
         <span className="flex justify-end text-primary hover:cursor-pointer">
@@ -32,7 +36,7 @@ const LoginForm = () => {
         </div>
       </div>
       <div className="mt-4">
-        <strong className="text-[#5A298B] text-xl">Don't have account</strong>
+        <strong className="text-[#5A298B] text-xl">Don't have account ?</strong>
         <p>
           <strong>
             Note:- <i>Get Rs. 100 to Rs. 500 upon account opening under us.</i>
