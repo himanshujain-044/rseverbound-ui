@@ -2,7 +2,7 @@ import { Button, FormControl, OutlinedInput } from "@mui/material";
 
 const LoginForm = () => {
   return (
-    <div className="w-2/5 pr-24 mobile:w-2/4 laptop:pr-6 tablet:w-full tablet:px-12">
+    <div className="w-2/6 max-h-full pr-24 mobile:w-2/4 laptop:pr-6 tablet:w-full tablet:px-12">
       <div className="shadow-login-box py-8 px-12">
         <strong className="text-3xl">Dashboard Login</strong>
         <form className="flex flex-col gap-2 mt-4">

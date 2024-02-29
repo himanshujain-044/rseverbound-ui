@@ -2,8 +2,8 @@ import logo from "../../../assets/logo/logo.png";
 import loginStocks from "../../../assets/images/login-stocks.png";
 const LoginContent = () => {
   return (
-    <div className="w-3/5 flex flex-col pl-24 justify-end leading-5 mobile:w-2/4 laptop:pl-6 tablet:w-full tablet:px-12">
-      <img src={logo} alt="logo" className="w-1/2" />
+    <div className="w-3/5 max-h-full flex flex-col pl-24 justify-end leading-5 mobile:w-2/4 laptop:pl-6 tablet:w-full tablet:px-12">
+      <img src={logo} alt="logo" className="max-w-[36%]" />
       <strong className="mt-4">Dear Valued Investors,</strong>
       <p>
         We are delighted to offer you a unique opportunity to earn returns on
@@ -20,7 +20,11 @@ const LoginContent = () => {
         <strong className="mt-1 pr-1">User-Friendly Dashboard:</strong>
         Personalized dashboard to track daily brokerage updates.
       </p>
-      <img src={loginStocks} alt="login-stocks-market" className="mt-4 w-2/3" />
+      <img
+        src={loginStocks}
+        alt="login-stocks-market"
+        className="mt-4 max-w-[50%]"
+      />
     </div>
   );
 };
