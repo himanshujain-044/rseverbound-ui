@@ -2,7 +2,7 @@ import logo from "../../../assets/logo/logo.png";
 import loginStocks from "../../../assets/images/login-stocks.png";
 const LoginContent = () => {
   return (
-    <div className="w-3/5 max-h-full flex flex-col pl-24 justify-end leading-5 mobile:w-2/4 laptop:pl-6 tablet:w-full tablet:px-12">
+    <div className="w-3/5 max-h-full flex flex-col pl-12 justify-end leading-5 mobile:w-2/4 laptop:pl-6 tablet:w-full tablet:px-12">
       <img src={logo} alt="logo" className="max-w-[36%]" />
       <strong className="mt-4">Dear Valued Investors,</strong>
       <p>
