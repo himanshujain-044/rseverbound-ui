@@ -6,7 +6,7 @@ import youtube from "../../assets/icons/youtube.png";
 
 const Footer = () => {
   return (
-    <div className="fixed z-999 bottom-0 h-16 w-full py-4 px-16 flex justify-between bg-white shadow-inner">
+    <div className="bg-[#fff] fixed z-999 bottom-0 h-16 w-full py-4 px-16 flex justify-between shadow-inner">
       <div className="flex items-center">
         <img src={logo} alt="logo" width={"120px"} />
       </div>

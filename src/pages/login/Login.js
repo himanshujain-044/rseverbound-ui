@@ -4,7 +4,7 @@ import "./Login.scss";
 
 const Login = () => {
   return (
-    <div className="login-background-img h-[calc(100vh_-_64px)] overflow-auto flex gap-10 items-center tablet:flex-col">
+    <div className="h-full overflow-auto flex gap-10 items-center tablet:flex-col">
       <LoginContent />
       <LoginForm />
     </div>

@@ -1,6 +1,52 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+@font-face {
+  font-family: Nunito-Black;
+  src: url("./assets/fonts/nunito/Nunito-Black.ttf");
+}
+@font-face {
+  font-family: Nunito-Bold;
+  src: url("./assets/fonts/nunito/Nunito-Bold.ttf");
+}
+@font-face {
+  font-family: Nunito-ExtraBold;
+  src: url("./assets/fonts/nunito/Nunito-ExtraBold.ttf");
+}
+@font-face {
+  font-family: Nunito-ExtraLight;
+  src: url("./assets/fonts/nunito/Nunito-ExtraLight.ttf");
+}
+@font-face {
+  font-family: Nunito-Light;
+  src: url("./assets/fonts/nunito/Nunito-Light.ttf");
+}
+@font-face {
+  font-family: Nunito-Medium;
+  src: url("./assets/fonts/nunito/Nunito-Medium.ttf");
+}
+@font-face {
+  font-family: Nunito-Regular;
+  src: url("./assets/fonts/nunito/Nunito-Regular.ttf");
+}
+@font-face {
+  font-family: Nunito-SemiBold;
+  src: url("./assets/fonts/nunito/Nunito-SemiBold.ttf");
+}
+@font-face {
+  font-family: Oswald-Bold;
+  src: url("./assets/fonts/oswald/Oswald-Bold.ttf");
+}
+@font-face {
+  font-family: Oswald-Light;
+  src: url("./assets/fonts/oswald/Oswald-Light.ttf");
+}
+@font-face {
+  font-family: Oswald-Regular;
+  src: url("./assets/fonts/oswald/Oswald-Regular.ttf");
+}
+
 :root {
   --primary: rgb(90, 41, 139);
 }
@@ -12,7 +58,22 @@ body {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
+span,
+strong,
+p,
+i,
+button {
+  font-family: Nunito-Regular;
+}
 
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-family: Oswald-Bold;
+}
 code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New",
     monospace;
