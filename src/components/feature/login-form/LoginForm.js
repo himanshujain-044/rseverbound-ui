@@ -56,9 +56,9 @@ const LoginForm = () => {
     );
   };
   return (
-    <div className="w-2/6 max-h-full pr-12 mobile:w-2/4 laptop:pr-6 tablet:w-full tablet:px-12">
+    <div className="w-2/6 max-h-full pr-12 laptop:pr-6 tablet:w-full tablet:px-12 mobile:w-full mobile:px-3 mobile:mt-6">
       <div className="shadow-container-box py-8 px-4">
-        <h3 className="text-3xl">Dashboard Login</h3>
+        <h3 className="text-3xl mobile:text-2xl">Dashboard Login</h3>
         <form className="flex flex-col gap-4 mt-4">
           <FormControl>
             <label className="text-inputLabel font-medium">Email/Mobile</label>
@@ -106,8 +106,10 @@ const LoginForm = () => {
         </div>
       </div>
       <div className="mt-4">
-        <strong className="text-[#5A298B] text-xl">Don't have account ?</strong>
-        <p>
+        <strong className="text-[#5A298B] text-xl mobile:text-lg">
+          Don't have account ?
+        </strong>
+        <p className="mobile:text-[12px]">
           <strong>
             Note:- <i>Get Rs. 100 to Rs. 500 upon account opening under us.</i>
           </strong>
@@ -125,7 +127,8 @@ const LoginForm = () => {
             onClick={copyToClipboard}
             className="flex items-center justify-center mt-2 gap-2 text-primary"
           >
-            Copy Link <ContentCopyOutlinedIcon />
+            Copy Link
+            <ContentCopyOutlinedIcon className="mobile:w-[16px]" />
           </button>
         </p>
       </div>
