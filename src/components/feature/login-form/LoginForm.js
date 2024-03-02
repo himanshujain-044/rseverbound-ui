@@ -57,7 +57,7 @@ const LoginForm = () => {
   };
   return (
     <div className="w-2/6 max-h-full pr-12 mobile:w-2/4 laptop:pr-6 tablet:w-full tablet:px-12">
-      <div className="shadow-login-box py-8 px-4">
+      <div className="shadow-container-box py-8 px-4">
         <h3 className="text-3xl">Dashboard Login</h3>
         <form className="flex flex-col gap-4 mt-4">
           <FormControl>

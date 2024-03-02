@@ -1,35 +1,56 @@
 import { useDispatch, useSelector } from "react-redux";
-import Brokrage from "../brokrage/Brokrage";
+import Brokerage from "../brokerage/Brokerage";
 import { useEffect } from "react";
-import { getBrokrage, getPaidBrokrageHistory } from "../../../store/api";
+import {
+  getBrokerage,
+  getPaidBrokerageHistory,
+  requestPayout,
+} from "../../../store/api";
 import { API_ENDPOINTS } from "../../../constants/apiEndPoints";
-import PaidBrokrageHistory from "../paid-brokrage-history/PaidBrokrageHistory";
+import PaidBrokerageHistory from "../paid-brokerage-history/PaidBrokerageHistory";
 
 const Dashboard = () => {
   const dispatch = useDispatch();
-  const { brokrageData, paidBrokrageData } = useSelector((state) => state.api);
+  const { brokerageData, paidBrokerageData } = useSelector(
+    (state) => state.api
+  );
   useEffect(() => {
-    if (!brokrageData) {
+    if (!brokerageData) {
       dispatch(
-        getBrokrage({
+        getBrokerage({
           method: "get",
-          endpoint: API_ENDPOINTS.getBrokrage,
+          endpoint: API_ENDPOINTS.getBrokerage,
         })
       );
     }
-    if (!paidBrokrageData) {
+    if (!paidBrokerageData) {
       dispatch(
-        getPaidBrokrageHistory({
+        getPaidBrokerageHistory({
           method: "get",
-          endpoint: API_ENDPOINTS.getPaidBrokrageHistory,
+          endpoint: API_ENDPOINTS.getPaidBrokerageHistory,
         })
       );
     }
   }, []);
+  const handlePayout = (selectedRows = []) => {
+    const dates = brokerageData
+      .filter((brokerage) =>
+        selectedRows.some((rowId) => brokerage.id === rowId)
+      )
+      .map((selectedBrokerage) => selectedBrokerage?.date);
+
+    dispatch(
+      requestPayout({
+        method: "patch",
+        endpoint: API_ENDPOINTS.requestPayout,
+        payload: { dates },
+      })
+    );
+  };
   return (
     <div className="flex gap-12 h-full">
-      <Brokrage data={brokrageData} />
-      <PaidBrokrageHistory data={paidBrokrageData} />
+      <Brokerage data={brokerageData} handlePayoutEvent={handlePayout} />
+      <PaidBrokerageHistory data={paidBrokerageData} />
     </div>
   );
 };

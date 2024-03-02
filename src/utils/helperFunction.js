@@ -25,9 +25,14 @@ const getSessionStorage = (key = "") => {
   }
 };
 
+const clearSessionStorage = (key = "") => {
+  sessionStorage.clear();
+};
+
 module.exports = {
   decryptData,
   encryptData,
   setSessionStorage,
   getSessionStorage,
+  clearSessionStorage,
 };

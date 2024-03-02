@@ -14,10 +14,12 @@ const PublicRoutes = () => {
   }
 
   return (
-    <Routes>
-      <Route path={ROUTES_LIST.login} element={<Login />} />
-      <Route path="/*" element={<Login />} />
-    </Routes>
+    <div className="overflow-auto">
+      <Routes>
+        <Route path={ROUTES_LIST.login} element={<Login />} />
+        <Route path="/*" element={<Login />} />
+      </Routes>
+    </div>
   );
 };
 export default PublicRoutes;

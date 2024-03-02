@@ -17,9 +17,8 @@ export const apiCalls = createAsyncThunk(
     }
   }
 );
-
-export const getBrokrage = createAsyncThunk(
-  "data/brokrage",
+export const getBrokerage = createAsyncThunk(
+  "data/brokerage",
   async (apiData, { rejectWithValue }) => {
     try {
       const { method, endpoint, payload } = apiData;
@@ -34,8 +33,56 @@ export const getBrokrage = createAsyncThunk(
     }
   }
 );
-export const getPaidBrokrageHistory = createAsyncThunk(
-  "data/paidBrokrage",
+export const getPaidBrokerageHistory = createAsyncThunk(
+  "data/paidBrokerage",
+  async (apiData, { rejectWithValue }) => {
+    try {
+      const { method, endpoint, payload } = apiData;
+      const response = await apiReq({
+        method,
+        endpoint,
+        payload,
+      });
+      return response;
+    } catch (err) {
+      return rejectWithValue(err?.response || err);
+    }
+  }
+);
+export const updatePaymentMethod = createAsyncThunk(
+  "updatePaymentMethod/api",
+  async (apiData, { rejectWithValue }) => {
+    try {
+      const { method, endpoint, payload } = apiData;
+      const response = await apiReq({
+        method,
+        endpoint,
+        payload,
+      });
+      return response;
+    } catch (err) {
+      return rejectWithValue(err?.response || err);
+    }
+  }
+);
+export const requestPayout = createAsyncThunk(
+  "requestPayout",
+  async (apiData, { rejectWithValue }) => {
+    try {
+      const { method, endpoint, payload } = apiData;
+      const response = await apiReq({
+        method,
+        endpoint,
+        payload,
+      });
+      return response;
+    } catch (err) {
+      return rejectWithValue(err?.response || err);
+    }
+  }
+);
+export const logout = createAsyncThunk(
+  "logout",
   async (apiData, { rejectWithValue }) => {
     try {
       const { method, endpoint, payload } = apiData;
@@ -57,8 +104,10 @@ const apiReducer = createSlice({
     reqCount: 0,
     message: "",
     data: "",
-    brokrageData: "",
-    paidBrokrageData: "",
+    brokerageData: "",
+    paidBrokerageData: "",
+    updatedPaymentModeData: "",
+    isUserLogout: false,
     statusCode: "",
     success: false,
   },
@@ -69,56 +118,123 @@ const apiReducer = createSlice({
         state.reqCount += 1;
       })
       .addCase(apiCalls.fulfilled, (state, action) => {
-        const { code, message, data } = action.payload?.data;
+        const { code = "", message = "", data = "" } = action.payload?.data;
         state.data = data;
         state.reqCount -= 1;
-        state.statusCode = code;
+        // state.statusCode = code;
         state.message = message;
         state.success = true;
       })
       .addCase(apiCalls.rejected, (state, action) => {
-        const { code, message } = action.payload?.data;
+        const { code = "", message = "", status } = action?.payload?.data;
         state.data = "";
-        state.statusCode = code;
+        state.statusCode = code || status;
         state.message = message;
         state.reqCount -= 1;
         state.success = false;
       })
-      .addCase(getBrokrage.pending, (state, action) => {
+      .addCase(getBrokerage.pending, (state, action) => {
         state.reqCount += 1;
       })
-      .addCase(getBrokrage.fulfilled, (state, action) => {
-        const { code, message, data } = action.payload?.data;
-        state.brokrageData = data;
+      .addCase(getBrokerage.fulfilled, (state, action) => {
+        const { code = "", message = "", data = "" } = action.payload?.data;
+        state.brokerageData = data;
         state.data = "";
         state.reqCount -= 1;
-        state.statusCode = code;
+        // state.statusCode = code;
         state.message = message;
         state.success = true;
       })
-      .addCase(getBrokrage.rejected, (state, action) => {
-        const { code, message } = action.payload?.data;
+      .addCase(getBrokerage.rejected, (state, action) => {
+        const { code = "", message = "", status } = action.payload?.data;
         state.data = "";
-        state.statusCode = code;
+        state.statusCode = code || status;
         state.message = message;
         state.reqCount -= 1;
         state.success = false;
       })
-      .addCase(getPaidBrokrageHistory.pending, (state, action) => {
+      .addCase(getPaidBrokerageHistory.pending, (state, action) => {
         state.reqCount += 1;
       })
-      .addCase(getPaidBrokrageHistory.fulfilled, (state, action) => {
-        const { code, message, data } = action.payload?.data;
-        state.paidBrokrageData = data;
+      .addCase(getPaidBrokerageHistory.fulfilled, (state, action) => {
+        const { code = "", message = "", data = "" } = action.payload?.data;
+        state.paidBrokerageData = data;
         state.reqCount -= 1;
-        state.statusCode = code;
+        // state.statusCode = code;
         state.message = message;
         state.success = true;
       })
-      .addCase(getPaidBrokrageHistory.rejected, (state, action) => {
-        const { code, message } = action.payload?.data;
+      .addCase(getPaidBrokerageHistory.rejected, (state, action) => {
+        const { code = "", message = "", status } = action.payload?.data;
         state.data = "";
+        state.statusCode = code || status;
+        state.message = message;
+        state.reqCount -= 1;
+        state.success = false;
+      })
+      .addCase(updatePaymentMethod.pending, (state, action) => {
+        state.reqCount += 1;
+      })
+      .addCase(updatePaymentMethod.fulfilled, (state, action) => {
+        const {
+          data: { method, paymentAddress },
+          code,
+          message,
+        } = action.payload?.data;
+        state.updatedPaymentModeData = {
+          paymentMethod: {
+            method,
+            paymentAddress,
+          },
+        };
         state.statusCode = code;
+        state.message = message;
+        state.reqCount -= 1;
+        state.success = true;
+      })
+      .addCase(updatePaymentMethod.rejected, (state, action) => {
+        const { code = "", message = "", status } = action?.payload?.data;
+        state.data = "";
+        state.statusCode = code || status;
+        state.message = message;
+        state.reqCount -= 1;
+        state.success = false;
+      })
+      .addCase(logout.pending, (state, action) => {
+        state.reqCount += 1;
+      })
+      .addCase(logout.fulfilled, (state, action) => {
+        const { code = "", message = "" } = action.payload?.data;
+        state.isUserLogout = true;
+        state.reqCount -= 1;
+        // state.statusCode = code;
+        state.message = message;
+        state.success = true;
+      })
+      .addCase(logout.rejected, (state, action) => {
+        const { code = "", message = "", status } = action?.payload?.data;
+        state.data = "";
+        state.statusCode = code || status;
+        state.message = message;
+        state.reqCount -= 1;
+        state.success = false;
+      })
+      .addCase(requestPayout.pending, (state, action) => {
+        state.reqCount += 1;
+      })
+      .addCase(requestPayout.fulfilled, (state, action) => {
+        const { message = "" } = action.payload?.data;
+        state.paidBrokerageData = "";
+        state.brokerageData = "";
+        state.reqCount -= 1;
+        // state.statusCode = code;
+        state.message = message;
+        state.success = true;
+      })
+      .addCase(requestPayout.rejected, (state, action) => {
+        const { code = "", message = "", status } = action?.payload?.data;
+        state.data = "";
+        state.statusCode = code || status;
         state.message = message;
         state.reqCount -= 1;
         state.success = false;
