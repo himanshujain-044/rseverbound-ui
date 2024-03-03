@@ -48,7 +48,7 @@ const Dashboard = () => {
     );
   };
   return (
-    <div className="h-full flex gap-12 mobile:flex-col mobile:gap-6">
+    <div className="h-full flex gap-12 mobile:flex-col mobile:gap-6 mobile:h-auto">
       <Brokerage data={brokerageData} handlePayoutEvent={handlePayout} />
       <PaidBrokerageHistory data={paidBrokerageData} />
     </div>
