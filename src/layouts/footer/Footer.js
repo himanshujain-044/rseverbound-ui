@@ -8,13 +8,13 @@ const Footer = () => {
   return (
     <div className="bg-[#fff] fixed z-999 bottom-0 h-16 w-full py-4 px-16 flex justify-between shadow-inner mobile:px-4 mobile:h-10">
       <div className="flex items-center">
-        <img src={logo} alt="logo" className="w-[120px] mobile:w-[40px]" />
+        <img src={logo} alt="logo" className="w-[120px] mobile:w-[78px]" />
       </div>
       <div className="flex items-center gap-4">
         <span className="mobile:text-[12px]">
           &#169; 2024 All Rights Reserved.
         </span>
-        <span className="flex items-center gap-1">
+        <span className="flex items-center gap-1 mobile:hidden">
           <img
             src={twitter}
             alt="twitter icon"

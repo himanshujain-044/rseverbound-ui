@@ -3,9 +3,9 @@ import { paidBrokerageHisCols } from "./paidBrokerageHisCols";
 
 const PaidBrokerageHistory = ({ data }) => {
   return (
-    <div className="bg-[#fff] w-1/2 rounded-md p-4">
+    <div className="bg-[#fff] w-1/2 rounded-md p-4 mobile:w-full">
       <strong
-        className="text-primary text-[24px] underline decoration-2"
+        className="text-primary text-[24px] underline decoration-2 mobile:text-[18px]"
         style={{ textUnderlineOffset: "10px" }}
       >
         Paid Brokerage

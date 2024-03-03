@@ -13,6 +13,7 @@ import {
 import { updateUserData } from "../../store/userData";
 import { logout } from "../../store/api";
 import { API_ENDPOINTS } from "../../constants/apiEndPoints";
+import LogoutOutlinedIcon from "@mui/icons-material/LogoutOutlined";
 
 const Header = () => {
   const dispatch = useDispatch();
@@ -44,14 +45,17 @@ const Header = () => {
 
   return (
     <>
-      <div className="bg-[#fff] fixed z-999 top-0 h-16 w-full py-4 px-16 flex justify-between shadow-inner">
+      <div className="bg-[#fff] fixed top-0 z-[999] h-16 w-full py-4 px-16 flex justify-between shadow-inner mobile:px-4 mobile:py-2 mobile:h-12">
         <div className="flex items-center justify-center text-primary">
-          <PersonOutlineOutlinedIcon /> <strong className="ml-2">{name}</strong>
+          <PersonOutlineOutlinedIcon />
+          <strong className="ml-2 mobile:ml-1 mobile:text-[10px]">
+            {name}
+          </strong>
         </div>
-        <div className="flex items-center gap-8">
+        <div className="flex items-center gap-8 mobile:gap-2">
           <Button
             variant="outlined"
-            className="flex gap-2 border-primary text-[#5A298B] hover:bg-primaryHover hover:border-primary"
+            className="flex gap-2 border-primary text-[#5A298B] hover:bg-primaryHover hover:border-primary mobile:text-[10px] mobile:p-[2px]"
             // disabled={paymentMethod?.method}
             onClick={() => {
               console.log("25", isPymtModeModalOpen);
@@ -60,7 +64,10 @@ const Header = () => {
           >
             {!paymentMethod?.method && (
               <>
-                <ControlPointOutlinedIcon /> <span>Select payment mode</span>
+                <ControlPointOutlinedIcon className="mobile:text-[10px]" />{" "}
+                <span className="mobile:text-[7px] mobile:py-[2px]">
+                  Select payment mode
+                </span>
               </>
             )}
             {paymentMethod?.method && (
@@ -69,11 +76,15 @@ const Header = () => {
           </Button>
           <Button
             variant="contained"
-            className="bg-primary hover:bg-primary"
+            className="bg-primary hover:bg-primary mobile:hidden"
             onClick={handleLogout}
           >
             Logout
           </Button>
+          <LogoutOutlinedIcon
+            className="hidden text-primary mobile:inline"
+            onClick={handleLogout}
+          />
         </div>
       </div>
       |

@@ -9,22 +9,34 @@ const UserPaymentMethod = ({ paymentMethod = {} }) => {
     case PAYMENT_MODE.GPAY:
       return (
         <>
-          <img src={gpay} alt="gpay icon" width="18px" />
-          <strong>GPay</strong>
+          <img
+            src={gpay}
+            alt="gpay icon"
+            className="w-[18px] mobile:w-[10px]"
+          />
+          <strong className="mobile:text-[10px]">GPay</strong>
         </>
       );
     case PAYMENT_MODE.PHONEPE:
       return (
         <>
-          <img src={phonepe} alt="phonepe icon" width="18px" />
-          <strong>Phonepe</strong>
+          <img
+            src={phonepe}
+            alt="phonepe icon"
+            className="w-[18px] mobile:w-[10px]"
+          />
+          <strong className="mobile:text-[10px]">Phonepe</strong>
         </>
       );
     case PAYMENT_MODE.PAYTM:
       return (
         <>
-          <img src={paytm} alt="paytm icon" width="18px" />
-          <strong>Paytm</strong>
+          <img
+            src={paytm}
+            alt="paytm icon"
+            className="w-[18px] mobile:w-[10px]"
+          />
+          <strong className="mobile:text-[10px]">Paytm</strong>
         </>
       );
 

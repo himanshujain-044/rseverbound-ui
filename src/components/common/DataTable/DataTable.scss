@@ -3,3 +3,17 @@
     color: var(--primary) !important;
   }
 }
+@media only screen and (max-width: 370px) {
+  .data-table {
+    .Mui-checked {
+      svg {
+        width: 20px;
+      }
+    }
+    .MuiCheckbox-root {
+      svg {
+        width: 20px;
+      }
+    }
+  }
+}

@@ -28,7 +28,7 @@ const DataTable = ({
       checkboxSelection={checkboxSelection}
       onRowSelectionModelChange={getSelectedRows}
       rowSelectionModel={rowSelectionModel}
-      className="data-table"
+      className="data-table mobile:text-[12px]"
     />
   );
 };

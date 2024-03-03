@@ -2,6 +2,8 @@
 @tailwind components;
 @tailwind utilities;
 
+/* @import url("./styles/tailwind-utility.css"); */
+
 @font-face {
   font-family: Nunito-Black;
   src: url("./assets/fonts/nunito/Nunito-Black.ttf");

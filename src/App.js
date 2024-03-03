@@ -31,7 +31,7 @@ function App() {
     );
   }
   return (
-    <div className="background-img h-[calc(100vh_-_64px)]">
+    <div className="background-img h-[calc(100vh_-_64px)] mobile:h-[calc(100vh_-_40px)]">
       {!userData && <PublicRoutes />}
       {userData && <PrivateRoutes />}
       <Footer />
