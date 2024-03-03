@@ -1,13 +1,14 @@
 import { useDispatch, useSelector } from "react-redux";
-import "./App.scss";
 import CircularIndeterminate from "./components/common/LoadingSpinner/LoadingSpinner";
 import Footer from "./layouts/footer/Footer";
 import PublicRoutes from "./routes/publicRoutes";
 import PrivateRoutes from "./routes/privateRoutes";
 import SnackbarsComp from "./components/common/SnackbarsComp/SnackbarsComp";
-import { clearSessionStorage, getSessionStorage } from "./utils/helperFunction";
+import { clearSessionStorage } from "./utils/helperFunction";
 import { useEffect } from "react";
 import { updateUserData } from "./store/userData";
+import { clearAPIState } from "./store/api";
+import "./App.scss";
 
 function App() {
   const dispatch = useDispatch();
@@ -19,6 +20,7 @@ function App() {
   useEffect(() => {
     if ((isUserLogout && success) || statusCode === 401) {
       dispatch(updateUserData(""));
+      dispatch(clearAPIState());
       clearSessionStorage();
     }
   }, [isUserLogout, success, statusCode, dispatch]);

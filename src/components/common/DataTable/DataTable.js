@@ -1,9 +1,18 @@
 import * as React from "react";
 import { DataGrid } from "@mui/x-data-grid";
+import noDataAvailableImg from "../../../assets/images/no-data-available.png";
 import "./DataTable.scss";
 
 const NoRowsOverlay = () => {
-  return <span>No Data</span>;
+  return (
+    <div className="h-full flex justify-center items-center">
+      <img
+        src={noDataAvailableImg}
+        alt="No Data Available"
+        className="w-[60%]"
+      />
+    </div>
+  );
 };
 
 const DataTable = ({
@@ -28,7 +37,7 @@ const DataTable = ({
       checkboxSelection={checkboxSelection}
       onRowSelectionModelChange={getSelectedRows}
       rowSelectionModel={rowSelectionModel}
-      className="data-table mobile:text-[12px]"
+      className="data-table min-h-[8rem] mobile:text-[12px]"
     />
   );
 };

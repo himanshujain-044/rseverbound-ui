@@ -111,7 +111,19 @@ const apiReducer = createSlice({
     statusCode: "",
     success: false,
   },
-  reducers: {},
+  reducers: {
+    clearAPIState: (state, action) => {
+      state.reqCount = 0;
+      state.message = "";
+      state.data = "";
+      state.brokerageData = "";
+      state.paidBrokerageData = "";
+      state.updatedPaymentModeData = "";
+      state.isUserLogout = false;
+      state.statusCode = "";
+      state.success = false;
+    },
+  },
   extraReducers: (builder) => {
     builder
       .addCase(apiCalls.pending, (state, action) => {
@@ -241,4 +253,5 @@ const apiReducer = createSlice({
       });
   },
 });
+export const { clearAPIState } = apiReducer.actions;
 export default apiReducer.reducer;

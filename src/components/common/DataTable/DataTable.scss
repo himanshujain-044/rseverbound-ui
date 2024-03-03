@@ -2,6 +2,12 @@
   .Mui-checked {
     color: var(--primary) !important;
   }
+  .MuiDataGrid-cell:focus-within {
+    outline: none !important;
+  }
+  .MuiDataGrid-virtualScroller {
+    min-height: 9rem;
+  }
 }
 @media only screen and (max-width: 370px) {
   .data-table {

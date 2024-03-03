@@ -40,7 +40,7 @@ const AddPaymentModeModal = ({ togglePymtModeModal = () => {} }) => {
           onChangeDDOption={handleDDOptionChange}
         />
         <OutlinedInput
-          placeholder="mobile - 896...4321"
+          placeholder="mobile/upi"
           className="[&_input]:p-2 w-1/2"
           value={paymentAdd}
           type="number"
@@ -60,6 +60,7 @@ const AddPaymentModeModal = ({ togglePymtModeModal = () => {} }) => {
         <Button
           variant="contained"
           className="bg-primary hover:bg-primary"
+          disabled={!paymentAdd || !paymentMethod}
           onClick={savePymtMethod}
         >
           Save
