@@ -48,6 +48,18 @@
   font-family: Oswald-Regular;
   src: url("./assets/fonts/oswald/Oswald-Regular.ttf");
 }
+@font-face {
+  font-family: Raleway-Medium;
+  src: url("./assets/fonts/raleway/Raleway-Medium.ttf");
+}
+@font-face {
+  font-family: Raleway-Regular;
+  src: url("./assets/fonts/raleway/Raleway-Regular.ttf");
+}
+@font-face {
+  font-family: Raleway-SemiBold;
+  src: url("./assets/fonts/raleway/Raleway-SemiBold.ttf");
+}
 
 :root {
   --primary: rgb(90, 41, 139);
@@ -74,7 +86,7 @@ h3,
 h4,
 h5,
 h6 {
-  font-family: Oswald-Bold;
+  font-family: Raleway-SemiBold;
 }
 code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New",

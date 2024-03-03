@@ -4,7 +4,7 @@ import "./Login.scss";
 
 const Login = () => {
   return (
-    <div className="h-full flex gap-10 items-center tablet:flex-col mobile:flex-col-reverse">
+    <div className="h-full flex gap-10 items-center tablet:flex-col mobile:flex-col-reverse mobile:h-auto">
       <LoginContent />
       <LoginForm />
     </div>

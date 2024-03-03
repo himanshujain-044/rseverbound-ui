@@ -4,7 +4,7 @@ const LoginContent = () => {
   return (
     <div className="w-3/5 max-h-full h-full flex flex-col pl-12 pt-4 justify-around leading-5 laptop:pl-6 tablet:w-full tablet:px-12 mobile:w-full mobile:px-3">
       <img src={logo} alt="logo" className="max-w-[30%] mobile:hidden" />
-      <span className="text-[12px]">
+      <span className="mobile:text-[12px]">
         <strong className="mt-4">Dear Valued Investors,</strong>
         <p>
           Delighted to extend a unique opportunity: earn 50% brokerage share

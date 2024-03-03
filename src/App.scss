@@ -3,3 +3,9 @@
   background-repeat: no-repeat;
   background-size: cover;
 }
+
+.MuiOutlinedInput-root {
+  &.Mui-focused fieldset {
+    border-color: var(--primary) !important;
+  }
+}

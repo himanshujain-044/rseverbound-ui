@@ -56,7 +56,7 @@ const Header = () => {
           <Button
             variant="outlined"
             className="flex gap-2 border-primary text-[#5A298B] hover:bg-primaryHover hover:border-primary mobile:text-[10px] mobile:p-[2px]"
-            // disabled={paymentMethod?.method}
+            disabled={paymentMethod?.method}
             onClick={() => {
               console.log("25", isPymtModeModalOpen);
               setIsPymtModeModalOpen(true);

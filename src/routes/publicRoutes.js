@@ -14,7 +14,7 @@ const PublicRoutes = () => {
   }
 
   return (
-    <div className="overflow-auto">
+    <div className="h-[calc(100%_-_40px)] overflow-auto">
       <Routes>
         <Route path={ROUTES_LIST.login} element={<Login />} />
         <Route path="/*" element={<Login />} />
