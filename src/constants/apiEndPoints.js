@@ -1,5 +1,4 @@
-const baseUrl =
-  "http://localhost:9000/api" || process.env.REACT_APP_API_BASE_URL;
+const baseUrl = process.env.REACT_APP_API_BASE_URL;
 const userBaseUrl = baseUrl + "/users";
 export const API_ENDPOINTS = {
   login: `${userBaseUrl}/login`,
