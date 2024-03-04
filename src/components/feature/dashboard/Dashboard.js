@@ -15,6 +15,7 @@ const Dashboard = () => {
     (state) => state.api
   );
   useEffect(() => {
+    document.title = "50% Brokerage Sharing - Dashbaord";
     if (!brokerageData) {
       dispatch(
         getBrokerage({
