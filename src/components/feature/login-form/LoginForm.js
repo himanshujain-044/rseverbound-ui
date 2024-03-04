@@ -8,6 +8,8 @@ import { API_ENDPOINTS } from "../../../constants/apiEndPoints";
 import { encryptData } from "../../../utils/helperFunction";
 import logo from "../../../assets/logo/logo.png";
 import "./LoginForm.scss";
+import ForgotPasswordModal from "../forgot-password-modal/ForgotPasswordModal";
+import ModalComp from "../../common/ModalComp/ModalComp";
 
 const LoginForm = () => {
   const dispatch = useDispatch();
@@ -17,6 +19,8 @@ const LoginForm = () => {
   });
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
+  const [isForgotPwdModalOpen, setIsForgotPwdModalOpen] = useState(false);
+
   const copyToClipboard = () => {
     navigator.clipboard.writeText("https://upstox.com/open-account/?f=JD1505");
     setIsSnackBarDisplay({
@@ -93,7 +97,12 @@ const LoginForm = () => {
             />
           </FormControl>
         </form>
-        <span className="flex justify-end text-primary hover:cursor-pointer mobile:text-[14px]">
+        <span
+          className="flex justify-end text-primary hover:cursor-pointer mobile:text-[14px]"
+          onClick={() => {
+            setIsForgotPwdModalOpen(true);
+          }}
+        >
           Forgot Password?
         </span>
 
@@ -146,6 +155,20 @@ const LoginForm = () => {
         <SnackbarsComp
           message={isSnackBarDisplay.msg}
           severity={isSnackBarDisplay.severity}
+        />
+      )}
+      {isForgotPwdModalOpen && (
+        <ModalComp
+          isOpen={isForgotPwdModalOpen}
+          setOpen={setIsForgotPwdModalOpen}
+          title="Forgot Password"
+          content={
+            <ForgotPasswordModal
+              toggleModal={() => {
+                setIsForgotPwdModalOpen(false);
+              }}
+            />
+          }
         />
       )}
     </div>

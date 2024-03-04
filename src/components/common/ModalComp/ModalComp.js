@@ -35,7 +35,7 @@ const ModalComp = ({
       aria-labelledby="modal-modal-title"
       aria-describedby="modal-modal-description"
     >
-      <Box sx={style} className="mobile:min-w-[90%]">
+      <Box sx={style} className="focus-visible:outline-none mobile:min-w-[90%]">
         <Icon
           className="w-full mb-8 flex justify-between items-center text-inputLabel [&_svg]:cursor-pointer"
           onClick={() => setOpen(false)}
