@@ -14,9 +14,9 @@ module.exports = {
       inputLabel: "#5b5b5b",
     },
     screens: {
-      mobile: { min: "0px", max: "370px" },
-      tablet: { min: "371px", max: "640px" },
-      laptop: { min: "641px", max: "1024px" },
+      mobile: { min: "0px", max: "600px" },
+      tablet: { min: "601px", max: "750px" },
+      laptop: { min: "751", max: "1024px" },
       desktop: { min: "1025px", max: "1280px" },
     },
   },
