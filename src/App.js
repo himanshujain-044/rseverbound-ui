@@ -8,7 +8,10 @@ import { clearSessionStorage } from "./utils/helperFunction";
 import { useEffect } from "react";
 import { updateUserData } from "./store/userData";
 import { clearAPIState } from "./store/api";
+import ReactGA from "react-ga";
 import "./App.scss";
+
+ReactGA.initialize("UA-216158857-1");
 
 function App() {
   const dispatch = useDispatch();
@@ -18,6 +21,7 @@ function App() {
   const userData = useSelector((state) => state.userData?.data);
 
   useEffect(() => {
+    ReactGA.pageview(window.location.pathname);
     if ((isUserLogout && success) || statusCode === 401) {
       dispatch(updateUserData(""));
       dispatch(clearAPIState());
