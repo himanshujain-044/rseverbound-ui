@@ -9,7 +9,8 @@ import { BrowserRouter } from "react-router-dom";
 import ReactGA from "react-ga4";
 import "./index.css";
 
-ReactGA.initialize("UA-216158857-1");
+// ReactGA.initialize("UA-216158857-1");
+ReactGA.initialize("G-MCDS6C79D");
 ReactGA.send({
   hitType: "pageview",
   page: window.location.pathname,
