@@ -7,9 +7,10 @@ import { apiCalls } from "../../../store/api";
 import { API_ENDPOINTS } from "../../../constants/apiEndPoints";
 import { encryptData } from "../../../utils/helperFunction";
 import logo from "../../../assets/logo/logo.png";
-import "./LoginForm.scss";
 import ForgotPasswordModal from "../forgot-password-modal/ForgotPasswordModal";
 import ModalComp from "../../common/ModalComp/ModalComp";
+import upstoxEmptyLogo from "../../../assets/logo/upstox-empty-logo.jpeg";
+import "./LoginForm.scss";
 
 const LoginForm = () => {
   const dispatch = useDispatch();
@@ -130,25 +131,34 @@ const LoginForm = () => {
         </strong>
         <p className="mobile:text-[12px]">
           <strong>
-            Note:- <i>Get Rs. 100 to Rs. 500 upon account opening under us.</i>
+            Note:- Get Rs. 100 to Rs. 500 upon account opening under us.
           </strong>
-          <br />
-
-          <a
-            href="https://upstox.com/open-account/?f=JD1505"
-            target="_blank"
-            rel="noreferrer"
-            className="block mt-4 font-medium underline text-primary mobile:mt-2"
-          >
-            Click here to open your demat account today
-          </a>
-          <button
-            onClick={copyToClipboard}
-            className="flex items-center justify-center mt-2 gap-2 text-primary mobile:mt-1"
-          >
-            Copy Link
-            <ContentCopyOutlinedIcon className="mobile:w-[16px]" />
-          </button>
+          <div className="mt-4 flex gap-4 items-center mobile:mt-2 mobile:gap-2">
+            <a
+              href="https://upstox.com/open-account/?f=JD1505"
+              target="_blank"
+              rel="noreferrer"
+              className="block font-medium underline text-primary"
+            >
+              Click here to open your demat account today in Upstox
+            </a>
+            <button
+              onClick={copyToClipboard}
+              className="flex items-center justify-center gap-2 text-primary"
+            >
+              <ContentCopyOutlinedIcon className="mobile:w-[16px]" />
+            </button>
+          </div>
+          <div className="flex items-center gap-4 mt-4 mobile:gap-2">
+            <img
+              src={upstoxEmptyLogo}
+              alt="Upstox Logo"
+              className="rounded-[50%] h-[46px] w-[46px]"
+            />
+            <strong>
+              Upstox - India's Trusted Broker with Minimal Charges
+            </strong>
+          </div>
         </p>
       </div>
       {isSnackBarDisplay.msg && (
