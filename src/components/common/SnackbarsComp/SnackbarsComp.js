@@ -19,7 +19,10 @@ const SnackbarsComp = ({ message, severity = "success" }) => {
           onClose={handleClose}
           severity={severity}
           variant="filled"
-          sx={{ width: "100%" }}
+          sx={{
+            width: "100%",
+          }}
+          className={severity === "success" && "bg-primary"}
         >
           {message}
         </Alert>

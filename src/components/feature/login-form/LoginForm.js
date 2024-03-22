@@ -73,7 +73,7 @@ const LoginForm = () => {
         <form className="flex flex-col gap-2 mt-2">
           <FormControl>
             <label className="text-inputLabel font-medium mobile:text-[14px]">
-              Email/Mobile
+              Email
             </label>
             <OutlinedInput
               placeholder="abc@gmail.com"
