@@ -5,6 +5,10 @@
   .MuiDataGrid-cell:focus-within {
     outline: none !important;
   }
+  .MuiDataGrid-columnHeader:focus,
+  .MuiDataGrid-columnHeader:focus-within {
+    outline: none !important;
+  }
   .MuiDataGrid-virtualScroller {
     min-height: 9rem;
   }

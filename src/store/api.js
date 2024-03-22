@@ -147,14 +147,15 @@ const apiReducer = createSlice({
       })
       .addCase(getBrokerage.pending, (state, action) => {
         state.reqCount += 1;
+        state.message = "Getting the brokerage data ...";
       })
       .addCase(getBrokerage.fulfilled, (state, action) => {
         const { code = "", message = "", data = "" } = action.payload?.data;
         state.brokerageData = data;
         state.data = "";
         state.reqCount -= 1;
-        // state.statusCode = code;
-        state.message = message;
+        state.statusCode = "";
+        state.message = "";
         state.success = true;
       })
       .addCase(getBrokerage.rejected, (state, action) => {
@@ -167,13 +168,14 @@ const apiReducer = createSlice({
       })
       .addCase(getPaidBrokerageHistory.pending, (state, action) => {
         state.reqCount += 1;
+        state.message = "Getting the paid brokerage data ...";
       })
       .addCase(getPaidBrokerageHistory.fulfilled, (state, action) => {
         const { code = "", message = "", data = "" } = action.payload?.data;
         state.paidBrokerageData = data;
         state.reqCount -= 1;
-        // state.statusCode = code;
-        state.message = message;
+        state.statusCode = "";
+        // state.message = message;
         state.success = true;
       })
       .addCase(getPaidBrokerageHistory.rejected, (state, action) => {
@@ -186,6 +188,7 @@ const apiReducer = createSlice({
       })
       .addCase(updatePaymentMethod.pending, (state, action) => {
         state.reqCount += 1;
+        state.message = "Updating the payment method ...";
       })
       .addCase(updatePaymentMethod.fulfilled, (state, action) => {
         const {
@@ -200,7 +203,7 @@ const apiReducer = createSlice({
           },
         };
         state.statusCode = code;
-        state.message = message;
+        state.message = "";
         state.reqCount -= 1;
         state.success = true;
       })
@@ -214,6 +217,7 @@ const apiReducer = createSlice({
       })
       .addCase(logout.pending, (state, action) => {
         state.reqCount += 1;
+        state.message = "Logging out ...";
       })
       .addCase(logout.fulfilled, (state, action) => {
         const { code = "", message = "" } = action.payload?.data;
@@ -233,14 +237,15 @@ const apiReducer = createSlice({
       })
       .addCase(requestPayout.pending, (state, action) => {
         state.reqCount += 1;
+        state.message = "Your request is verifying ...";
       })
       .addCase(requestPayout.fulfilled, (state, action) => {
-        const { message = "" } = action.payload?.data;
+        const { message = "", code } = action.payload?.data;
         state.paidBrokerageData = "";
         state.brokerageData = "";
         state.reqCount -= 1;
-        // state.statusCode = code;
-        state.message = message;
+        state.statusCode = code;
+        state.message = "";
         state.success = true;
       })
       .addCase(requestPayout.rejected, (state, action) => {

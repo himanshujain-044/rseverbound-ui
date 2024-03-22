@@ -28,7 +28,7 @@ function App() {
   if (reqCount) {
     return (
       <>
-        <CircularIndeterminate /> <Footer />
+        <CircularIndeterminate msg={message} /> <Footer />
       </>
     );
   }
