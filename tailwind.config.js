@@ -12,6 +12,10 @@ module.exports = {
       primary: "rgb(90, 41, 139)",
       primaryHover: "rgba(90, 41, 139, 0.04)",
       inputLabel: "#5b5b5b",
+      success: "#28a745",
+      error: "#dc3545",
+      warning: "#ffc107",
+      info: "#17a2b8",
     },
     screens: {
       mobile: { min: "0px", max: "600px" },

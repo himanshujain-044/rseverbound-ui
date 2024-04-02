@@ -1,6 +1,6 @@
 import { Route, Routes } from "react-router-dom";
 import { ROUTES_LIST } from "../constants/routes";
-import Dashboard from "../components/feature/dashboard/Dashboard";
+import Dashboard from "../pages/dashboard/Dashboard";
 import Header from "../layouts/header/Header";
 
 const PrivateRoutes = () => {

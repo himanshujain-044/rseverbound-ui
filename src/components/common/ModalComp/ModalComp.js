@@ -37,7 +37,7 @@ const ModalComp = ({
     >
       <Box sx={style} className="focus-visible:outline-none mobile:min-w-[90%]">
         <Icon
-          className="w-full mb-8 flex justify-between items-center text-inputLabel [&_svg]:cursor-pointer"
+          className="w-full mb-8 flex justify-between items-center text-inputLabel h-fit [&_svg]:cursor-pointer"
           onClick={() => setOpen(false)}
         >
           <strong className="text-xl font-[Oswald-Light]">{title}</strong>

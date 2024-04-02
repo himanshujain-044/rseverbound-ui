@@ -110,6 +110,7 @@ const apiReducer = createSlice({
     isUserLogout: false,
     statusCode: "",
     success: false,
+    isRequestedPayoutModalOpen: false,
   },
   reducers: {
     clearAPIState: (state, action) => {
@@ -122,6 +123,10 @@ const apiReducer = createSlice({
       state.isUserLogout = false;
       state.statusCode = "";
       state.success = false;
+      state.isRequestedPayoutModalOpen = false;
+    },
+    closeRequestedPayoutModal: (state, action) => {
+      state.isRequestedPayoutModalOpen = false;
     },
   },
   extraReducers: (builder) => {
@@ -247,6 +252,7 @@ const apiReducer = createSlice({
         state.statusCode = code;
         state.message = "";
         state.success = true;
+        state.isRequestedPayoutModalOpen = true;
       })
       .addCase(requestPayout.rejected, (state, action) => {
         const { code = "", message = "", status } = action?.payload?.data;
@@ -258,5 +264,5 @@ const apiReducer = createSlice({
       });
   },
 });
-export const { clearAPIState } = apiReducer.actions;
+export const { clearAPIState, closeRequestedPayoutModal } = apiReducer.actions;
 export default apiReducer.reducer;
