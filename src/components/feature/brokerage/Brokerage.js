@@ -2,6 +2,7 @@ import { Button } from "@mui/material";
 import DataTable from "../../common/DataTable/DataTable";
 import { useState } from "react";
 import { borkerageCols } from "./brokerageCols";
+import { AMOUNT_PAID } from "../../../constants/common";
 
 const Brokerage = ({ data = [], handlePayoutEvent = () => {} }) => {
   const [selectedRows, setSelectedRows] = useState([]);
@@ -23,6 +24,10 @@ const Brokerage = ({ data = [], handlePayoutEvent = () => {} }) => {
           checkboxSelection={true}
           getSelectedRows={handleGetSelectedRows}
           rowSelectionModel={selectedRows}
+          tableProps={{
+            isRowSelectable: (params) =>
+              params.row.status !== AMOUNT_PAID.PENDING,
+          }}
         />
       </div>
       <div className="flex gap-2 mt-6">

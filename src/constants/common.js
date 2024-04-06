@@ -8,6 +8,12 @@ export const PAYMENT_MODE = {
   PAYTM: "paytm",
 };
 
+export const AMOUNT_PAID = {
+  PAID: "Paid",
+  NOT_PAID: "Not Paid",
+  PENDING: "Pending",
+};
+
 export const paymentModeOptions = [
   {
     text: (
