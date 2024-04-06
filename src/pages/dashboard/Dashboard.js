@@ -70,8 +70,10 @@ const Dashboard = () => {
               }
               content={
                 <strong className="text-justify">
-                  Your request has been approved, your payment will be done
-                  within 24 hours and will reflect in you dashboard.
+                  We are pleased to inform you that your request has been
+                  approved successfully. Your payment will be processed within
+                  the next 24 hours and the updated status will be reflected in
+                  your paid brokerage.
                 </strong>
               }
               closeModal={closeModal}

@@ -21,6 +21,7 @@ const DataTable = ({
   checkboxSelection = false,
   getSelectedRows = () => {},
   rowSelectionModel = [],
+  tableProps = {},
 }) => {
   return (
     <DataGrid
@@ -38,6 +39,7 @@ const DataTable = ({
       onRowSelectionModelChange={getSelectedRows}
       rowSelectionModel={rowSelectionModel}
       className="data-table min-h-[8rem] mobile:text-[12px]"
+      {...tableProps}
     />
   );
 };
