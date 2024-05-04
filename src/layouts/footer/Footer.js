@@ -14,26 +14,26 @@ const Footer = () => {
         <span className="mobile:text-[12px]">
           &#169; 2024 All Rights Reserved.
         </span>
-        <span className="flex items-center gap-1 mobile:hidden">
+        <span className="flex items-center gap-2 mobile:hidden">
           <img
             src={twitter}
             alt="twitter icon"
-            className="w-[18px] mobile:w-[12px]"
+            className="w-[18px] cursor-pointer mobile:w-[12px]"
           />
           <img
             src={fb}
             alt="facebook icon"
-            className="w-[18px] mobile:w-[12px]"
+            className="w-[18px] cursor-pointer mobile:w-[12px]"
           />
           <img
             src={insta}
             alt="instagram icon"
-            className="w-[18px] mobile:w-[12px]"
+            className="w-[18px] cursor-pointer mobile:w-[12px]"
           />
           <img
             src={youtube}
             alt="youtube icon"
-            className="w-[18px] mobile:w-[12px]"
+            className="w-[18px] cursor-pointer mobile:w-[12px]"
           />
         </span>
       </div>
