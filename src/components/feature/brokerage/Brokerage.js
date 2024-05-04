@@ -10,7 +10,7 @@ const Brokerage = ({ data = [], handlePayoutEvent = () => {} }) => {
     setSelectedRows(rowsIds);
   };
   return (
-    <div className="bg-[#fff] w-1/2 rounded-md p-4 mobile:w-full">
+    <div className="bg-[#fff] w-1/2 rounded-md overflow-auto p-4 mobile:w-full">
       <strong
         className="text-primary text-[24px] underline decoration-2 mobile:text-[18px]"
         style={{ textUnderlineOffset: "10px" }}

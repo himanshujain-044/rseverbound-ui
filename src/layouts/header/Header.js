@@ -117,13 +117,13 @@ const Header = () => {
           content={
             <MsgModalContent
               icon={
-                <div className="w-[100px] mobile:w-[60px]">
+                <div className="w-[100px] h-[120px] mobile:w-[60px] mobile:h-[60px]">
                   <lord-icon
                     src="https://cdn.lordicon.com/jnzhohhs.json"
                     trigger="loop"
                     colors="primary:#5a298b"
                     delay="2000"
-                    style={{ width: "100%", height: "120px" }}
+                    style={{ width: "100%", height: "100%" }}
                   ></lord-icon>
                 </div>
               }
