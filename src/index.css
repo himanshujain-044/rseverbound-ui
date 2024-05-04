@@ -63,6 +63,7 @@
 
 :root {
   --primary: rgb(90, 41, 139);
+  --bg-color-scroll-bar: rgb(149 149 149);
 }
 body {
   margin: 0;
@@ -102,6 +103,6 @@ code {
 }
 
 ::-webkit-scrollbar-thumb {
-  background-color: rgba(90, 41, 139, 0.8);
-  border-radius: 16px;
+  background-color: var(--bg-color-scroll-bar);
+  border-radius: 48px;
 }
