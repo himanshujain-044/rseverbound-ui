@@ -1,0 +1,14 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer utilities {
+  .loading-spinner {
+    height: 24px !important;
+    width: 24px !important;
+  }
+  .mobile-loading-spinner {
+    height: 20px !important;
+    width: 20px !important;
+  }
+}

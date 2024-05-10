@@ -1,5 +1,5 @@
 import { useDispatch, useSelector } from "react-redux";
-import CircularIndeterminate from "./components/common/LoadingSpinner/LoadingSpinner";
+import FullPageLoadingSpinner from "./components/common/FullPageLoadingSpinner/FullPageLoadingSpinner";
 import Footer from "./layouts/footer/Footer";
 import PublicRoutes from "./routes/publicRoutes";
 import PrivateRoutes from "./routes/privateRoutes";
@@ -24,14 +24,15 @@ function App() {
       clearSessionStorage();
     }
   }, [isUserLogout, success, statusCode, dispatch]);
-  console.log("14 userdata", data, message, statusCode);
+
   if (reqCount) {
     return (
       <>
-        <CircularIndeterminate msg={message} /> <Footer />
+        <FullPageLoadingSpinner msg={message} /> <Footer />
       </>
     );
   }
+  console.log("35", data, message, statusCode);
   return (
     <div className="background-img h-[calc(100vh_-1px)] mobile:h-[calc(100vh_-_1px)]">
       {!userData && <PublicRoutes />}

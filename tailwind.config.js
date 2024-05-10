@@ -16,6 +16,7 @@ module.exports = {
       error: "#dc3545",
       warning: "#ffc107",
       info: "#17a2b8",
+      disabledText: "rgba(0, 0, 0, 0.26)",
     },
     screens: {
       mobile: { min: "0px", max: "600px" },
@@ -25,4 +26,5 @@ module.exports = {
     },
   },
   plugins: [],
+  // important: true,
 };
