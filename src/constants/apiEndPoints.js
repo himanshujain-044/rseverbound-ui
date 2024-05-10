@@ -7,4 +7,6 @@ export const API_ENDPOINTS = {
   getPaidBrokerageHistory: `${userBaseUrl}/paid-user-brokerage`,
   updatePaymentMethod: `${userBaseUrl}/update-payment-method`,
   requestPayout: `${userBaseUrl}/update-user-brokerage`,
+  requestOTP: `${userBaseUrl}/request-otp`,
+  verifyOTP: `${userBaseUrl}/verify-otp`,
 };

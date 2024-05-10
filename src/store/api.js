@@ -81,6 +81,39 @@ export const requestPayout = createAsyncThunk(
     }
   }
 );
+export const requestOTP = createAsyncThunk(
+  "request-otp",
+  async (apiData, { rejectWithValue }) => {
+    try {
+      const { method, endpoint, payload } = apiData;
+      const response = await apiReq({
+        method,
+        endpoint,
+        payload,
+      });
+      return response;
+    } catch (err) {
+      return rejectWithValue(err?.response || err);
+    }
+  }
+);
+export const verifyOTP = createAsyncThunk(
+  "verify-otp",
+  async (apiData, { rejectWithValue }) => {
+    try {
+      const { method, endpoint, payload } = apiData;
+      const response = await apiReq({
+        method,
+        endpoint,
+        payload,
+      });
+      return response;
+    } catch (err) {
+      return rejectWithValue(err?.response || err);
+    }
+  }
+);
+
 export const logout = createAsyncThunk(
   "logout",
   async (apiData, { rejectWithValue }) => {
@@ -102,6 +135,7 @@ const apiReducer = createSlice({
   name: "data",
   initialState: {
     reqCount: 0,
+    componentLoader: false,
     message: "",
     data: "",
     brokerageData: "",
@@ -111,6 +145,8 @@ const apiReducer = createSlice({
     statusCode: "",
     success: false,
     isRequestedPayoutModalOpen: false,
+    isRequestedOTP: false,
+    otpVerified: false,
   },
   reducers: {
     clearAPIState: (state, action) => {
@@ -133,6 +169,7 @@ const apiReducer = createSlice({
     builder
       .addCase(apiCalls.pending, (state, action) => {
         state.reqCount += 1;
+        state.message = "";
       })
       .addCase(apiCalls.fulfilled, (state, action) => {
         const { code = "", message = "", data = "" } = action.payload?.data;
@@ -260,6 +297,61 @@ const apiReducer = createSlice({
         state.statusCode = code || status;
         state.message = message;
         state.reqCount -= 1;
+        state.success = false;
+      })
+      .addCase(requestOTP.pending, (state, action) => {
+        // state.reqCount += 1;
+        state.componentLoader = true;
+        state.message = "Checking registered email or not ...";
+        state.isRequestedOTP = false;
+        state.otpVerified = false;
+      })
+      .addCase(requestOTP.fulfilled, (state, action) => {
+        const { message, code } = action.payload?.data;
+        state.paidBrokerageData = "";
+        state.brokerageData = "";
+        state.componentLoader = false;
+        // state.reqCount -= 1;
+        state.statusCode = code;
+        state.message = message;
+        state.success = true;
+        state.isRequestedOTP = true;
+      })
+      .addCase(requestOTP.rejected, (state, action) => {
+        const { code = "", message = "", status } = action?.payload?.data;
+        state.data = "";
+        state.statusCode = code || status;
+        state.message = message;
+        state.componentLoader = false;
+        // state.reqCount -= 1;
+        state.success = false;
+      })
+      .addCase(verifyOTP.pending, (state, action) => {
+        // state.reqCount += 1;
+        state.componentLoader = true;
+        state.message = "Checking registered email or not ...";
+        // state.isRequestedOTP = false;
+        state.otpVerified = false;
+      })
+      .addCase(verifyOTP.fulfilled, (state, action) => {
+        const { message, code } = action.payload?.data;
+        state.paidBrokerageData = "";
+        state.brokerageData = "";
+        state.componentLoader = false;
+        // state.reqCount -= 1;
+        state.statusCode = code;
+        state.message = message;
+        state.success = true;
+        state.otpVerified = true;
+        // state.isRequestedOTP = true;
+      })
+      .addCase(verifyOTP.rejected, (state, action) => {
+        const { code = "", message = "", status } = action?.payload?.data;
+        state.data = "";
+        state.statusCode = code || status;
+        state.message = message;
+        state.componentLoader = false;
+        // state.reqCount -= 1;
         state.success = false;
       });
   },

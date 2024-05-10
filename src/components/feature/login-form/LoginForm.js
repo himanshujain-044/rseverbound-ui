@@ -1,8 +1,8 @@
 import { Button, FormControl, OutlinedInput } from "@mui/material";
 import ContentCopyOutlinedIcon from "@mui/icons-material/ContentCopyOutlined";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import SnackbarsComp from "../../common/SnackbarsComp/SnackbarsComp";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { apiCalls } from "../../../store/api";
 import { API_ENDPOINTS } from "../../../constants/apiEndPoints";
 import { encryptData } from "../../../utils/helperFunction";
@@ -11,6 +11,7 @@ import ForgotPasswordModal from "../forgot-password-modal/ForgotPasswordModal";
 import ModalComp from "../../common/ModalComp/ModalComp";
 import upstoxEmptyLogo from "../../../assets/logo/upstox-empty-logo.jpeg";
 import "./LoginForm.scss";
+import ResetNewPassword from "../reset-new-password/ResetNewPassword";
 
 const LoginForm = () => {
   const dispatch = useDispatch();
@@ -18,10 +19,21 @@ const LoginForm = () => {
     msg: "",
     severity: "",
   });
+  const { isRequestedOTP } = useSelector((state) => state.api);
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [isForgotPwdModalOpen, setIsForgotPwdModalOpen] = useState(false);
-
+  const [isNewPasswordModalOpen, setIsNewPasswordModalOpen] =
+    useState(isRequestedOTP);
+  const [forgotPwdEmail, setForgotPwdEmail] = useState();
+  useEffect(() => {
+    console.log("isNewPasswordModalOpen", isNewPasswordModalOpen);
+  }, [isNewPasswordModalOpen]);
+  console.log(
+    "isNewPasswordModalOpen outside ",
+    isNewPasswordModalOpen,
+    isRequestedOTP
+  );
   const copyToClipboard = () => {
     navigator.clipboard.writeText("https://upstox.com/open-account/?f=JD1505");
     setIsSnackBarDisplay({
@@ -39,20 +51,8 @@ const LoginForm = () => {
     setUsername("");
     setPassword("");
   };
-  const handleLogin = () => {
-    // const postReq = axios.post(API_ENDPOINTS.login, {
-    //   email: username,
-    //   password: encryptPassword(password),
-    // });
-    // dispatch(
-    //   apiCalls(
-    //     axios.post(API_ENDPOINTS.login, {
-    //       email: username,
-    //       password: encryptPassword(password),
-    //     })
-    //   )
-    // ); method: "post",
 
+  const handleLogin = () => {
     dispatch(
       apiCalls({
         method: "post",
@@ -61,6 +61,19 @@ const LoginForm = () => {
       })
     );
   };
+  const handleForgotPwdSentReq = ({ data }) => {
+    if (data) {
+      setForgotPwdEmail(data?.email);
+    }
+  };
+
+  useEffect(() => {
+    if (isRequestedOTP) {
+      setIsForgotPwdModalOpen(false);
+      setIsNewPasswordModalOpen(true);
+    }
+  }, [isRequestedOTP]);
+
   return (
     <div className="w-2/6 max-h-full pr-12 laptop:pr-6 tablet:w-full tablet:px-12 mobile:w-full mobile:px-3 mobile:mt-6">
       <img
@@ -102,6 +115,7 @@ const LoginForm = () => {
           className="flex justify-end text-primary hover:cursor-pointer mobile:text-[14px]"
           onClick={() => {
             setIsForgotPwdModalOpen(true);
+            setIsNewPasswordModalOpen(false);
           }}
         >
           Forgot Password?
@@ -174,8 +188,22 @@ const LoginForm = () => {
           title="Forgot Password"
           content={
             <ForgotPasswordModal
+              sentOTPReq={handleForgotPwdSentReq}
+              closeModal={() => setIsForgotPwdModalOpen(false)}
+            />
+          }
+        />
+      )}
+      {isNewPasswordModalOpen && (
+        <ModalComp
+          isOpen={isNewPasswordModalOpen}
+          setOpen={setIsNewPasswordModalOpen}
+          title="Reset New Password"
+          content={
+            <ResetNewPassword
+              data={{ email: forgotPwdEmail }}
               toggleModal={() => {
-                setIsForgotPwdModalOpen(false);
+                setIsNewPasswordModalOpen(false);
               }}
             />
           }

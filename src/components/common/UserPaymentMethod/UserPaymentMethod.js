@@ -4,7 +4,6 @@ import phonepe from "../../../assets/icons/phonepe.png";
 import paytm from "../../../assets/icons/paytm.png";
 
 const UserPaymentMethod = ({ paymentMethod = {} }) => {
-  console.log("7", paymentMethod);
   switch (paymentMethod?.method) {
     case PAYMENT_MODE.GPAY:
       return (

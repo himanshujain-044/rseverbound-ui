@@ -14,6 +14,12 @@ export const AMOUNT_PAID = {
   PENDING: "Pending",
 };
 
+export const OTP_TYPE = {
+  FORGOT_PASSWORD: "forgotPassword",
+};
+
+export const RESEND_OTP_TIMER = 120;
+
 export const paymentModeOptions = [
   {
     text: (

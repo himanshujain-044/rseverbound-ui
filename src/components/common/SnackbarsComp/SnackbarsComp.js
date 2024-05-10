@@ -1,16 +1,19 @@
-import * as React from "react";
+import { useEffect, useState } from "react";
 import Snackbar from "@mui/material/Snackbar";
 import Alert from "@mui/material/Alert";
 
 const SnackbarsComp = ({ message, severity = "success" }) => {
-  const [open, setOpen] = React.useState(true);
-  console.log("7", message, severity);
+  const [open, setOpen] = useState();
+  console.log("7", message, severity, open);
   const handleClose = (event, reason) => {
     if (reason === "clickaway") {
       return;
     }
     setOpen(false);
   };
+  useEffect(() => {
+    setOpen(!!message);
+  }, [message]);
 
   return (
     <div>
@@ -22,7 +25,7 @@ const SnackbarsComp = ({ message, severity = "success" }) => {
           sx={{
             width: "100%",
           }}
-          className={severity === "success" && "bg-primary"}
+          // className={severity === "success" && "bg-primary"}
         >
           {message}
         </Alert>
