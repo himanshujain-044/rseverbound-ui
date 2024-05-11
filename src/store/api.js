@@ -1,7 +1,7 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import { apiReq } from "../services/apiReq";
 
-export const apiCalls = createAsyncThunk(
+export const userLogin = createAsyncThunk(
   "data/api",
   async (apiData, { rejectWithValue }) => {
     try {
@@ -113,7 +113,6 @@ export const verifyOTP = createAsyncThunk(
     }
   }
 );
-
 export const logout = createAsyncThunk(
   "logout",
   async (apiData, { rejectWithValue }) => {
@@ -160,6 +159,8 @@ const apiReducer = createSlice({
       state.statusCode = "";
       state.success = false;
       state.isRequestedPayoutModalOpen = false;
+      state.isRequestedOTP = false;
+      state.otpVerified = false;
     },
     closeRequestedPayoutModal: (state, action) => {
       state.isRequestedPayoutModalOpen = false;
@@ -167,22 +168,22 @@ const apiReducer = createSlice({
   },
   extraReducers: (builder) => {
     builder
-      .addCase(apiCalls.pending, (state, action) => {
+      .addCase(userLogin.pending, (state, action) => {
         state.reqCount += 1;
-        state.message = "";
+        state.message = "Verifying credentials";
+        state.isRequestedOTP = false;
+        state.otpVerified = false;
       })
-      .addCase(apiCalls.fulfilled, (state, action) => {
-        const { code = "", message = "", data = "" } = action.payload?.data;
+      .addCase(userLogin.fulfilled, (state, action) => {
+        const { data } = action.payload?.data;
         state.data = data;
         state.reqCount -= 1;
-        // state.statusCode = code;
-        state.message = message;
         state.success = true;
       })
-      .addCase(apiCalls.rejected, (state, action) => {
-        const { code = "", message = "", status } = action?.payload?.data;
+      .addCase(userLogin.rejected, (state, action) => {
+        const { code, message } = action?.payload?.data;
         state.data = "";
-        state.statusCode = code || status;
+        state.statusCode = code;
         state.message = message;
         state.reqCount -= 1;
         state.success = false;
@@ -192,18 +193,15 @@ const apiReducer = createSlice({
         state.message = "Getting the brokerage data ...";
       })
       .addCase(getBrokerage.fulfilled, (state, action) => {
-        const { code = "", message = "", data = "" } = action.payload?.data;
+        const { data } = action.payload?.data;
         state.brokerageData = data;
-        state.data = "";
         state.reqCount -= 1;
-        state.statusCode = "";
-        state.message = "";
         state.success = true;
       })
       .addCase(getBrokerage.rejected, (state, action) => {
-        const { code = "", message = "", status } = action.payload?.data;
+        const { code, message } = action.payload?.data;
         state.data = "";
-        state.statusCode = code || status;
+        state.statusCode = code;
         state.message = message;
         state.reqCount -= 1;
         state.success = false;
@@ -213,17 +211,15 @@ const apiReducer = createSlice({
         state.message = "Getting the paid brokerage data ...";
       })
       .addCase(getPaidBrokerageHistory.fulfilled, (state, action) => {
-        const { code = "", message = "", data = "" } = action.payload?.data;
+        const { data } = action.payload?.data;
         state.paidBrokerageData = data;
         state.reqCount -= 1;
-        state.statusCode = "";
-        // state.message = message;
         state.success = true;
       })
       .addCase(getPaidBrokerageHistory.rejected, (state, action) => {
-        const { code = "", message = "", status } = action.payload?.data;
+        const { code, message } = action.payload?.data;
         state.data = "";
-        state.statusCode = code || status;
+        state.statusCode = code;
         state.message = message;
         state.reqCount -= 1;
         state.success = false;
@@ -235,8 +231,6 @@ const apiReducer = createSlice({
       .addCase(updatePaymentMethod.fulfilled, (state, action) => {
         const {
           data: { method, paymentAddress },
-          code,
-          message,
         } = action.payload?.data;
         state.updatedPaymentModeData = {
           paymentMethod: {
@@ -244,15 +238,13 @@ const apiReducer = createSlice({
             paymentAddress,
           },
         };
-        state.statusCode = code;
-        state.message = "";
         state.reqCount -= 1;
         state.success = true;
       })
       .addCase(updatePaymentMethod.rejected, (state, action) => {
-        const { code = "", message = "", status } = action?.payload?.data;
+        const { code, message } = action?.payload?.data;
         state.data = "";
-        state.statusCode = code || status;
+        state.statusCode = code;
         state.message = message;
         state.reqCount -= 1;
         state.success = false;
@@ -262,17 +254,14 @@ const apiReducer = createSlice({
         state.message = "Logging out ...";
       })
       .addCase(logout.fulfilled, (state, action) => {
-        const { code = "", message = "" } = action.payload?.data;
         state.isUserLogout = true;
         state.reqCount -= 1;
-        // state.statusCode = code;
-        state.message = message;
         state.success = true;
       })
       .addCase(logout.rejected, (state, action) => {
-        const { code = "", message = "", status } = action?.payload?.data;
+        const { code = "", message = "" } = action?.payload?.data;
         state.data = "";
-        state.statusCode = code || status;
+        state.statusCode = code;
         state.message = message;
         state.reqCount -= 1;
         state.success = false;
@@ -282,76 +271,61 @@ const apiReducer = createSlice({
         state.message = "Your request is verifying ...";
       })
       .addCase(requestPayout.fulfilled, (state, action) => {
-        const { message = "", code } = action.payload?.data;
         state.paidBrokerageData = "";
         state.brokerageData = "";
         state.reqCount -= 1;
-        state.statusCode = code;
-        state.message = "";
         state.success = true;
         state.isRequestedPayoutModalOpen = true;
       })
       .addCase(requestPayout.rejected, (state, action) => {
-        const { code = "", message = "", status } = action?.payload?.data;
+        const { code, message } = action?.payload?.data;
         state.data = "";
-        state.statusCode = code || status;
+        state.statusCode = code;
         state.message = message;
         state.reqCount -= 1;
         state.success = false;
       })
       .addCase(requestOTP.pending, (state, action) => {
-        // state.reqCount += 1;
         state.componentLoader = true;
-        state.message = "Checking registered email or not ...";
+        state.message = "";
         state.isRequestedOTP = false;
         state.otpVerified = false;
       })
       .addCase(requestOTP.fulfilled, (state, action) => {
         const { message, code } = action.payload?.data;
-        state.paidBrokerageData = "";
-        state.brokerageData = "";
         state.componentLoader = false;
-        // state.reqCount -= 1;
         state.statusCode = code;
         state.message = message;
         state.success = true;
         state.isRequestedOTP = true;
       })
       .addCase(requestOTP.rejected, (state, action) => {
-        const { code = "", message = "", status } = action?.payload?.data;
+        const { code, message } = action?.payload?.data;
         state.data = "";
-        state.statusCode = code || status;
+        state.statusCode = code;
         state.message = message;
         state.componentLoader = false;
-        // state.reqCount -= 1;
         state.success = false;
       })
       .addCase(verifyOTP.pending, (state, action) => {
-        // state.reqCount += 1;
         state.componentLoader = true;
-        state.message = "Checking registered email or not ...";
-        // state.isRequestedOTP = false;
+        state.message = "";
         state.otpVerified = false;
       })
       .addCase(verifyOTP.fulfilled, (state, action) => {
         const { message, code } = action.payload?.data;
-        state.paidBrokerageData = "";
-        state.brokerageData = "";
         state.componentLoader = false;
-        // state.reqCount -= 1;
         state.statusCode = code;
         state.message = message;
         state.success = true;
         state.otpVerified = true;
-        // state.isRequestedOTP = true;
       })
       .addCase(verifyOTP.rejected, (state, action) => {
-        const { code = "", message = "", status } = action?.payload?.data;
+        const { code, message } = action?.payload?.data;
         state.data = "";
-        state.statusCode = code || status;
+        state.statusCode = code;
         state.message = message;
         state.componentLoader = false;
-        // state.reqCount -= 1;
         state.success = false;
       });
   },

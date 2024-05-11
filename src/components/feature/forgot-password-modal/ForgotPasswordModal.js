@@ -59,9 +59,9 @@ const ForgotPasswordModal = ({
         <Button
           variant="contained"
           className={cx(
-            "hover:bg-primary  w-[108px] mobile:text-[12px] mobile:h-[30px]",
+            "w-[108px] mobile:text-[12px] mobile:h-[30px]",
             componentLoader && "bg-none",
-            !componentLoader && "bg-primary"
+            !componentLoader && "bg-primary hover:bg-primary"
           )}
           disabled={!validator.isEmail(email) || componentLoader}
           onClick={handleRequestOTP}

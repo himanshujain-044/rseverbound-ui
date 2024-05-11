@@ -4,7 +4,6 @@ import Alert from "@mui/material/Alert";
 
 const SnackbarsComp = ({ message, severity = "success" }) => {
   const [open, setOpen] = useState();
-  console.log("7", message, severity, open);
   const handleClose = (event, reason) => {
     if (reason === "clickaway") {
       return;
@@ -25,7 +24,7 @@ const SnackbarsComp = ({ message, severity = "success" }) => {
           sx={{
             width: "100%",
           }}
-          // className={severity === "success" && "bg-primary"}
+          className={severity === "success" && "bg-primary"}
         >
           {message}
         </Alert>

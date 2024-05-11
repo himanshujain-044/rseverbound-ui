@@ -3,14 +3,13 @@ import ContentCopyOutlinedIcon from "@mui/icons-material/ContentCopyOutlined";
 import { useEffect, useState } from "react";
 import SnackbarsComp from "../../common/SnackbarsComp/SnackbarsComp";
 import { useDispatch, useSelector } from "react-redux";
-import { apiCalls } from "../../../store/api";
+import { userLogin } from "../../../store/api";
 import { API_ENDPOINTS } from "../../../constants/apiEndPoints";
 import { encryptData } from "../../../utils/helperFunction";
 import logo from "../../../assets/logo/logo.png";
 import ForgotPasswordModal from "../forgot-password-modal/ForgotPasswordModal";
 import ModalComp from "../../common/ModalComp/ModalComp";
 import upstoxEmptyLogo from "../../../assets/logo/upstox-empty-logo.jpeg";
-import "./LoginForm.scss";
 import ResetNewPassword from "../reset-new-password/ResetNewPassword";
 
 const LoginForm = () => {
@@ -26,14 +25,7 @@ const LoginForm = () => {
   const [isNewPasswordModalOpen, setIsNewPasswordModalOpen] =
     useState(isRequestedOTP);
   const [forgotPwdEmail, setForgotPwdEmail] = useState();
-  useEffect(() => {
-    console.log("isNewPasswordModalOpen", isNewPasswordModalOpen);
-  }, [isNewPasswordModalOpen]);
-  console.log(
-    "isNewPasswordModalOpen outside ",
-    isNewPasswordModalOpen,
-    isRequestedOTP
-  );
+
   const copyToClipboard = () => {
     navigator.clipboard.writeText("https://upstox.com/open-account/?f=JD1505");
     setIsSnackBarDisplay({
@@ -54,7 +46,7 @@ const LoginForm = () => {
 
   const handleLogin = () => {
     dispatch(
-      apiCalls({
+      userLogin({
         method: "post",
         endpoint: API_ENDPOINTS.login,
         payload: { email: username, password: encryptData(password) },
@@ -111,14 +103,15 @@ const LoginForm = () => {
             />
           </FormControl>
         </form>
-        <span
-          className="flex justify-end text-primary hover:cursor-pointer mobile:text-[14px]"
-          onClick={() => {
-            setIsForgotPwdModalOpen(true);
-            setIsNewPasswordModalOpen(false);
-          }}
-        >
-          Forgot Password?
+        <span className="flex justify-end text-primary hover:cursor-pointer mobile:text-[14px]">
+          <span
+            onClick={() => {
+              setIsForgotPwdModalOpen(true);
+              setIsNewPasswordModalOpen(false);
+            }}
+          >
+            Forgot Password?
+          </span>
         </span>
 
         <div className="flex justify-center gap-2 mt-5">
@@ -143,7 +136,7 @@ const LoginForm = () => {
         <strong className="text-[#5A298B] text-xl mobile:text-md">
           Don't have account ?
         </strong>
-        <p className="mobile:text-[12px]">
+        <div className="mobile:text-[12px]">
           <strong>
             Note:- Get Rs. 100 to Rs. 500 upon account opening under us.
           </strong>
@@ -173,7 +166,7 @@ const LoginForm = () => {
               Upstox - India's Trusted Broker with Minimal Charges
             </strong>
           </div>
-        </p>
+        </div>
       </div>
       {isSnackBarDisplay.msg && (
         <SnackbarsComp
