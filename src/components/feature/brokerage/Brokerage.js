@@ -20,7 +20,7 @@ const Brokerage = ({ data = [], handlePayoutEvent = () => {} }) => {
       <div style={{ height: "75%", width: "100%", marginTop: "32px" }}>
         <DataTable
           cols={borkerageCols}
-          data={data}
+          data={data?.length ? data : []}
           checkboxSelection={true}
           getSelectedRows={handleGetSelectedRows}
           rowSelectionModel={selectedRows}

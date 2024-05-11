@@ -26,7 +26,6 @@ const ResetNewPassword = ({ toggleModal = () => {}, data = {} }) => {
       clearInterval(timer);
     }
     if (otpVerified) {
-      console.log("29 otpVerified", otpVerified);
       toggleModal();
     }
 
@@ -124,9 +123,9 @@ const ResetNewPassword = ({ toggleModal = () => {}, data = {} }) => {
         <Button
           variant={componentLoader ? "outlined" : "contained"}
           className={cx(
-            "flex gap 2 hover:bg-primary mobile:text-[12px] mobile:h-[30px]",
+            "flex gap 2 mobile:text-[12px] mobile:h-[30px]",
             componentLoader && "bg-none",
-            !componentLoader && "bg-primary"
+            !componentLoader && "bg-primary hover:bg-primary"
           )}
           disabled={newPassword?.length < 6 || componentLoader}
           onClick={handleResetPassword}

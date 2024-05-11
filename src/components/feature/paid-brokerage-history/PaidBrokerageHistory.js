@@ -1,7 +1,7 @@
 import DataTable from "../../common/DataTable/DataTable";
 import { paidBrokerageHisCols } from "./paidBrokerageHisCols";
 
-const PaidBrokerageHistory = ({ data }) => {
+const PaidBrokerageHistory = ({ data = [] }) => {
   return (
     <div className="bg-[#fff] w-1/2 rounded-md p-4 mobile:w-full">
       <strong
@@ -11,7 +11,10 @@ const PaidBrokerageHistory = ({ data }) => {
         Paid Brokerage
       </strong>
       <div style={{ height: "85%", width: "100%", marginTop: "32px" }}>
-        <DataTable cols={paidBrokerageHisCols} data={data} />
+        <DataTable
+          cols={paidBrokerageHisCols}
+          data={data?.length ? data : []}
+        />
       </div>
     </div>
   );

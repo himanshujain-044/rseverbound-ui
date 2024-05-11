@@ -13,7 +13,7 @@ const FullPageLoadingSpinner = ({ msg = "" }) => {
 
 export const LoadingSpinner = ({ style }) => {
   return (
-    <Box sx={{ display: "flex" }}>
+    <Box className="flex items-center justify-center">
       <CircularProgress className="loading-spinner text-primary mobile:mobile-loading-spinner" />
     </Box>
   );

@@ -1,4 +1,3 @@
-import { useState } from "react";
 import Box from "@mui/material/Box";
 import Modal from "@mui/material/Modal";
 import HighlightOffOutlinedIcon from "@mui/icons-material/HighlightOffOutlined";
@@ -24,10 +23,7 @@ const ModalComp = ({
   closeIcon = <HighlightOffOutlinedIcon />,
   hasBackdropClose = false,
 }) => {
-  // const [open, setOpen] = useState(isOpen);
-  // const handleOpen = () => setOpen(true);
   const handleClose = () => hasBackdropClose && setOpen(false);
-  console.log("23", isOpen);
   return (
     <Modal
       open={isOpen}

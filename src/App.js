@@ -4,7 +4,7 @@ import Footer from "./layouts/footer/Footer";
 import PublicRoutes from "./routes/publicRoutes";
 import PrivateRoutes from "./routes/privateRoutes";
 import SnackbarsComp from "./components/common/SnackbarsComp/SnackbarsComp";
-import { clearSessionStorage } from "./utils/helperFunction";
+import { clearSessionStorage, setSessionStorage } from "./utils/helperFunction";
 import { useEffect } from "react";
 import { updateUserData } from "./store/userData";
 import { clearAPIState } from "./store/api";
@@ -23,7 +23,11 @@ function App() {
       dispatch(clearAPIState());
       clearSessionStorage();
     }
-  }, [isUserLogout, success, statusCode, dispatch]);
+    if (data?.token) {
+      setSessionStorage("userData", data);
+      dispatch(updateUserData(data));
+    }
+  }, [data, isUserLogout, success, statusCode, dispatch]);
 
   if (reqCount) {
     return (
@@ -32,11 +36,10 @@ function App() {
       </>
     );
   }
-  console.log("35", data, message, statusCode);
+
   return (
     <div className="background-img h-[calc(100vh_-1px)] mobile:h-[calc(100vh_-_1px)]">
-      {!userData && <PublicRoutes />}
-      {userData && <PrivateRoutes />}
+      {userData ? <PrivateRoutes /> : <PublicRoutes />}
       <Footer />
       {!data && message && statusCode && (
         <SnackbarsComp
