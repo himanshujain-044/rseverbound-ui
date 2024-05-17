@@ -18,16 +18,18 @@ function App() {
   const userData = useSelector((state) => state.userData?.data);
 
   useEffect(() => {
-    if ((isUserLogout && success) || statusCode === 401) {
-      dispatch(updateUserData(""));
-      dispatch(clearAPIState());
-      clearSessionStorage();
-    }
     if (data?.token) {
       setSessionStorage("userData", data);
       dispatch(updateUserData(data));
     }
-  }, [data, isUserLogout, success, statusCode, dispatch]);
+  }, [data, dispatch]);
+  useEffect(() => {
+    if ((isUserLogout && success) || statusCode === 401) {
+      clearSessionStorage();
+      dispatch(updateUserData(""));
+      dispatch(clearAPIState());
+    }
+  }, [isUserLogout, success, statusCode, dispatch]);
 
   if (reqCount) {
     return (

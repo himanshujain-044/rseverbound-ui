@@ -251,6 +251,7 @@ const apiReducer = createSlice({
       })
       .addCase(logout.pending, (state, action) => {
         state.reqCount += 1;
+        state.isUserLogout = false;
         state.message = "Logging out ...";
       })
       .addCase(logout.fulfilled, (state, action) => {
