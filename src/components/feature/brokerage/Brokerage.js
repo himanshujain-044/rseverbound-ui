@@ -6,7 +6,15 @@ import { AMOUNT_PAID } from "../../../constants/common";
 
 const Brokerage = ({ data = [], handlePayoutEvent = () => {} }) => {
   const [selectedRows, setSelectedRows] = useState([]);
+  const [totalAmount, setTotalAmount] = useState(0);
   const handleGetSelectedRows = (rowsIds) => {
+    let calTotalAmount = 0;
+    data.forEach((d) => {
+      if (rowsIds.includes(d.id)) {
+        calTotalAmount = calTotalAmount + d?.amount;
+      }
+    });
+    setTotalAmount(calTotalAmount);
     setSelectedRows(rowsIds);
   };
   return (
@@ -17,7 +25,10 @@ const Brokerage = ({ data = [], handlePayoutEvent = () => {} }) => {
       >
         Brokerage
       </strong>
-      <div style={{ height: "75%", width: "100%", marginTop: "32px" }}>
+      <div
+        style={{ height: "75%", width: "100%", marginTop: "32px" }}
+        className="mb-3"
+      >
         <DataTable
           cols={borkerageCols}
           data={data?.length ? data : []}
@@ -30,7 +41,10 @@ const Brokerage = ({ data = [], handlePayoutEvent = () => {} }) => {
           }}
         />
       </div>
-      <div className="flex gap-2 mt-6">
+      <span className="block mb-2 mobile:text-[14px]">
+        Total selected amount to be paid - <strong>{totalAmount}</strong>
+      </span>
+      <div className="flex gap-2">
         <Button
           variant="outlined"
           className="border-primary text-[#5A298B] hover:bg-primaryHover hover:border-primary mobile:text-[12px] mobile:h-[30px]"
