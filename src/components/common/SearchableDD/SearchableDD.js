@@ -9,7 +9,7 @@ const SearchableDD = ({
   onInputChangeDDSearch = () => {},
 }) => {
   return (
-    <div className="flex max-w-[100%]">
+    <div className="flex max-w-[100%] [&_div]:w-full w-full">
       <Autocomplete
         id="searchable-dd"
         freeSolo

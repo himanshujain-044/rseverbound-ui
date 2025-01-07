@@ -8,9 +8,12 @@ import {
   getAllBuyers,
   getAllProducts,
   getAllVehicles,
+  getBillNumber,
 } from "../../../store/api";
 import { API_ENDPOINTS } from "../../../constants/apiEndPoints";
 import { DATED_OPTIONS, FORM_REDUCER } from "../../../constants/common";
+import { formatDate } from "../../../utils/helperFunction";
+import ItemsSell from "./ItemsSell";
 const formInitValues = {
   buyerName: "",
   buyerAddress: "",
@@ -45,7 +48,7 @@ const formReducer = (state, action) => {
 const BillForm = ({ className = "" }) => {
   const dispatch = useDispatch();
   const [formValues, formDispatch] = useReducer(formReducer, formInitValues);
-  const { allBuyers, allVehicles, allProducts } = useSelector(
+  const { billNumber, allBuyers, allVehicles, allProducts } = useSelector(
     (state) => state.api
   );
   const [buyersNameDDOptions, setBuyersNameDDOptions] = useState([]);
@@ -53,6 +56,14 @@ const BillForm = ({ className = "" }) => {
   const [productsDDOptions, setProductsDDOptions] = useState([]);
 
   useEffect(() => {
+    if (!billNumber) {
+      dispatch(
+        getBillNumber({
+          method: "get",
+          endpoint: API_ENDPOINTS.getBillNumber,
+        })
+      );
+    }
     if (!allBuyers?.length) {
       dispatch(
         getAllBuyers({
@@ -77,6 +88,7 @@ const BillForm = ({ className = "" }) => {
         })
       );
     }
+
     if (allBuyers?.length) {
       const buyersNames = [];
       //   const
@@ -140,7 +152,10 @@ const BillForm = ({ className = "" }) => {
             <u className="pt-[2px]">TAX INVOICE</u>
           </h2>
         </Grid>
-        <Grid xs={6} className="form-border no-top-border flex flex-col">
+        <Grid
+          xs={6}
+          className="pl-1 pb-1 form-border no-top-border flex flex-col"
+        >
           <strong>MADHUVAN MINERALS & INDUSTRIES</strong>
           {/* <input placeholder="Enter " className="outline-none block" />
           <input placeholder="Enter " className="outline-none block" />
@@ -154,20 +169,20 @@ const BillForm = ({ className = "" }) => {
           <span>Contact: 7000042043, 9685520593</span>
         </Grid>
         <Grid xs={3} className="bottom-border">
-          <div className="bottom-border">
+          <div className="pl-1 pb-1  bottom-border">
             <p>Invoice No.</p>
-            <strong>67</strong>
+            <strong>{billNumber}</strong>
           </div>
-          <div className="bottom-border">Buyer's Order No.</div>
-          <div>Dispatched through</div>
+          <div className="pl-1 pb-1 bottom-border">Buyer's Order No.</div>
+          <div className="pl-1 pb-1">Dispatched through</div>
         </Grid>
         <Grid xs={3} className="form-border no-top-border">
-          <div className="bottom-border">
-            <p>Dated</p>
-            <strong>19-Dec-24</strong>
+          <div className="pb-1 bottom-border">
+            <p className="pl-1">Dated</p>
+            <strong className="pl-1">{formatDate(new Date())}</strong>
           </div>
-          <div className="bottom-border flex">
-            <span className="min-w-[3.4rem]">Dated -</span>
+          <div className="pb-1 bottom-border flex">
+            <span className="pl-1 min-w-[3.7rem]">Dated -</span>
             <SearchableDD
               onChangeDDOption={handleOnChangeDatedDD}
               onInputChangeDDSearch={handleOnChangeDatedDDInput}
@@ -175,7 +190,7 @@ const BillForm = ({ className = "" }) => {
               ddOptions={DATED_OPTIONS}
             />
           </div>
-          <div className="flex">
+          <div className="pb-1 flex pl-1">
             <span className="min-w-[5.9rem]">Destination -</span>
             <SearchableDD
               onChangeDDOption={handleOnChangeDatedDD}
@@ -183,9 +198,9 @@ const BillForm = ({ className = "" }) => {
             />
           </div>
         </Grid>
-        <Grid xs={6} className="form-border no-top-border">
+        <Grid xs={6} className="pl-1 pb-1 form-border no-top-border">
           <div className="flex">
-            <span className="min-w-[3.4rem]">Buyer's Name -</span>
+            <span className="min-w-[7.3rem]">Buyer's Name -</span>
             <SearchableDD
               onChangeDDOption={onChangeBuyerNameDD}
               onInputChangeDDSearch={onChangeBuyerNameDDInput}
@@ -200,7 +215,7 @@ const BillForm = ({ className = "" }) => {
             ddValue={formValues?.buyerAddress}
           />
           <div className="flex">
-            <h6>GST -</h6>
+            <h6 className="w-[3rem]">GST -</h6>
             <SearchableDD
               onChangeDDOption={handleOnChangeDatedDD}
               onInputChangeDDSearch={handleOnChangeDatedDDInput}
@@ -209,7 +224,7 @@ const BillForm = ({ className = "" }) => {
             />
           </div>
           <div className="flex">
-            <strong>State -</strong>
+            <strong className="w-[4rem]">State -</strong>
             <SearchableDD
               onChangeDDOption={handleOnChangeDatedDD}
               onInputChangeDDSearch={handleOnChangeDatedDDInput}
@@ -218,10 +233,10 @@ const BillForm = ({ className = "" }) => {
           </div>
         </Grid>
         <Grid xs={3} className="bottom-border">
-          <div> Bill of Loading / LR No.</div>
+          <div className="pl-1 pb-1 "> Bill of Loading / LR No.</div>
         </Grid>
         <Grid xs={3} className="form-border no-top-border">
-          <div className="flex">
+          <div className="flex pl-1 pb-1 ">
             <span className="min-w-[5.5rem]">Vechile No -</span>
             <SearchableDD
               onChangeDDOption={handleOnChangeDatedDD}
@@ -230,150 +245,14 @@ const BillForm = ({ className = "" }) => {
             />
           </div>
         </Grid>
-
-        <Grid xs={1} className="left-border">
-          <strong>S. No.</strong>
-          <input
-            placeholder="Enter "
-            className="outline-none block max-w-[100%]"
-            value={formValues.items["1"].sNo}
-          />
-          <input
-            placeholder="Enter "
-            className="outline-none block max-w-[100%]"
-            value={formValues.items["2"].sNo}
-          />
-          <input
-            placeholder="Enter "
-            className="outline-none block max-w-[100%]"
-            value={formValues.items["3"].sNo}
-          />
-        </Grid>
-        <Grid xs={1} className="left-border">
-          <strong>Date</strong>
-          <input
-            placeholder="Enter "
-            className="outline-none block max-w-[100%]"
-          />
-          <input
-            placeholder="Enter "
-            className="outline-none block max-w-[100%]"
-          />
-          <input
-            placeholder="Enter "
-            className="outline-none block max-w-[100%]"
-          />
-        </Grid>
-        <Grid xs={3} className="left-border">
-          <strong>Description of Goods</strong>
-          <SearchableDD
-            onChangeDDOption={handleOnChangeDatedDD}
-            onInputChangeDDSearch={handleOnChangeDatedDDInput}
-            ddOptions={productsDDOptions}
-          />
-          <SearchableDD
-            onChangeDDOption={handleOnChangeDatedDD}
-            onInputChangeDDSearch={handleOnChangeDatedDDInput}
-            ddOptions={productsDDOptions}
-          />
-          <SearchableDD
-            onChangeDDOption={handleOnChangeDatedDD}
-            onInputChangeDDSearch={handleOnChangeDatedDDInput}
-            ddOptions={productsDDOptions}
-          />
-        </Grid>
-        {/* <Grid xs={1}>
-          <strong>Truck No.</strong>
-          <input placeholder="Enter " className="outline-none block" />
-          <input placeholder="Enter " className="outline-none block" />
-          <input placeholder="Enter " className="outline-none block" />
-        </Grid> */}
-        <Grid xs={2} className="left-border">
-          <strong>HSN Code</strong>
-          <input
-            placeholder="Enter "
-            className="outline-none block max-w-[100%]"
-          />
-          <input
-            placeholder="Enter "
-            className="outline-none block max-w-[100%]"
-          />
-          <input
-            placeholder="Enter "
-            className="outline-none block max-w-[100%]"
-          />
-        </Grid>
-        <Grid xs={1} className="left-border">
-          <strong>Quantity</strong>
-          <input
-            placeholder="Enter "
-            className="outline-none block max-w-[100%]"
-            type="number"
-          />
-          <input
-            placeholder="Enter "
-            className="outline-none block max-w-[100%]"
-            type="number"
-          />
-          <input
-            placeholder="Enter "
-            className="outline-none block max-w-[100%]"
-            type="number"
-          />
-        </Grid>
-        <Grid xs={1} className="left-border">
-          <strong>Rate PMT</strong>
-          <input
-            placeholder="Enter "
-            className="outline-none block max-w-[100%]"
-            type="number"
-          />
-          <input
-            placeholder="Enter "
-            className="outline-none block max-w-[100%]"
-            type="number"
-          />
-          <input
-            placeholder="Enter "
-            className="outline-none block max-w-[100%]"
-            type="number"
-          />
-        </Grid>
-        <Grid xs={1} className="left-border">
-          <strong>IGST R/o</strong>
-          <input
-            placeholder="Enter "
-            className="outline-none block max-w-[100%]"
-          />
-          <input
-            placeholder="Enter "
-            className="outline-none block max-w-[100%]"
-          />
-          <input
-            placeholder="Enter "
-            className="outline-none block max-w-[100%]"
-          />
-        </Grid>
-        <Grid xs={2} className="left-border right-border">
-          <strong>Amount RS</strong>
-          <input
-            placeholder="Enter "
-            className="outline-none block max-w-[100%]"
-          />
-          <input
-            placeholder="Enter "
-            className="outline-none block max-w-[100%]"
-          />
-          <input
-            placeholder="Enter "
-            className="outline-none block max-w-[100%]"
-          />
-        </Grid>
-
-        <Grid xs={7} className="form-border">
+        <ItemsSell />
+        <Grid xs={6} className="pr-1 pb-1 form-border flex justify-end">
           <strong>Grand Total</strong>
         </Grid>
-        <Grid xs={5} className="form-border no-left-border">
+        <Grid
+          xs={6}
+          className="pr-1 pb-1 form-border no-left-border flex justify-end"
+        >
           <strong>678687687</strong>
         </Grid>
 
@@ -381,37 +260,39 @@ const BillForm = ({ className = "" }) => {
           xs={12}
           className="form-border no-top-border flex justify-between"
         >
-          <div className="flex flex-col">
+          <div className="pl-1 pb-1 flex flex-col">
             <span>Amount chargable </span>
             <strong>Indian Rupess eight lakh</strong>
           </div>
-          <span>E. & O.E</span>
+          <span className="pr-1 pb-1">E. & O.E</span>
         </Grid>
 
         <Grid
           xs={5}
-          className="form-border no-top-border flex flex-col justify-end"
+          className="pl-1 pb-1 form-border no-top-border flex flex-col justify-end"
         >
           <span>
             <u>Declaration</u>
           </span>
           <p>
-            We declare that this invoice shi iuigghjg hj gjhjh jhghj gjhgjh jhg
-            hjgjg hj g hj
+            We declare that this invoices shows the actaul price of the goods
+            described and that all particulars are true and correct.
           </p>
           <sapn>
-            Company's PAN: <strong>SFDSF5675</strong>
+            Company's PAN: <strong>ABAFM0119P</strong>
           </sapn>
         </Grid>
         <Grid xs={7} className="form-border no-left-border no-top-border">
-          <div className="flex flex-col">
-            <span>Company's Bank Det</span>
-            <strong>A/c Holder nmae : Madhuvan minerals & industries</strong>
+          <div className="pl-1 pb-1 flex flex-col">
+            <span>Company's Bank Details</span>
+            <strong>A/c Holder's Name: MADHUVAN MINERALS & INDUSTRIES</strong>
             <strong>Bank Name: Central Bank of India</strong>
-            <strong>A/c No.: 44354343335</strong>
-            <strong>Brnach & IFSC Code: SHAHgarhs ,sagar sgsfgf d</strong>
+            <strong>A/c No.: 3734793516</strong>
+            <strong>
+              Branch & IFSC Code: SHAHGARH, SAGAR (M.P.) & CBIN0282030
+            </strong>
           </div>
-          <div className="flex flex-col text-right top-border">
+          <div className="pr-1 pb-1 flex flex-col text-right top-border">
             <strong>for MADHUVAN MINERALS & INDUSTRIES</strong>
             <span>Authorised Signatory</span>
           </div>

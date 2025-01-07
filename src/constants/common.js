@@ -27,6 +27,20 @@ export const FORM_REDUCER = {
 
 export const DATED_OPTIONS = ["Date", "Telephonic", "On Delivery"];
 
+export const MONTH_NAMES = [
+  "Jan",
+  "Feb",
+  "Mar",
+  "Apr",
+  "May",
+  "Jun",
+  "Jul",
+  "Aug",
+  "Sep",
+  "Oct",
+  "Nov",
+  "Dec",
+];
 export const paymentModeOptions = [
   {
     text: (

@@ -1,4 +1,13 @@
 const { AES, enc } = require("crypto-js");
+const { MONTH_NAMES } = require("../constants/common");
+
+const formatDate = (date) => {
+  const day = date.getDate();
+  const monthIndex = date.getMonth();
+  const year = date.getFullYear();
+
+  return `${day}-${MONTH_NAMES[monthIndex]}-${year.toString().slice(-2)}`;
+};
 
 const decryptData = (data = "") => {
   return AES.decrypt(data, process.env.REACT_APP_ENCRYPTED_SECRET).toString(
@@ -30,6 +39,7 @@ const clearSessionStorage = (key = "") => {
 };
 
 module.exports = {
+  formatDate,
   decryptData,
   encryptData,
   setSessionStorage,

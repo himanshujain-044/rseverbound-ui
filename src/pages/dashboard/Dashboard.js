@@ -24,14 +24,6 @@ const Dashboard = () => {
   const { billNumber } = useSelector((state) => state.api);
   useEffect(() => {
     document.title = "Madhuvan Minerals - Dashbaord";
-    if (!billNumber) {
-      dispatch(
-        getBillNumber({
-          method: "get",
-          endpoint: API_ENDPOINTS.getBillNumber,
-        })
-      );
-    }
   }, []);
   const componentRef = useRef();
 
