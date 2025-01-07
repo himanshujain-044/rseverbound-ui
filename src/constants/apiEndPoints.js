@@ -3,12 +3,14 @@ const userBaseUrl = baseUrl + "/users";
 const billsBaseUrl = baseUrl + "/bills";
 const buyersBaseUrl = baseUrl + "/buyers";
 const vehiclesBaseUrl = baseUrl + "/vehicles";
+const productsBaseUrl = baseUrl + "/products";
 export const API_ENDPOINTS = {
   login: `${userBaseUrl}/login`,
   logout: `${userBaseUrl}/logout`,
   getBillNumber: `${billsBaseUrl}/bill-number`,
   getAllBuyers: `${buyersBaseUrl}/all-buyers`,
   getAllVehicles: `${vehiclesBaseUrl}/all-vehicles`,
+  getAllProducts: `${productsBaseUrl}/all-products`,
   // getBrokerage: `${userBaseUrl}/get-user-brokerage`,
   // getPaidBrokerageHistory: `${userBaseUrl}/paid-user-brokerage`,
   // updatePaymentMethod: `${userBaseUrl}/update-payment-method`,

@@ -1,6 +1,19 @@
 import axios from "axios";
-import { getSessionStorage } from "../utils/helperFunction";
-
+import {
+  clearSessionStorage,
+  getSessionStorage,
+} from "../utils/helperFunction";
+axios.interceptors.response.use(
+  (response) => {
+    return response;
+  },
+  (error) => {
+    if (error.response.status === 401) {
+      clearSessionStorage();
+    }
+    return Promise.reject(error);
+  }
+);
 export const apiReq = async ({
   method = "get",
   endpoint = "",

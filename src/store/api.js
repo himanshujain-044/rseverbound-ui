@@ -86,6 +86,23 @@ export const getAllVehicles = createAsyncThunk(
   }
 );
 
+export const getAllProducts = createAsyncThunk(
+  "all-products",
+  async (apiData, { rejectWithValue }) => {
+    try {
+      const { method, endpoint, payload } = apiData;
+      const response = await apiReq({
+        method,
+        endpoint,
+        payload,
+      });
+      return response;
+    } catch (err) {
+      return rejectWithValue(err?.response || err);
+    }
+  }
+);
+
 const apiReducer = createSlice({
   name: "data",
   initialState: {
@@ -98,6 +115,7 @@ const apiReducer = createSlice({
     billNumber: "",
     allBuyers: [],
     allVehicles: [],
+    allProducts: [],
 
     // brokerageData: "",
     // paidBrokerageData: "",
@@ -115,6 +133,7 @@ const apiReducer = createSlice({
       state.billNumber = "";
       state.allBuyers = "";
       state.allVehicles = "";
+      state.allProducts = "";
 
       // state.brokerageData = "";
       // state.paidBrokerageData = "";
@@ -222,6 +241,25 @@ const apiReducer = createSlice({
       .addCase(getAllVehicles.rejected, (state, action) => {
         const { code, message } = action.payload?.data;
         state.allVehicles = "";
+        state.statusCode = code;
+        state.message = message;
+        state.reqCount -= 1;
+        state.success = false;
+      })
+      .addCase(getAllProducts.pending, (state, action) => {
+        state.reqCount += 1;
+        state.message = "Fetching all the vichels ...";
+      })
+      .addCase(getAllProducts.fulfilled, (state, action) => {
+        console.log("138", action.payload?.data);
+        const { data } = action.payload?.data;
+        state.allProducts = data;
+        state.reqCount -= 1;
+        state.success = true;
+      })
+      .addCase(getAllProducts.rejected, (state, action) => {
+        const { code, message } = action.payload?.data;
+        state.allProducts = "";
         state.statusCode = code;
         state.message = message;
         state.reqCount -= 1;

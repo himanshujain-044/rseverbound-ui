@@ -4,7 +4,11 @@ import Grid from "@mui/material/Grid";
 import cx from "classnames";
 import { Button, Typography } from "@mui/material";
 import SearchableDD from "../../common/SearchableDD/SearchableDD";
-import { getAllBuyers, getAllVehicles } from "../../../store/api";
+import {
+  getAllBuyers,
+  getAllProducts,
+  getAllVehicles,
+} from "../../../store/api";
 import { API_ENDPOINTS } from "../../../constants/apiEndPoints";
 import { DATED_OPTIONS, FORM_REDUCER } from "../../../constants/common";
 const formInitValues = {
@@ -13,6 +17,15 @@ const formInitValues = {
   buyerGst: "",
   buyerState: "",
   dated: DATED_OPTIONS[1],
+  items: {
+    1: {
+      sNo: 1,
+    },
+    2: {
+      sNo: 2,
+    },
+    3: { sNo: 3 },
+  },
 };
 const formReducer = (state, action) => {
   if (action.type === FORM_REDUCER.UPDATE_FORM_VALUES) {
@@ -25,15 +38,20 @@ const formReducer = (state, action) => {
       buyerGst: buyerDetails?.gst,
       buyerState: buyerDetails?.state,
       dated: state?.dated,
+      items: state?.items,
     };
   }
 };
 const BillForm = ({ className = "" }) => {
   const dispatch = useDispatch();
   const [formValues, formDispatch] = useReducer(formReducer, formInitValues);
-  const { allBuyers, allVehicles } = useSelector((state) => state.api);
+  const { allBuyers, allVehicles, allProducts } = useSelector(
+    (state) => state.api
+  );
   const [buyersNameDDOptions, setBuyersNameDDOptions] = useState([]);
   const [vehiclesDDOptions, setVehiclesDDOptions] = useState([]);
+  const [productsDDOptions, setProductsDDOptions] = useState([]);
+
   useEffect(() => {
     if (!allBuyers?.length) {
       dispatch(
@@ -48,6 +66,14 @@ const BillForm = ({ className = "" }) => {
         getAllVehicles({
           method: "get",
           endpoint: API_ENDPOINTS.getAllVehicles,
+        })
+      );
+    }
+    if (!allProducts?.length) {
+      dispatch(
+        getAllProducts({
+          method: "get",
+          endpoint: API_ENDPOINTS.getAllProducts,
         })
       );
     }
@@ -73,6 +99,17 @@ const BillForm = ({ className = "" }) => {
       setVehiclesDDOptions(vehicles);
     }
   }, [allVehicles]);
+
+  useEffect(() => {
+    if (allProducts?.length) {
+      const products = [];
+      allProducts.forEach((product) => {
+        products.push(product?.name);
+      });
+      console.log("38", products);
+      setProductsDDOptions(products);
+    }
+  }, [allProducts]);
   const handleOnChangeDatedDD = (e, value) => {
     console.log("7 dd", e?.target?.value, value);
   };
@@ -199,14 +236,17 @@ const BillForm = ({ className = "" }) => {
           <input
             placeholder="Enter "
             className="outline-none block max-w-[100%]"
+            value={formValues.items["1"].sNo}
           />
           <input
             placeholder="Enter "
             className="outline-none block max-w-[100%]"
+            value={formValues.items["2"].sNo}
           />
           <input
             placeholder="Enter "
             className="outline-none block max-w-[100%]"
+            value={formValues.items["3"].sNo}
           />
         </Grid>
         <Grid xs={1} className="left-border">
@@ -226,17 +266,20 @@ const BillForm = ({ className = "" }) => {
         </Grid>
         <Grid xs={3} className="left-border">
           <strong>Description of Goods</strong>
-          <input
-            placeholder="Enter "
-            className="outline-none block max-w-[100%]"
+          <SearchableDD
+            onChangeDDOption={handleOnChangeDatedDD}
+            onInputChangeDDSearch={handleOnChangeDatedDDInput}
+            ddOptions={productsDDOptions}
           />
-          <input
-            placeholder="Enter "
-            className="outline-none block max-w-[100%]"
+          <SearchableDD
+            onChangeDDOption={handleOnChangeDatedDD}
+            onInputChangeDDSearch={handleOnChangeDatedDDInput}
+            ddOptions={productsDDOptions}
           />
-          <input
-            placeholder="Enter "
-            className="outline-none block max-w-[100%]"
+          <SearchableDD
+            onChangeDDOption={handleOnChangeDatedDD}
+            onInputChangeDDSearch={handleOnChangeDatedDDInput}
+            ddOptions={productsDDOptions}
           />
         </Grid>
         {/* <Grid xs={1}>
@@ -265,14 +308,17 @@ const BillForm = ({ className = "" }) => {
           <input
             placeholder="Enter "
             className="outline-none block max-w-[100%]"
+            type="number"
           />
           <input
             placeholder="Enter "
             className="outline-none block max-w-[100%]"
+            type="number"
           />
           <input
             placeholder="Enter "
             className="outline-none block max-w-[100%]"
+            type="number"
           />
         </Grid>
         <Grid xs={1} className="left-border">
@@ -280,14 +326,17 @@ const BillForm = ({ className = "" }) => {
           <input
             placeholder="Enter "
             className="outline-none block max-w-[100%]"
+            type="number"
           />
           <input
             placeholder="Enter "
             className="outline-none block max-w-[100%]"
+            type="number"
           />
           <input
             placeholder="Enter "
             className="outline-none block max-w-[100%]"
+            type="number"
           />
         </Grid>
         <Grid xs={1} className="left-border">
