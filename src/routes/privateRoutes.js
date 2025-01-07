@@ -7,7 +7,7 @@ const PrivateRoutes = () => {
   return (
     <>
       <Header />
-      <div className="h-[calc(100%_-_192px)] m-8 relative top-[41px] overflow-auto mobile:top-[24px] mobile:m-4 mobile:h-[calc(100%_-_118px)]">
+      <div className="h-[calc(100%_-_134px)] relative top-[64px] overflow-auto mobile:top-[24px] mobile:m-4 mobile:h-[calc(100%_-_80px)]">
         <Routes>
           <Route path={ROUTES_LIST.dashboard} element={<Dashboard />} />
           <Route path="/*" element={<Dashboard />} />

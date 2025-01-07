@@ -2,7 +2,7 @@ import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import { apiReq } from "../services/apiReq";
 
 export const userLogin = createAsyncThunk(
-  "data/api",
+  "login",
   async (apiData, { rejectWithValue }) => {
     try {
       const { method, endpoint, payload } = apiData;
@@ -17,104 +17,60 @@ export const userLogin = createAsyncThunk(
     }
   }
 );
-export const getBrokerage = createAsyncThunk(
-  "data/brokerage",
-  async (apiData, { rejectWithValue }) => {
-    try {
-      const { method, endpoint, payload } = apiData;
-      const response = await apiReq({
-        method,
-        endpoint,
-        payload,
-      });
-      return response;
-    } catch (err) {
-      return rejectWithValue(err?.response || err);
-    }
-  }
-);
-export const getPaidBrokerageHistory = createAsyncThunk(
-  "data/paidBrokerage",
-  async (apiData, { rejectWithValue }) => {
-    try {
-      const { method, endpoint, payload } = apiData;
-      const response = await apiReq({
-        method,
-        endpoint,
-        payload,
-      });
-      return response;
-    } catch (err) {
-      return rejectWithValue(err?.response || err);
-    }
-  }
-);
-export const updatePaymentMethod = createAsyncThunk(
-  "updatePaymentMethod/api",
-  async (apiData, { rejectWithValue }) => {
-    try {
-      const { method, endpoint, payload } = apiData;
-      const response = await apiReq({
-        method,
-        endpoint,
-        payload,
-      });
-      return response;
-    } catch (err) {
-      return rejectWithValue(err?.response || err);
-    }
-  }
-);
-export const requestPayout = createAsyncThunk(
-  "requestPayout",
-  async (apiData, { rejectWithValue }) => {
-    try {
-      const { method, endpoint, payload } = apiData;
-      const response = await apiReq({
-        method,
-        endpoint,
-        payload,
-      });
-      return response;
-    } catch (err) {
-      return rejectWithValue(err?.response || err);
-    }
-  }
-);
-export const requestOTP = createAsyncThunk(
-  "request-otp",
-  async (apiData, { rejectWithValue }) => {
-    try {
-      const { method, endpoint, payload } = apiData;
-      const response = await apiReq({
-        method,
-        endpoint,
-        payload,
-      });
-      return response;
-    } catch (err) {
-      return rejectWithValue(err?.response || err);
-    }
-  }
-);
-export const verifyOTP = createAsyncThunk(
-  "verify-otp",
-  async (apiData, { rejectWithValue }) => {
-    try {
-      const { method, endpoint, payload } = apiData;
-      const response = await apiReq({
-        method,
-        endpoint,
-        payload,
-      });
-      return response;
-    } catch (err) {
-      return rejectWithValue(err?.response || err);
-    }
-  }
-);
+
 export const logout = createAsyncThunk(
   "logout",
+  async (apiData, { rejectWithValue }) => {
+    try {
+      const { method, endpoint, payload } = apiData;
+      const response = await apiReq({
+        method,
+        endpoint,
+        payload,
+      });
+      return response;
+    } catch (err) {
+      return rejectWithValue(err?.response || err);
+    }
+  }
+);
+
+export const getBillNumber = createAsyncThunk(
+  "bill-number",
+  async (apiData, { rejectWithValue }) => {
+    try {
+      const { method, endpoint, payload } = apiData;
+      const response = await apiReq({
+        method,
+        endpoint,
+        payload,
+      });
+      return response;
+    } catch (err) {
+      return rejectWithValue(err?.response || err);
+    }
+  }
+);
+
+export const getAllBuyers = createAsyncThunk(
+  "all-buyers",
+  async (apiData, { rejectWithValue }) => {
+    try {
+      const { method, endpoint, payload } = apiData;
+      const response = await apiReq({
+        method,
+        endpoint,
+        payload,
+      });
+      return response;
+    } catch (err) {
+      return rejectWithValue(err?.response || err);
+    }
+  }
+);
+
+export const getAllVehicles = createAsyncThunk(
+  "all-vehicles",
   async (apiData, { rejectWithValue }) => {
     try {
       const { method, endpoint, payload } = apiData;
@@ -137,34 +93,42 @@ const apiReducer = createSlice({
     componentLoader: false,
     message: "",
     data: "",
-    brokerageData: "",
-    paidBrokerageData: "",
-    updatedPaymentModeData: "",
-    isUserLogout: false,
     statusCode: "",
     success: false,
-    isRequestedPayoutModalOpen: false,
-    isRequestedOTP: false,
-    otpVerified: false,
+    billNumber: "",
+    allBuyers: [],
+    allVehicles: [],
+
+    // brokerageData: "",
+    // paidBrokerageData: "",
+    // updatedPaymentModeData: "",
+    // isUserLogout: false,
+    // isRequestedPayoutModalOpen: false,
+    // isRequestedOTP: false,
+    // otpVerified: false,
   },
   reducers: {
     clearAPIState: (state, action) => {
       state.reqCount = 0;
       state.message = "";
       state.data = "";
-      state.brokerageData = "";
-      state.paidBrokerageData = "";
-      state.updatedPaymentModeData = "";
-      state.isUserLogout = false;
-      state.statusCode = "";
-      state.success = false;
-      state.isRequestedPayoutModalOpen = false;
-      state.isRequestedOTP = false;
-      state.otpVerified = false;
+      state.billNumber = "";
+      state.allBuyers = "";
+      state.allVehicles = "";
+
+      // state.brokerageData = "";
+      // state.paidBrokerageData = "";
+      // state.updatedPaymentModeData = "";
+      // state.isUserLogout = false;
+      // state.statusCode = "";
+      // state.success = false;
+      // state.isRequestedPayoutModalOpen = false;
+      // state.isRequestedOTP = false;
+      // state.otpVerified = false;
     },
-    closeRequestedPayoutModal: (state, action) => {
-      state.isRequestedPayoutModalOpen = false;
-    },
+    // closeRequestedPayoutModal: (state, action) => {
+    //   state.isRequestedPayoutModalOpen = false;
+    // },
   },
   extraReducers: (builder) => {
     builder
@@ -181,67 +145,6 @@ const apiReducer = createSlice({
         state.success = true;
       })
       .addCase(userLogin.rejected, (state, action) => {
-        const { code, message } = action?.payload?.data;
-        state.data = "";
-        state.statusCode = code;
-        state.message = message;
-        state.reqCount -= 1;
-        state.success = false;
-      })
-      .addCase(getBrokerage.pending, (state, action) => {
-        state.reqCount += 1;
-        state.message = "Getting the brokerage data ...";
-      })
-      .addCase(getBrokerage.fulfilled, (state, action) => {
-        const { data } = action.payload?.data;
-        state.brokerageData = data;
-        state.reqCount -= 1;
-        state.success = true;
-      })
-      .addCase(getBrokerage.rejected, (state, action) => {
-        const { code, message } = action.payload?.data;
-        state.data = "";
-        state.statusCode = code;
-        state.message = message;
-        state.reqCount -= 1;
-        state.success = false;
-      })
-      .addCase(getPaidBrokerageHistory.pending, (state, action) => {
-        state.reqCount += 1;
-        state.message = "Getting the paid brokerage data ...";
-      })
-      .addCase(getPaidBrokerageHistory.fulfilled, (state, action) => {
-        const { data } = action.payload?.data;
-        state.paidBrokerageData = data;
-        state.reqCount -= 1;
-        state.success = true;
-      })
-      .addCase(getPaidBrokerageHistory.rejected, (state, action) => {
-        const { code, message } = action.payload?.data;
-        state.data = "";
-        state.statusCode = code;
-        state.message = message;
-        state.reqCount -= 1;
-        state.success = false;
-      })
-      .addCase(updatePaymentMethod.pending, (state, action) => {
-        state.reqCount += 1;
-        state.message = "Updating the payment method ...";
-      })
-      .addCase(updatePaymentMethod.fulfilled, (state, action) => {
-        const {
-          data: { method, paymentAddress },
-        } = action.payload?.data;
-        state.updatedPaymentModeData = {
-          paymentMethod: {
-            method,
-            paymentAddress,
-          },
-        };
-        state.reqCount -= 1;
-        state.success = true;
-      })
-      .addCase(updatePaymentMethod.rejected, (state, action) => {
         const { code, message } = action?.payload?.data;
         state.data = "";
         state.statusCode = code;
@@ -267,66 +170,61 @@ const apiReducer = createSlice({
         state.reqCount -= 1;
         state.success = false;
       })
-      .addCase(requestPayout.pending, (state, action) => {
+      .addCase(getBillNumber.pending, (state, action) => {
         state.reqCount += 1;
-        state.message = "Your request is verifying ...";
+        state.message = "Getting the latest bill number ...";
       })
-      .addCase(requestPayout.fulfilled, (state, action) => {
-        state.paidBrokerageData = "";
-        state.brokerageData = "";
+      .addCase(getBillNumber.fulfilled, (state, action) => {
+        console.log("138", action.payload?.data);
+        const { nextBillNumber } = action.payload?.data?.data;
+        state.billNumber = nextBillNumber;
         state.reqCount -= 1;
         state.success = true;
-        state.isRequestedPayoutModalOpen = true;
       })
-      .addCase(requestPayout.rejected, (state, action) => {
-        const { code, message } = action?.payload?.data;
-        state.data = "";
+      .addCase(getBillNumber.rejected, (state, action) => {
+        const { code, message } = action.payload?.data;
+        state.billNumber = "";
         state.statusCode = code;
         state.message = message;
         state.reqCount -= 1;
         state.success = false;
       })
-      .addCase(requestOTP.pending, (state, action) => {
-        state.componentLoader = true;
-        state.message = "";
-        state.isRequestedOTP = false;
-        state.otpVerified = false;
+      .addCase(getAllBuyers.pending, (state, action) => {
+        state.reqCount += 1;
+        state.message = "Fetching all the buyers ...";
       })
-      .addCase(requestOTP.fulfilled, (state, action) => {
-        const { message, code } = action.payload?.data;
-        state.componentLoader = false;
-        state.statusCode = code;
-        state.message = message;
+      .addCase(getAllBuyers.fulfilled, (state, action) => {
+        console.log("138", action.payload?.data);
+        const { data } = action.payload?.data;
+        state.allBuyers = data;
+        state.reqCount -= 1;
         state.success = true;
-        state.isRequestedOTP = true;
       })
-      .addCase(requestOTP.rejected, (state, action) => {
-        const { code, message } = action?.payload?.data;
-        state.data = "";
+      .addCase(getAllBuyers.rejected, (state, action) => {
+        const { code, message } = action.payload?.data;
+        state.allBuyers = "";
         state.statusCode = code;
         state.message = message;
-        state.componentLoader = false;
+        state.reqCount -= 1;
         state.success = false;
       })
-      .addCase(verifyOTP.pending, (state, action) => {
-        state.componentLoader = true;
-        state.message = "";
-        state.otpVerified = false;
+      .addCase(getAllVehicles.pending, (state, action) => {
+        state.reqCount += 1;
+        state.message = "Fetching all the vichels ...";
       })
-      .addCase(verifyOTP.fulfilled, (state, action) => {
-        const { message, code } = action.payload?.data;
-        state.componentLoader = false;
-        state.statusCode = code;
-        state.message = message;
+      .addCase(getAllVehicles.fulfilled, (state, action) => {
+        console.log("138", action.payload?.data);
+        const { data } = action.payload?.data;
+        state.allVehicles = data;
+        state.reqCount -= 1;
         state.success = true;
-        state.otpVerified = true;
       })
-      .addCase(verifyOTP.rejected, (state, action) => {
-        const { code, message } = action?.payload?.data;
-        state.data = "";
+      .addCase(getAllVehicles.rejected, (state, action) => {
+        const { code, message } = action.payload?.data;
+        state.allVehicles = "";
         state.statusCode = code;
         state.message = message;
-        state.componentLoader = false;
+        state.reqCount -= 1;
         state.success = false;
       });
   },

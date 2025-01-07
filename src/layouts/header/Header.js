@@ -3,8 +3,6 @@ import ControlPointOutlinedIcon from "@mui/icons-material/ControlPointOutlined";
 import { Button } from "@mui/material";
 import { useDispatch, useSelector } from "react-redux";
 import ModalComp from "../../components/common/ModalComp/ModalComp";
-import UserPaymentMethod from "../../components/common/UserPaymentMethod/UserPaymentMethod";
-import AddPaymentModeModal from "../../components/feature/add-payment-mode-modal/AddPaymentModeModal";
 import { useEffect, useState } from "react";
 import {
   getSessionStorage,

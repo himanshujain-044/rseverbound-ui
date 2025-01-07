@@ -20,6 +20,13 @@ export const OTP_TYPE = {
 
 export const RESEND_OTP_TIMER = 120;
 
+export const FORM_REDUCER = {
+  SET_FORM_DETAILS: "set_form_details",
+  UPDATE_FORM_VALUES: "update_form_values",
+};
+
+export const DATED_OPTIONS = ["Date", "Telephonic", "On Delivery"];
+
 export const paymentModeOptions = [
   {
     text: (

@@ -40,7 +40,7 @@ function App() {
   }
 
   return (
-    <div className="background-img h-[calc(100vh_-1px)] mobile:h-[calc(100vh_-_1px)]">
+    <div className="background-img h-[calc(100vh_-1px)] mobile:h-[calc(100vh_-_20px)]">
       {userData ? <PrivateRoutes /> : <PublicRoutes />}
       <Footer />
       {!data && message && statusCode && (
