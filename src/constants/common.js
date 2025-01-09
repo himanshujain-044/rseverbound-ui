@@ -41,6 +41,45 @@ export const MONTH_NAMES = [
   "Nov",
   "Dec",
 ];
+
+export const NUMBERS_DIGITS_UNITS = {
+  UNITS: [
+    "",
+    "one",
+    "two",
+    "three",
+    "four",
+    "five",
+    "six",
+    "seven",
+    "eight",
+    "nine",
+  ],
+  TEENS: [
+    "ten",
+    "eleven",
+    "twelve",
+    "thirteen",
+    "fourteen",
+    "fifteen",
+    "sixteen",
+    "seventeen",
+    "eighteen",
+    "nineteen",
+  ],
+  TENS: [
+    "",
+    "",
+    "twenty",
+    "thirty",
+    "forty",
+    "fifty",
+    "sixty",
+    "seventy",
+    "eighty",
+    "ninety",
+  ],
+};
 export const paymentModeOptions = [
   {
     text: (

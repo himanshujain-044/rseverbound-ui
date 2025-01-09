@@ -1,59 +1,42 @@
 import React, { useEffect, useReducer, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
 import Grid from "@mui/material/Grid";
 import cx from "classnames";
-import { Button, Typography } from "@mui/material";
+import { Button } from "@mui/material";
+import { saveAs } from "file-saver";
+import { pdf, PDFViewer } from "@react-pdf/renderer";
 import SearchableDD from "../../common/SearchableDD/SearchableDD";
 import {
   getAllBuyers,
   getAllProducts,
   getAllVehicles,
   getBillNumber,
+  saveInvoiceDetails,
 } from "../../../store/api";
 import { API_ENDPOINTS } from "../../../constants/apiEndPoints";
-import { DATED_OPTIONS, FORM_REDUCER } from "../../../constants/common";
+import { DATED_OPTIONS } from "../../../constants/common";
 import { formatDate } from "../../../utils/helperFunction";
 import ItemsSell from "./ItemsSell";
+import BillPdfGen from "../bill-pdf/BillPdfGen";
+import { ROUTES_LIST } from "../../../constants/routes";
+let payload = {};
 const formInitValues = {
-  buyerName: "",
-  buyerAddress: "",
-  buyerGst: "",
-  buyerState: "",
+  buyerDetails: { name: "", address: "", gst: "", state: "" },
   dated: DATED_OPTIONS[1],
-  items: {
-    1: {
-      sNo: 1,
-    },
-    2: {
-      sNo: 2,
-    },
-    3: { sNo: 3 },
-  },
-};
-const formReducer = (state, action) => {
-  if (action.type === FORM_REDUCER.UPDATE_FORM_VALUES) {
-    console.log("13", action);
-    const { value, allBuyers } = action?.data;
-    const buyerDetails = allBuyers.find((buyer) => buyer?.name === value);
-    return {
-      buyerName: buyerDetails?.name,
-      buyerAddress: buyerDetails?.address,
-      buyerGst: buyerDetails?.gst,
-      buyerState: buyerDetails?.state,
-      dated: state?.dated,
-      items: state?.items,
-    };
-  }
+  date: formatDate(new Date()),
+  vehicleNo: "",
+  destination: "",
 };
 const BillForm = ({ className = "" }) => {
   const dispatch = useDispatch();
-  const [formValues, formDispatch] = useReducer(formReducer, formInitValues);
-  const { billNumber, allBuyers, allVehicles, allProducts } = useSelector(
-    (state) => state.api
-  );
+  const navigate = useNavigate();
+  const [formValues, setFormValue] = useState(formInitValues);
+  const [itemsSell, setItemsSell] = useState();
+  const { billNumber, allBuyers, allVehicles, allProducts, isInvoiceSave } =
+    useSelector((state) => state.api);
   const [buyersNameDDOptions, setBuyersNameDDOptions] = useState([]);
   const [vehiclesDDOptions, setVehiclesDDOptions] = useState([]);
-  const [productsDDOptions, setProductsDDOptions] = useState([]);
 
   useEffect(() => {
     if (!billNumber) {
@@ -91,7 +74,6 @@ const BillForm = ({ className = "" }) => {
 
     if (allBuyers?.length) {
       const buyersNames = [];
-      //   const
       allBuyers.forEach((buyer) => {
         buyersNames.push(buyer?.name);
       });
@@ -103,7 +85,6 @@ const BillForm = ({ className = "" }) => {
   useEffect(() => {
     if (allVehicles?.length) {
       const vehicles = [];
-      //   const
       allVehicles.forEach((vehicle) => {
         vehicles.push(vehicle?.vehicleNumber);
       });
@@ -112,33 +93,65 @@ const BillForm = ({ className = "" }) => {
     }
   }, [allVehicles]);
 
-  useEffect(() => {
-    if (allProducts?.length) {
-      const products = [];
-      allProducts.forEach((product) => {
-        products.push(product?.name);
-      });
-      console.log("38", products);
-      setProductsDDOptions(products);
+  const handleChange = (e, value, type) => {
+    const values = { ...formValues };
+    console.log("input value", e?.target?.value, value, type);
+    if (["name", "address", "gst", "state"].includes(type)) {
+      if (type === "name" && value) {
+        const buyerDetails = allBuyers.find((buyer) => buyer.name === value);
+        if (buyerDetails) {
+          values.buyerDetails = buyerDetails;
+        } else {
+          values.buyerDetails = {
+            name: value,
+            address: "",
+            gst: "",
+            state: "",
+          };
+        }
+      }
     }
-  }, [allProducts]);
-  const handleOnChangeDatedDD = (e, value) => {
-    console.log("7 dd", e?.target?.value, value);
+    values[type] = value;
+    setFormValue(values);
   };
-  const handleOnChangeDatedDDInput = (e, value) => {
-    console.log("input value", e?.target?.value, value);
+  const getUpdatedItemsSellValue = (values) => {
+    setItemsSell(values);
+  };
+  const handleGenerateInvoice = () => {
+    payload = {
+      ...formValues,
+      invoiceNo: billNumber,
+      productsSellDetails: {
+        productsSell: itemsSell?.rowFields,
+        [itemsSell?.gstType?.type]: itemsSell["gstType"].value,
+        gstAmount: Number(itemsSell["gstType"].gstAmount),
+        otherExpenses: Number(itemsSell.otherExpenses),
+        grandTotal: Number(itemsSell.otherExpenses),
+      },
+    };
+    dispatch(
+      saveInvoiceDetails({
+        method: "post",
+        endpoint: API_ENDPOINTS.saveInvoiceDetails,
+        payload,
+      })
+    );
   };
 
-  const onChangeBuyerNameDD = (e, value) => {
-    console.log("7 dd", e?.target?.value, value);
-    formDispatch({
-      type: FORM_REDUCER.UPDATE_FORM_VALUES,
-      data: { value, allBuyers },
+  const downloadPdf = async () => {
+    console.log("140", payload);
+    const fileName = `${payload.buyerDetails.name}_${formValues.date}.pdf`;
+    const blob = await pdf(<BillPdfGen data={payload} />).toBlob();
+    saveAs(blob, fileName);
+  };
+
+  const onClickPdfView = () => {
+    navigate({
+      pathname: ROUTES_LIST.pdfViewer,
+      pdfData: new URLSearchParams(payload).toString(),
     });
   };
-  const onChangeBuyerNameDDInput = (e, value) => {
-    console.log("input value", e?.target?.value, value);
-  };
+
   return (
     <div
       className={cx(
@@ -157,15 +170,9 @@ const BillForm = ({ className = "" }) => {
           className="pl-1 pb-1 form-border no-top-border flex flex-col"
         >
           <strong>MADHUVAN MINERALS & INDUSTRIES</strong>
-          {/* <input placeholder="Enter " className="outline-none block" />
-          <input placeholder="Enter " className="outline-none block" />
-          <input placeholder="Enter " className="outline-none block" /> */}
           <span>WARD 31, NADI KE PASS, MAIN ROAD,</span>
           <span>SHAHGARH, SAGAR - 470339, MP, INDIA</span>
           <strong>GSTIN/UIN: 23ABAFM01191ZF</strong>
-          {/* <span>
-            <strong>State</strong> ; grf rtrt rtr
-          </span> */}
           <span>Contact: 7000042043, 9685520593</span>
         </Grid>
         <Grid xs={3} className="bottom-border">
@@ -178,23 +185,26 @@ const BillForm = ({ className = "" }) => {
         </Grid>
         <Grid xs={3} className="form-border no-top-border">
           <div className="pb-1 bottom-border">
-            <p className="pl-1">Dated</p>
-            <strong className="pl-1">{formatDate(new Date())}</strong>
+            <p className="pl-1">Date</p>
+            <strong className="pl-1">{formValues.date}</strong>
           </div>
           <div className="pb-1 bottom-border flex">
             <span className="pl-1 min-w-[3.7rem]">Dated -</span>
             <SearchableDD
-              onChangeDDOption={handleOnChangeDatedDD}
-              onInputChangeDDSearch={handleOnChangeDatedDDInput}
-              ddValue={formValues?.dated}
+              onInputChangeDDSearch={(e, value) => {
+                handleChange(e, value, "dated");
+              }}
+              ddValue={formValues.dated}
               ddOptions={DATED_OPTIONS}
             />
           </div>
           <div className="pb-1 flex pl-1">
             <span className="min-w-[5.9rem]">Destination -</span>
             <SearchableDD
-              onChangeDDOption={handleOnChangeDatedDD}
-              onInputChangeDDSearch={handleOnChangeDatedDDInput}
+              onInputChangeDDSearch={(e, value) => {
+                handleChange(e, value, "destination");
+              }}
+              ddValue={formValues.destination}
             />
           </div>
         </Grid>
@@ -202,33 +212,39 @@ const BillForm = ({ className = "" }) => {
           <div className="flex">
             <span className="min-w-[7.3rem]">Buyer's Name -</span>
             <SearchableDD
-              onChangeDDOption={onChangeBuyerNameDD}
-              onInputChangeDDSearch={onChangeBuyerNameDDInput}
-              ddValue={formValues?.buyerName}
+              onInputChangeDDSearch={(e, value) => {
+                handleChange(e, value, "name");
+              }}
+              ddValue={formValues?.buyerDetails.name}
               ddOptions={buyersNameDDOptions}
             />
           </div>
           {/* <input placeholder="Enter " className="outline-none block" /> */}
+
           <SearchableDD
-            onChangeDDOption={handleOnChangeDatedDD}
-            onInputChangeDDSearch={handleOnChangeDatedDDInput}
-            ddValue={formValues?.buyerAddress}
+            onInputChangeDDSearch={(e, value) => {
+              handleChange(e, value, "address");
+            }}
+            ddValue={formValues?.buyerDetails.address}
           />
+
           <div className="flex">
             <h6 className="w-[3rem]">GST -</h6>
             <SearchableDD
-              onChangeDDOption={handleOnChangeDatedDD}
-              onInputChangeDDSearch={handleOnChangeDatedDDInput}
-              ddValue={formValues?.buyerGst}
+              onInputChangeDDSearch={(e, value) => {
+                handleChange(e, value, "gst");
+              }}
+              ddValue={formValues?.buyerDetails.gst}
               ddOptions={buyersNameDDOptions}
             />
           </div>
           <div className="flex">
             <strong className="w-[4rem]">State -</strong>
             <SearchableDD
-              onChangeDDOption={handleOnChangeDatedDD}
-              onInputChangeDDSearch={handleOnChangeDatedDDInput}
-              ddValue={formValues?.buyerState}
+              onInputChangeDDSearch={(e, value) => {
+                handleChange(e, value, "state");
+              }}
+              ddValue={formValues?.buyerDetails.state}
             />
           </div>
         </Grid>
@@ -239,34 +255,15 @@ const BillForm = ({ className = "" }) => {
           <div className="flex pl-1 pb-1 ">
             <span className="min-w-[5.5rem]">Vechile No -</span>
             <SearchableDD
-              onChangeDDOption={handleOnChangeDatedDD}
-              onInputChangeDDSearch={handleOnChangeDatedDDInput}
+              onInputChangeDDSearch={(e, value) => {
+                handleChange(e, value, "vehicleNo");
+              }}
+              ddValue={formValues.vehicleNo}
               ddOptions={vehiclesDDOptions}
             />
           </div>
         </Grid>
-        <ItemsSell />
-        <Grid xs={6} className="pr-1 pb-1 form-border flex justify-end">
-          <strong>Grand Total</strong>
-        </Grid>
-        <Grid
-          xs={6}
-          className="pr-1 pb-1 form-border no-left-border flex justify-end"
-        >
-          <strong>678687687</strong>
-        </Grid>
-
-        <Grid
-          xs={12}
-          className="form-border no-top-border flex justify-between"
-        >
-          <div className="pl-1 pb-1 flex flex-col">
-            <span>Amount chargable </span>
-            <strong>Indian Rupess eight lakh</strong>
-          </div>
-          <span className="pr-1 pb-1">E. & O.E</span>
-        </Grid>
-
+        <ItemsSell getUpdatedItemsSellValue={getUpdatedItemsSellValue} />
         <Grid
           xs={5}
           className="pl-1 pb-1 form-border no-top-border flex flex-col justify-end"
@@ -298,7 +295,7 @@ const BillForm = ({ className = "" }) => {
           </div>
         </Grid>
       </Grid>
-      <div className="mt-2">
+      <div className="mt-2 flex flex-col gap-4">
         <Button
           variant="contained"
           className={cx(
@@ -307,10 +304,36 @@ const BillForm = ({ className = "" }) => {
             "bg-primary hover:bg-primary"
           )}
           // disabled={!validator.isEmail(email) || componentLoader}
-          // onClick={handleRequestOTP}
+          onClick={handleGenerateInvoice}
         >
           Generate Invoice
         </Button>
+        {isInvoiceSave && (
+          <>
+            <Button
+              variant="contained"
+              className={cx(
+                "w-[220px] mobile:text-[12px] mobile:h-[30px]",
+                "bg-primary hover:bg-primary"
+              )}
+              onClick={downloadPdf}
+            >
+              Download PDF
+            </Button>
+            <Button
+              variant="contained"
+              className={cx(
+                "w-[220px] mobile:text-[12px] mobile:h-[30px]",
+                //   componentLoader && "bg-none",
+                "bg-primary hover:bg-primary"
+              )}
+              // disabled={!validator.isEmail(email) || componentLoader}
+              onClick={onClickPdfView}
+            >
+              View PDF
+            </Button>
+          </>
+        )}
       </div>
     </div>
   );
