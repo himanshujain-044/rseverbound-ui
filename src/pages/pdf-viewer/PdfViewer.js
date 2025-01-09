@@ -7,22 +7,20 @@ import { ROUTES_LIST } from "../../constants/routes";
 const PdfViewer = () => {
   const location = useLocation();
   const navigate = useNavigate();
-  const searchParams = new URLSearchParams(location.search);
-  console.log(searchParams.get("pdfData"), searchParams);
+  const data = location.state;
   const onClickBackToDashboard = () => {
     navigate({
       pathname: ROUTES_LIST.dashboard,
     });
   };
   return (
-    <div className="flex items-center justify-center">
-      <PDFViewer height={600} width={800}>
-        <BillPdfGen />
+    <div className="flex flex-col gap-4 items-center justify-center">
+      <PDFViewer height={600} width={850}>
+        <BillPdfGen data={data} />
       </PDFViewer>
       <Button
         variant="contained"
-        className="w-[220px] mobile:text-[12px] mobile:h-[30px] bg-primary hover:bg-primar"
-        // disabled={!validator.isEmail(email) || componentLoader}
+        className="w-[220px] mobile:text-[12px] mobile:h-[30px] bg-primary hover:bg-primary"
         onClick={onClickBackToDashboard}
       >
         Back to Dashboard

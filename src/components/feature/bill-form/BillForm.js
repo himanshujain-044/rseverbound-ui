@@ -11,7 +11,7 @@ import {
   getAllBuyers,
   getAllProducts,
   getAllVehicles,
-  getBillNumber,
+  getInvoiceDetails,
   saveInvoiceDetails,
 } from "../../../store/api";
 import { API_ENDPOINTS } from "../../../constants/apiEndPoints";
@@ -20,28 +20,32 @@ import { formatDate } from "../../../utils/helperFunction";
 import ItemsSell from "./ItemsSell";
 import BillPdfGen from "../bill-pdf/BillPdfGen";
 import { ROUTES_LIST } from "../../../constants/routes";
+import DatePickerComp from "../../common/DatePickerComp/DatePickerComp";
 let payload = {};
 const formInitValues = {
   buyerDetails: { name: "", address: "", gst: "", state: "" },
   dated: DATED_OPTIONS[1],
   date: formatDate(new Date()),
+  etpNo: "",
+  ewayBillNo: "",
   vehicleNo: "",
   destination: "",
 };
 const BillForm = ({ className = "" }) => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const [formValues, setFormValue] = useState(formInitValues);
+  const [formValues, setFormValues] = useState(formInitValues);
   const [itemsSell, setItemsSell] = useState();
-  const { billNumber, allBuyers, allVehicles, allProducts, isInvoiceSave } =
+  // const [isUpdatedInvoiceFetched, setIsUpdatedInvoiceFetched] = useState();
+  const { invoiceDetails, allBuyers, allVehicles, allProducts, isInvoiceSave } =
     useSelector((state) => state.api);
   const [buyersNameDDOptions, setBuyersNameDDOptions] = useState([]);
   const [vehiclesDDOptions, setVehiclesDDOptions] = useState([]);
 
   useEffect(() => {
-    if (!billNumber) {
+    if (!invoiceDetails) {
       dispatch(
-        getBillNumber({
+        getInvoiceDetails({
           method: "get",
           endpoint: API_ENDPOINTS.getBillNumber,
         })
@@ -71,6 +75,7 @@ const BillForm = ({ className = "" }) => {
         })
       );
     }
+    console.log("74", invoiceDetails);
 
     if (allBuyers?.length) {
       const buyersNames = [];
@@ -92,10 +97,21 @@ const BillForm = ({ className = "" }) => {
       setVehiclesDDOptions(vehicles);
     }
   }, [allVehicles]);
+  // useEffect(() => {
+  //   if (isInvoiceSave) {
+  //     setIsUpdatedInvoiceFetched
+  //     dispatch(
+  //       getInvoiceDetails({
+  //         method: "get",
+  //         endpoint: API_ENDPOINTS.getBillNumber,
+  //       })
+  //     );
+  //   }
+  // }, [isInvoiceSave]);
 
   const handleChange = (e, value, type) => {
     const values = { ...formValues };
-    console.log("input value", e?.target?.value, value, type);
+
     if (["name", "address", "gst", "state"].includes(type)) {
       if (type === "name" && value) {
         const buyerDetails = allBuyers.find((buyer) => buyer.name === value);
@@ -109,10 +125,16 @@ const BillForm = ({ className = "" }) => {
             state: "",
           };
         }
+      } else {
+        values.buyerDetails = {
+          ...values.buyerDetails,
+          [type]: value,
+        };
       }
     }
     values[type] = value;
-    setFormValue(values);
+    console.log("input value", values, value, type);
+    setFormValues(values);
   };
   const getUpdatedItemsSellValue = (values) => {
     setItemsSell(values);
@@ -120,13 +142,14 @@ const BillForm = ({ className = "" }) => {
   const handleGenerateInvoice = () => {
     payload = {
       ...formValues,
-      invoiceNo: billNumber,
+      invoiceNo: invoiceDetails?.nextInvoiceNo,
       productsSellDetails: {
         productsSell: itemsSell?.rowFields,
         [itemsSell?.gstType?.type]: itemsSell["gstType"].value,
         gstAmount: Number(itemsSell["gstType"].gstAmount),
         otherExpenses: Number(itemsSell.otherExpenses),
-        grandTotal: Number(itemsSell.otherExpenses),
+        otherExpensesText: itemsSell.otherExpensesText,
+        grandTotal: Number(itemsSell.grandTotal),
       },
     };
     dispatch(
@@ -146,10 +169,12 @@ const BillForm = ({ className = "" }) => {
   };
 
   const onClickPdfView = () => {
-    navigate({
-      pathname: ROUTES_LIST.pdfViewer,
-      pdfData: new URLSearchParams(payload).toString(),
-    });
+    navigate(ROUTES_LIST.pdfViewer, { state: payload });
+  };
+  const handleOnDateChange = (e) => {
+    const values = { ...formValues };
+    values.date = formatDate(new Date(e));
+    setFormValues(values);
   };
 
   return (
@@ -173,20 +198,25 @@ const BillForm = ({ className = "" }) => {
           <span>WARD 31, NADI KE PASS, MAIN ROAD,</span>
           <span>SHAHGARH, SAGAR - 470339, MP, INDIA</span>
           <strong>GSTIN/UIN: 23ABAFM01191ZF</strong>
-          <span>Contact: 7000042043, 9685520593</span>
+          <span>Contact: 7000042043, 9755421008</span>
         </Grid>
         <Grid xs={3} className="bottom-border">
           <div className="pl-1 pb-1  bottom-border">
             <p>Invoice No.</p>
-            <strong>{billNumber}</strong>
+            <strong>{invoiceDetails?.nextInvoiceNo}</strong>
           </div>
           <div className="pl-1 pb-1 bottom-border">Buyer's Order No.</div>
           <div className="pl-1 pb-1">Dispatched through</div>
         </Grid>
         <Grid xs={3} className="form-border no-top-border">
-          <div className="pb-1 bottom-border">
+          <div className="pb-[0.4rem] bottom-border">
             <p className="pl-1">Date</p>
-            <strong className="pl-1">{formValues.date}</strong>
+            <div className="mx-1">
+              <DatePickerComp
+                value={formValues.date}
+                onDateChange={handleOnDateChange}
+              />
+            </div>
           </div>
           <div className="pb-1 bottom-border flex">
             <span className="pl-1 min-w-[3.7rem]">Dated -</span>
@@ -221,21 +251,31 @@ const BillForm = ({ className = "" }) => {
           </div>
           {/* <input placeholder="Enter " className="outline-none block" /> */}
 
-          <SearchableDD
+          {/* <SearchableDD
             onInputChangeDDSearch={(e, value) => {
               handleChange(e, value, "address");
             }}
             ddValue={formValues?.buyerDetails.address}
+          /> */}
+          <input
+            type="text"
+            placeholder="Bill Address"
+            value={formValues?.buyerDetails?.address}
+            onChange={(e) => {
+              handleChange(e, e?.target?.value, "address");
+            }}
+            className="outline-none"
           />
 
           <div className="flex">
             <h6 className="w-[3rem]">GST -</h6>
-            <SearchableDD
-              onInputChangeDDSearch={(e, value) => {
-                handleChange(e, value, "gst");
+            <input
+              type="text"
+              value={formValues?.buyerDetails?.gst}
+              onChange={(e) => {
+                handleChange(e, e?.target?.value, "gst");
               }}
-              ddValue={formValues?.buyerDetails.gst}
-              ddOptions={buyersNameDDOptions}
+              className="outline-none"
             />
           </div>
           <div className="flex">
@@ -249,7 +289,28 @@ const BillForm = ({ className = "" }) => {
           </div>
         </Grid>
         <Grid xs={3} className="bottom-border">
-          <div className="pl-1 pb-1 "> Bill of Loading / LR No.</div>
+          <div className="pl-1 pb-1 ">
+            ETP No.
+            <input
+              type="text"
+              value={formValues?.etpNo}
+              onChange={(e) => {
+                handleChange(e, e?.target?.value, "etpNo");
+              }}
+              className="outline-none ml-1"
+            />
+          </div>
+          <div className="pl-1 pb-1 ">
+            E-way Bill No.
+            <input
+              type="text"
+              value={formValues?.ewayBillNo}
+              onChange={(e) => {
+                handleChange(e, e?.target?.value, "ewayBillNo");
+              }}
+              className="outline-none ml-1"
+            />
+          </div>
         </Grid>
         <Grid xs={3} className="form-border no-top-border">
           <div className="flex pl-1 pb-1 ">
@@ -263,7 +324,10 @@ const BillForm = ({ className = "" }) => {
             />
           </div>
         </Grid>
-        <ItemsSell getUpdatedItemsSellValue={getUpdatedItemsSellValue} />
+        <ItemsSell
+          getUpdatedItemsSellValue={getUpdatedItemsSellValue}
+          invoiceDetails={invoiceDetails}
+        />
         <Grid
           xs={5}
           className="pl-1 pb-1 form-border no-top-border flex flex-col justify-end"

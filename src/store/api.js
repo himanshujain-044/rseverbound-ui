@@ -35,8 +35,8 @@ export const logout = createAsyncThunk(
   }
 );
 
-export const getBillNumber = createAsyncThunk(
-  "bill-number",
+export const getInvoiceDetails = createAsyncThunk(
+  "invoice-details",
   async (apiData, { rejectWithValue }) => {
     try {
       const { method, endpoint, payload } = apiData;
@@ -129,7 +129,7 @@ const apiReducer = createSlice({
     data: "",
     statusCode: "",
     success: false,
-    billNumber: "",
+    invoiceDetails: "",
     allBuyers: [],
     allVehicles: [],
     allProducts: [],
@@ -148,7 +148,7 @@ const apiReducer = createSlice({
       state.reqCount = 0;
       state.message = "";
       state.data = "";
-      state.billNumber = "";
+      state.invoiceDetails = "";
       state.allBuyers = "";
       state.allVehicles = "";
       state.allProducts = "";
@@ -208,20 +208,20 @@ const apiReducer = createSlice({
         state.reqCount -= 1;
         state.success = false;
       })
-      .addCase(getBillNumber.pending, (state, action) => {
+      .addCase(getInvoiceDetails.pending, (state, action) => {
         state.reqCount += 1;
         state.message = "Getting the latest bill number ...";
       })
-      .addCase(getBillNumber.fulfilled, (state, action) => {
+      .addCase(getInvoiceDetails.fulfilled, (state, action) => {
         console.log("138", action.payload?.data);
-        const { nextBillNumber } = action.payload?.data?.data;
-        state.billNumber = nextBillNumber;
+        const invoiceDetails = action.payload?.data?.data;
+        state.invoiceDetails = invoiceDetails;
         state.reqCount -= 1;
         state.success = true;
       })
-      .addCase(getBillNumber.rejected, (state, action) => {
+      .addCase(getInvoiceDetails.rejected, (state, action) => {
         const { code, message } = action.payload?.data;
-        state.billNumber = "";
+        state.invoiceDetails = "";
         state.statusCode = code;
         state.message = message;
         state.reqCount -= 1;
@@ -287,11 +287,13 @@ const apiReducer = createSlice({
       .addCase(saveInvoiceDetails.pending, (state, action) => {
         state.reqCount += 1;
         state.message = "Fetching all the vichels ...";
+        state.isInvoiceSave = false;
       })
       .addCase(saveInvoiceDetails.fulfilled, (state, action) => {
         console.log("138", action.payload?.data);
         // const { data } = action.payload?.data;
         state.isInvoiceSave = true;
+        state.invoiceDetails = "";
         state.reqCount -= 1;
         state.success = true;
       })

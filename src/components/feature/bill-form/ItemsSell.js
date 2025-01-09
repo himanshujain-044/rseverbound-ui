@@ -16,18 +16,18 @@ import {
 
 const ItemsSell = ({ getUpdatedItemsSellValue = () => {} }) => {
   const dispatch = useDispatch();
-  const { allProducts } = useSelector((state) => state.api);
+  const { allProducts, invoiceDetails } = useSelector((state) => state.api);
   const options = [
-    { value: "igst", label: "IGST % -", inputValue: 5 },
+    { value: "igst", label: "IGST % -", inputValue: invoiceDetails?.igst },
     {
       value: "sgst",
       label: (
         <span className="flex flex-col">
-          <span>SGST - 2.5%</span>
-          <span>CGST - 2.5%</span>
+          <span>SGST % - </span>
+          <span>CGST %</span>
         </span>
       ),
-      inputValue: 5,
+      inputValue: Number(invoiceDetails?.sgst) + Number(invoiceDetails?.cgst),
     },
   ];
   const [productsDDOptions, setProductsDDOptions] = useState([]);
@@ -35,13 +35,14 @@ const ItemsSell = ({ getUpdatedItemsSellValue = () => {} }) => {
     rowFields: [
       {
         sNo: 1,
-        description: "",
-        hsnCode: "",
+        description: productsDDOptions[0],
+        hsnCode: invoiceDetails?.hsnCode,
         quantity: "",
         ratePMT: "",
         amount: "",
       },
     ],
+    otherExpensesText: "",
     otherExpenses: "",
     gstType: {
       type: options[0].value,
@@ -59,8 +60,8 @@ const ItemsSell = ({ getUpdatedItemsSellValue = () => {} }) => {
           ...preVal?.rowFields,
           {
             sNo: preVal?.rowFields?.length + 1,
-            description: "",
-            hsnCode: "",
+            description: productsDDOptions[0],
+            hsnCode: invoiceDetails?.hsnCode,
             quantity: "",
             ratePMT: "",
             amount: "",
@@ -97,6 +98,9 @@ const ItemsSell = ({ getUpdatedItemsSellValue = () => {} }) => {
         products.push(product?.name);
       });
       console.log("38", products);
+      const values = { ...itemsSellForm };
+      values.rowFields[0]["description"] = products[0];
+      setItemsSellForm(values);
       setProductsDDOptions(products);
     }
   }, [allProducts]);
@@ -105,7 +109,7 @@ const ItemsSell = ({ getUpdatedItemsSellValue = () => {} }) => {
     console.log("input value", e?.target?.value, value, type, index);
     const values = { ...itemsSellForm };
     if (index || index === 0) {
-      values.rowFields[index][type] = e.target.value;
+      values.rowFields[index][type] = e?.target?.value || value;
       if (["quantity", "ratePMT"].includes(type)) {
         values.rowFields[index].amount =
           values.rowFields[index].quantity * values.rowFields[index].ratePMT;
@@ -116,17 +120,31 @@ const ItemsSell = ({ getUpdatedItemsSellValue = () => {} }) => {
       }
     } else {
       if (type === "radioGST") {
-        console.log(values);
         const gstVal = options.find((gstType) => gstType.value === value);
         const [gstType, grandTotal] = updateGstType(values, {
           type: gstVal.value,
-          value: gstVal.inputValue,
+          value: values.gstType.value || gstVal.inputValue,
+          gstAmount: 0,
+        });
+        values.gstType = gstType;
+        values.grandTotal = grandTotal;
+      }
+      if (["igst", "sgst"].includes(type)) {
+        const gstVal = options.find((gstType) => gstType.value === type);
+        const [gstType, grandTotal] = updateGstType(values, {
+          type: gstVal.value,
+          value: value,
           gstAmount: 0,
         });
         values.gstType = gstType;
         values.grandTotal = grandTotal;
       } else {
-        values[type] = Number(value);
+        values[type] = value;
+        if (type === "otherExpenses") {
+          const [gstType, grandTotal] = updateGstType(values, values.gstType);
+          values.gstType = gstType;
+          values.grandTotal = grandTotal;
+        }
       }
     }
     setItemsSellForm(values);
@@ -138,6 +156,15 @@ const ItemsSell = ({ getUpdatedItemsSellValue = () => {} }) => {
         (accumulator, currentValue) => accumulator + currentValue.amount,
         0
       ) || 0;
+    console.log(
+      "154",
+      typeof calculateGstAmount(gstVal.value, totalAmount),
+      typeof totalAmount,
+      typeof values.otherExpenses,
+      calculateGstAmount(gstVal.value, totalAmount) +
+        totalAmount +
+        values.otherExpenses
+    );
     return [
       {
         type: gstVal.type,
@@ -146,7 +173,7 @@ const ItemsSell = ({ getUpdatedItemsSellValue = () => {} }) => {
       },
       calculateGstAmount(gstVal.value, totalAmount) +
         totalAmount +
-        values.otherExpenses || 0,
+        Number(values.otherExpenses) || 0,
     ];
   };
   return (
@@ -178,18 +205,19 @@ const ItemsSell = ({ getUpdatedItemsSellValue = () => {} }) => {
       </Grid>
       <Grid xs={3} className="left-border right-border">
         <strong className="flex bottom-border pb-1 justify-center w-full">
-          Amount RS
+          Amount Rs
         </strong>
       </Grid>
       {itemsSellForm.rowFields.map((row, index) => {
         return (
           <>
-            <Grid xs={1} className="left-border">
+            <Grid xs={1} className="left-border flex justify-center">
               <div className="pl-1">{row.sNo}</div>
             </Grid>
             <Grid xs={4} className="left-border">
               <SearchableDD
                 // onChangeDDOption={handleOnChangeDatedDD}
+                ddValue={itemsSellForm.rowFields[index]["description"]}
                 onInputChangeDDSearch={(event, value) => {
                   handleChange(event, value, "description", index);
                 }}
@@ -199,9 +227,8 @@ const ItemsSell = ({ getUpdatedItemsSellValue = () => {} }) => {
             <Grid xs={2} className="left-border">
               <div className="pl-1">
                 <input
-                  placeholder="Enter "
                   className="outline-none block max-w-[100%]"
-                  //   value={}
+                  value={itemsSellForm.rowFields[index]["hsnCode"]}
                   onChange={(e) => {
                     handleChange(e, e?.target?.value, "hsnCode", index);
                   }}
@@ -291,18 +318,38 @@ const ItemsSell = ({ getUpdatedItemsSellValue = () => {} }) => {
               <label htmlFor={option.value}>{option.label}</label>
               <input
                 type="number"
-                value={option.inputValue}
+                value={itemsSellForm?.gstType.value || option.inputValue}
                 className="outline-none w-12"
+                onChange={(e, value) => {
+                  handleChange(e, e?.target?.value, option.value, null);
+                }}
               />
             </div>
-            {itemsSellForm?.gstType.type === option.value && (
-              <i>{itemsSellForm?.gstType.gstAmount}</i>
-            )}
+            {itemsSellForm?.gstType.type === option.value &&
+              itemsSellForm?.gstType.type === "igst" && (
+                <i>{itemsSellForm?.gstType.gstAmount}</i>
+              )}
+            {itemsSellForm?.gstType.type === option.value &&
+              itemsSellForm?.gstType.type === "sgst" && (
+                <div className="flex flex-col">
+                  <i>{itemsSellForm?.gstType.gstAmount / 2}</i>{" "}
+                  <i>{itemsSellForm?.gstType.gstAmount / 2}</i>
+                </div>
+              )}
           </div>
         ))}
         <div className="flex justify-between pr-1">
           <div className="flex gap-3">
-            <strong>Other Expenses - </strong>
+            <input
+              type="text"
+              className="outline-none max-w-42 font-bold"
+              placeholder="Other Expenses ..."
+              onChange={(e) => {
+                handleChange(e, e?.target?.value, "otherExpensesText", null);
+              }}
+              value={itemsSellForm.otherExpensesText}
+            />
+            -
             <input
               type="number"
               className="outline-none w-28"

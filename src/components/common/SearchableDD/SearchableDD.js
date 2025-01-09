@@ -8,17 +8,24 @@ const SearchableDD = ({
   onChangeDDOption = () => {},
   onInputChangeDDSearch = () => {},
 }) => {
+  console.log("searhc dd", ddValue);
   return (
     <div className="flex max-w-[100%] [&_div]:w-full w-full">
       <Autocomplete
         id="searchable-dd"
         freeSolo
         options={ddOptions}
+        inputValue={ddValue}
         // renderInput={(params) => <TextField {...params} />}
         value={ddValue}
         renderInput={(params) => (
           <div ref={params.InputProps.ref}>
-            <input type="text" {...params.inputProps} className="w-full" />
+            <input
+              type="text"
+              {...params.inputProps}
+              className="w-full"
+              value={ddValue}
+            />
           </div>
         )}
         onChange={onChangeDDOption}

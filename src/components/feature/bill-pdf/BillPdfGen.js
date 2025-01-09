@@ -1,44 +1,12 @@
 import React from "react";
 import { Page, Text, View, Document, StyleSheet } from "@react-pdf/renderer";
 
-// Create styles
 const styles = StyleSheet.create({
-  page: {
-    flexDirection: "col",
-    backgroundColor: "#fff",
-    padding: "8px",
-    fontSize: "10px",
-    lineHeight: "16px",
-  },
   section: {
     flexDirection: "row",
     border: "1px solid black",
     margin: "0",
     borderBottom: "none",
-    // width: "100%",
-    // margin: 10,
-    // padding: 4,
-    // flexGrow: 1,
-    // border: 1,
-  },
-  title: {
-    textDecoration: "underline",
-    // borderTop: "1px solid black",
-    // borderBottom:"none",
-    width: "100%",
-    textAlign: "center",
-    padding: "4px",
-  },
-  senderDetails: {
-    width: "45%",
-    paddingLeft: "2px",
-    paddingTop: "2px",
-  },
-  invoiceNumberCol: {
-    width: "30%",
-  },
-  dated: {
-    width: "25%",
   },
 });
 const data = {
@@ -75,54 +43,98 @@ const data = {
 const BillPdfGen = ({ data = {} }) => {
   console.log("49", data);
   return (
-    <Document title={"H.J Chemical Pvt Ltd"}>
-      <Page size="A4" style={styles.page}>
+    <Document title={`${data?.buyerDetails?.name}_${data?.date}`}>
+      <Page
+        size="A4"
+        style={{
+          flexDirection: "col",
+          backgroundColor: "#fff",
+          padding: "8px",
+          fontSize: "10px",
+          lineHeight: "16px",
+        }}
+      >
         <View style={styles.section}>
-          <Text style={styles.title}>TAX INVOICE</Text>
+          <Text
+            style={{
+              textDecoration: "underline",
+              width: "100%",
+              textAlign: "center",
+              padding: "4px",
+              paddingTop: "8px",
+            }}
+          >
+            TAX INVOICE
+          </Text>
         </View>
 
         <View style={styles.section}>
-          <View style={styles.senderDetails}>
-            <Text>MADHUVAN MINERALS & INDUSTRIES</Text>
+          <View style={{ width: "45%", paddingLeft: "2px", paddingTop: "2px" }}>
+            <Text style={{ fontFamily: "Helvetica-Bold" }}>
+              MADHUVAN MINERALS & INDUSTRIES
+            </Text>
             <Text>WARD 31,NADI KE PASS,MAIN ROAD,</Text>
             <Text>SHAHGARH, SAGAR - 470339, MP, INDIA</Text>
-            <Text>GSTIN/UIN: 23ABAFM01191ZF</Text>
+            <Text style={{ fontFamily: "Helvetica-Bold" }}>
+              GSTIN/UIN: 23ABAFM01191ZF
+            </Text>
             <Text>State Name: Madhya Pradesh, Code: 23</Text>
-            <Text>Contact - 7000042043, 9685520593</Text>
+            <Text>Contact - 7000042043, 9755421008</Text>
           </View>
           <View
             style={{
               width: "30%",
               borderLeft: "1px solid black",
-              paddingLeft: "2px",
+
               paddingTop: "2px",
             }}
           >
-            <Text>Invoice No.</Text>
-            <Text>{"1"}</Text>
-            <Text>Buyer Order number</Text>
-            <Text>Dispatched through</Text>
+            <View style={{ paddingLeft: "2px" }}>
+              <Text>Invoice No.</Text>
+              <Text style={{ fontFamily: "Helvetica-Bold" }}>
+                {data?.invoiceNo}
+              </Text>
+            </View>
+            <View style={{ borderBottom: "1px solid black" }}></View>
+
+            <Text style={{ paddingLeft: "2px", paddingTop: "2px" }}>
+              Buyer Order number
+            </Text>
+            <View style={{ borderBottom: "1px solid black" }}></View>
+            <Text style={{ paddingLeft: "2px", paddingTop: "2px" }}>
+              Dispatched through
+            </Text>
           </View>
+
           <View
             style={{
               borderLeft: "1px solid black",
-              paddingLeft: "2px",
+              width: "25%",
               paddingTop: "2px",
             }}
           >
-            <Text>Dated</Text>
-            <Text>{"8-Jan-25"}</Text>
-            <Text>Dated - {"Telephonic"}</Text>
-            <Text>Destination - {"Sagar"}</Text>
+            <View style={{ paddingLeft: "2px" }}>
+              <Text>Dated</Text>
+              <Text style={{ fontFamily: "Helvetica-Bold" }}>{data?.date}</Text>
+            </View>
+            <View style={{ borderBottom: "1px solid black" }}></View>
+
+            <Text style={{ paddingLeft: "2px", paddingTop: "2px" }}>
+              Dated - {data?.dated}
+            </Text>
+            <View style={{ borderBottom: "1px solid black" }}></View>
+            <Text style={{ paddingLeft: "2px", paddingTop: "2px" }}>
+              Destination - {data?.destination}
+            </Text>
           </View>
         </View>
 
         <View style={styles.section}>
-          <View style={styles.senderDetails}>
-            <Text>Buyer's Name - {"H.J Chemical Pvt Ltd"}</Text>
-            <Text>{"Shahgarh, Amamrou, Sagar"}</Text>
-            <Text>GSTIN/UIN: {"AAWQE342DREF"}</Text>
-            <Text>State - {"Uttar Pradesh"}</Text>
+          <View style={{ width: "45%", paddingLeft: "2px", paddingTop: "2px" }}>
+            <Text>Buyer's Name - {data?.buyerDetails?.name}</Text>
+            <Text>{data?.buyerDetails?.address}</Text>
+            <Text>GSTIN/UIN: {data?.buyerDetails?.gst}</Text>
+            <Text>State - {data?.buyerDetails?.state}</Text>
           </View>
           <View
             style={{
@@ -132,7 +144,8 @@ const BillPdfGen = ({ data = {} }) => {
               paddingTop: "2px",
             }}
           >
-            <Text>Bill of Loading / LR No.</Text>
+            <Text>ETP No. - {data?.etpNo}</Text>
+            <Text>E-way Bill No. - {data?.ewayBillNo}</Text>
           </View>
           <View
             style={{
@@ -141,19 +154,19 @@ const BillPdfGen = ({ data = {} }) => {
               paddingTop: "2px",
             }}
           >
-            <Text>Vechicle No. - {"UP 34 EE33"}</Text>
+            <Text>Vechicle No. - {data?.vehicleNo}</Text>
           </View>
         </View>
 
-        <View style={styles.section}>
-          <View style={{ width: "6%", paddingTop: "2px", textAlign: "center" }}>
+        <View style={{ ...styles.section, fontFamily: "Helvetica-Bold" }}>
+          <View style={{ width: "6%", paddingTop: "5px", textAlign: "center" }}>
             <Text>S. No</Text>
           </View>
           <View
             style={{
               width: "28%",
               borderLeft: "1px solid black",
-              paddingTop: "2px",
+              paddingTop: "5px",
               textAlign: "center",
             }}
           >
@@ -163,7 +176,7 @@ const BillPdfGen = ({ data = {} }) => {
             style={{
               width: "16%",
               borderLeft: "1px solid black",
-              paddingTop: "2px",
+              paddingTop: "5px",
               textAlign: "center",
             }}
           >
@@ -173,7 +186,7 @@ const BillPdfGen = ({ data = {} }) => {
             style={{
               width: "12%",
               borderLeft: "1px solid black",
-              paddingTop: "2px",
+              paddingTop: "5px",
               textAlign: "center",
             }}
           >
@@ -183,7 +196,7 @@ const BillPdfGen = ({ data = {} }) => {
             style={{
               width: "13%",
               borderLeft: "1px solid black",
-              paddingTop: "2px",
+              paddingTop: "5px",
               textAlign: "center",
             }}
           >
@@ -193,70 +206,81 @@ const BillPdfGen = ({ data = {} }) => {
             style={{
               width: "25%",
               borderLeft: "1px solid black",
-              paddingTop: "2px",
+              paddingTop: "5px",
               textAlign: "center",
             }}
           >
-            <Text>AMOUNT RS</Text>
+            <Text>Amount Rs</Text>
           </View>
         </View>
 
-        <View style={styles.section}>
-          <View style={{ width: "6%", paddingLeft: "2px", paddingTop: "2px" }}>
-            <Text>1</Text>
-          </View>
-          <View
-            style={{
-              width: "28%",
-              borderLeft: "1px solid black",
-              paddingLeft: "2px",
-              paddingTop: "2px",
-            }}
-          >
-            <Text>PQ</Text>
-          </View>
-          <View
-            style={{
-              width: "16%",
-              borderLeft: "1px solid black",
-              paddingLeft: "2px",
-              paddingTop: "2px",
-            }}
-          >
-            <Text>1232</Text>
-          </View>
-          <View
-            style={{
-              width: "12%",
-              borderLeft: "1px solid black",
-              paddingLeft: "2px",
-              paddingTop: "2px",
-            }}
-          >
-            <Text>11.2</Text>
-          </View>
-          <View
-            style={{
-              width: "13%",
-              borderLeft: "1px solid black",
-              paddingLeft: "2px",
-              paddingTop: "2px",
-            }}
-          >
-            <Text>1200</Text>
-          </View>
-          <View
-            style={{
-              width: "25%",
-              borderLeft: "1px solid black",
-              paddingRight: "2px",
-              paddingTop: "2px",
-              textAlign: "right",
-            }}
-          >
-            <Text>13453</Text>
-          </View>
-        </View>
+        {data?.productsSellDetails?.productsSell?.map((productSell) => {
+          return (
+            <View style={styles.section}>
+              <View
+                style={{
+                  width: "6%",
+                  paddingLeft: "2px",
+                  paddingTop: "5px",
+                  textAlign: "center",
+                }}
+              >
+                <Text>{productSell?.sNo}</Text>
+              </View>
+              <View
+                style={{
+                  width: "28%",
+                  borderLeft: "1px solid black",
+                  paddingLeft: "2px",
+                  paddingTop: "5px",
+                }}
+              >
+                <Text>{productSell?.description}</Text>
+              </View>
+              <View
+                style={{
+                  width: "16%",
+                  borderLeft: "1px solid black",
+                  paddingLeft: "2px",
+                  paddingTop: "5px",
+                }}
+              >
+                <Text>{productSell?.hsnCode}</Text>
+              </View>
+              <View
+                style={{
+                  width: "12%",
+                  borderLeft: "1px solid black",
+                  paddingLeft: "2px",
+                  paddingTop: "5px",
+                }}
+              >
+                <Text>{productSell?.quantity}</Text>
+              </View>
+              <View
+                style={{
+                  width: "13%",
+                  borderLeft: "1px solid black",
+                  paddingLeft: "2px",
+                  paddingTop: "5px",
+                }}
+              >
+                <Text>{productSell?.ratePMT}</Text>
+              </View>
+              <View
+                style={{
+                  width: "25%",
+                  borderLeft: "1px solid black",
+                  paddingRight: "2px",
+                  paddingTop: "5px",
+                  textAlign: "right",
+                }}
+              >
+                <Text>{productSell?.amount}</Text>
+              </View>
+            </View>
+          );
+        })}
 
         <View style={styles.section}>
           <View style={{ width: "50%", paddingTop: "2px" }}>
@@ -268,28 +292,48 @@ const BillPdfGen = ({ data = {} }) => {
               borderLeft: "1px solid black",
               paddingRight: "2px",
               paddingTop: "2px",
-
               flexDirection: "row",
               justifyContent: "space-between",
             }}
           >
             <View style={{ paddingLeft: "2px" }}>
-              {" "}
-              <Text>{"12,34,34,"}</Text>
-              <Text>{"12,34,34,"}</Text>
-              <Text>{"12,34,34,"}</Text>
+              {data?.productsSellDetails?.igst && (
+                <Text>{`IGST - ${data?.productsSellDetails?.igst} %`}</Text>
+              )}
+              {data?.productsSellDetails?.sgst && (
+                <>
+                  <Text>{`SGST - ${
+                    Number(data?.productsSellDetails?.sgst) / 2
+                  }  %`}</Text>
+                  <Text>{`CGST - ${Number(
+                    data?.productsSellDetails?.sgst / 2
+                  )} %`}</Text>
+                </>
+              )}
+              <Text>{data?.productsSellDetails?.otherExpensesText}</Text>
             </View>
 
-            <View>
-              <Text>{"12,34,34,"}</Text>
-              <Text>{"12,34,34,"}</Text>
-              <Text>{"12,34,34,"}</Text>
+            <View style={{ fontFamily: "Times-Italic", fontStyle: "italic" }}>
+              {data?.productsSellDetails?.igst && (
+                <Text>{data?.productsSellDetails?.gstAmount}</Text>
+              )}
+              {data?.productsSellDetails?.sgst && (
+                <>
+                  <Text>
+                    {Number(data?.productsSellDetails?.gstAmount) / 2}
+                  </Text>
+                  <Text>
+                    {Number(data?.productsSellDetails?.gstAmount) / 2}
+                  </Text>
+                </>
+              )}
+              <Text>{data?.productsSellDetails?.otherExpenses}</Text>
             </View>
           </View>
         </View>
 
-        <View style={styles.section}>
-          <View style={{ width: "60%", paddingLeft: "2px", paddingTop: "2px" }}>
+        <View style={{ ...styles.section, fontFamily: "Helvetica-Bold" }}>
+          <View style={{ width: "60%", paddingLeft: "2px", paddingTop: "5px" }}>
             <Text>Grand Total</Text>
           </View>
           <View
@@ -297,17 +341,17 @@ const BillPdfGen = ({ data = {} }) => {
               width: "40%",
               textAlign: "right",
               paddingRight: "2px",
-              paddingTop: "2px",
+              paddingTop: "5px",
             }}
           >
-            <Text>{"12,34,34,"}</Text>
+            <Text>{data?.productsSellDetails?.grandTotal}</Text>
           </View>
         </View>
 
         <View style={styles.section}>
           <View style={{ width: "60%", paddingLeft: "2px", paddingTop: "2px" }}>
             <Text>Amount Chargable</Text>
-            <Text>Indian Rupees: </Text>
+            <Text style={{ fontFamily: "Helvetica-Bold" }}>Indian Rupees:</Text>
           </View>
           <View
             style={{
@@ -336,24 +380,29 @@ const BillPdfGen = ({ data = {} }) => {
               We declare that this invoices shows the actaul price of the goods
               described and that all particulars are true and correct.
             </Text>
-            <Text>Company's PAN: ABAFM0119P</Text>
+            <Text>
+              Company's PAN:
+              <Text style={{ fontFamily: "Helvetica-Bold" }}>ABAFM0119P</Text>
+            </Text>
           </View>
           <View
             style={{
               width: "60%",
               marginLeft: "20px",
               borderLeft: "1px solid black",
-              paddingLeft: "2px",
+
               paddingTop: "2px",
             }}
           >
-            <Text>Company's Bank Details</Text>
-            <Text>A/c Holder's Name: MADHUVAN MINERALS & INDUSTRIES</Text>
-            <Text>Bank Name: Central Bank of India</Text>
-            <Text>A/c No.: 3734793516</Text>
-            <Text>
-              Branch & IFSC Code: SHAHGARH, SAGAR (M.P.) & CBIN0282030
-            </Text>
+            <View style={{ paddingLeft: "2px", fontFamily: "Helvetica-Bold" }}>
+              <Text>Company's Bank Details</Text>
+              <Text>A/c Holder's Name: MADHUVAN MINERALS & INDUSTRIES</Text>
+              <Text>Bank Name: Central Bank of India</Text>
+              <Text>A/c No.: 3734793516</Text>
+              <Text>
+                Branch & IFSC Code: SHAHGARH, SAGAR (M.P.) & CBIN0282030
+              </Text>
+            </View>
 
             <View
               style={{
@@ -364,7 +413,9 @@ const BillPdfGen = ({ data = {} }) => {
                 paddingTop: "2px",
               }}
             >
-              <Text>for MADHUVAN MINERALS & INDUSTRIES</Text>
+              <Text style={{ fontFamily: "Helvetica-Bold" }}>
+                for MADHUVAN MINERALS & INDUSTRIES
+              </Text>
               <Text>Authorised Signatory</Text>
             </View>
           </View>
