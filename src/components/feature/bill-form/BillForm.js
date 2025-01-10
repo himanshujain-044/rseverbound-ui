@@ -163,7 +163,7 @@ const BillForm = ({ className = "" }) => {
 
   const downloadPdf = async () => {
     console.log("140", payload);
-    const fileName = `${payload.buyerDetails.name}_${formValues.date}.pdf`;
+    const fileName = `${payload.buyerDetails.name}_${payload.date}.pdf`;
     const blob = await pdf(<BillPdfGen data={payload} />).toBlob();
     saveAs(blob, fileName);
   };
