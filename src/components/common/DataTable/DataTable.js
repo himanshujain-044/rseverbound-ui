@@ -38,7 +38,7 @@ const DataTable = ({
       checkboxSelection={checkboxSelection}
       onRowSelectionModelChange={getSelectedRows}
       rowSelectionModel={rowSelectionModel}
-      className="data-table min-h-[8rem] mobile:text-[12px]"
+      className="data-table min-h-[8rem] mobile:text-[12px] mx-[4rem] mobile:mx-1 bg-[#fff]"
       {...tableProps}
     />
   );

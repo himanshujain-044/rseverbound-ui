@@ -30,7 +30,7 @@ const SellHistory = () => {
     }
   }, []);
   return (
-    <div className="h-full flex mx-[4rem] items-center justify-center bg-[#fff]">
+    <div className="h-full items-center justify-center">
       <DataTable
         cols={sellHistoryCols}
         data={allSellsHistory?.length ? allSellsHistory : []}
