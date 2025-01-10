@@ -11,6 +11,7 @@ import { getAllProducts } from "../../../store/api";
 import { API_ENDPOINTS } from "../../../constants/apiEndPoints";
 import {
   calculateGstAmount,
+  convertFixedDecimal,
   numberToWords,
 } from "../../../utils/helperFunction";
 
@@ -118,6 +119,11 @@ const ItemsSell = ({ getUpdatedItemsSellValue = () => {} }) => {
         values.gstType = gstType;
         values.grandTotal = grandTotal;
       }
+      if (type === "hsnCode") {
+        for (let i = 0; i < values.rowFields.length; i++) {
+          values.rowFields[i][type] = values.rowFields[index][type];
+        }
+      }
     } else {
       if (type === "radioGST") {
         const gstVal = options.find((gstType) => gstType.value === value);
@@ -171,9 +177,11 @@ const ItemsSell = ({ getUpdatedItemsSellValue = () => {} }) => {
         value: gstVal.value,
         gstAmount: calculateGstAmount(gstVal.value, totalAmount),
       },
-      calculateGstAmount(gstVal.value, totalAmount) +
-        totalAmount +
-        Number(values.otherExpenses) || 0,
+      convertFixedDecimal(
+        calculateGstAmount(gstVal.value, totalAmount) +
+          totalAmount +
+          Number(values.otherExpenses) || 0
+      ),
     ];
   };
   return (
@@ -193,9 +201,9 @@ const ItemsSell = ({ getUpdatedItemsSellValue = () => {} }) => {
           HSN Code
         </strong>
       </Grid>
-      <Grid xs={1} className="left-border">
+      <Grid xs={2} className="left-border">
         <strong className="flex bottom-border pb-1 justify-center w-full">
-          Quantity
+          Quantity (MT)
         </strong>
       </Grid>
       <Grid xs={1} className="left-border">
@@ -203,7 +211,7 @@ const ItemsSell = ({ getUpdatedItemsSellValue = () => {} }) => {
           Rate PMT
         </strong>
       </Grid>
-      <Grid xs={3} className="left-border right-border">
+      <Grid xs={2} className="left-border right-border">
         <strong className="flex bottom-border pb-1 justify-center w-full">
           Amount Rs
         </strong>
@@ -235,7 +243,7 @@ const ItemsSell = ({ getUpdatedItemsSellValue = () => {} }) => {
                 />
               </div>
             </Grid>
-            <Grid xs={1} className="left-border">
+            <Grid xs={2} className="left-border">
               <div className="pl-1">
                 <input
                   placeholder="Enter "
@@ -259,7 +267,7 @@ const ItemsSell = ({ getUpdatedItemsSellValue = () => {} }) => {
                 />
               </div>
             </Grid>
-            <Grid xs={3} className="left-border right-border">
+            <Grid xs={2} className="left-border right-border">
               <div className="pr-1 text-right">
                 {/* <input
                   placeholder="Enter "

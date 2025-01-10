@@ -12,51 +12,90 @@ const calculateGstAmount = (percent, amount) => {
   return (amount * percent) / 100;
 };
 
-const numberToWords = (num) => {
-  if (num === 0) return "";
+var a = [
+  "",
+  "One ",
+  "Two ",
+  "Three ",
+  "Four ",
+  "Five ",
+  "Six ",
+  "Seven ",
+  "Eight ",
+  "Nine ",
+  "Ten ",
+  "Eleven ",
+  "Twelve ",
+  "Thirteen ",
+  "Fourteen ",
+  "Fifteen ",
+  "Sixteen ",
+  "Seventeen ",
+  "Eighteen ",
+  "Nineteen ",
+];
+var b = [
+  "",
+  "",
+  "Twenty",
+  "Thirty",
+  "Forty",
+  "Fifty",
+  "Sixty",
+  "Seventy",
+  "Eighty",
+  "Ninety",
+];
 
-  const integerPart = Math.floor(num);
-  const decimalPart = (num - integerPart).toFixed(2).slice(2);
-
-  function convertInteger(num) {
-    if (num < 10) return NUMBERS_DIGITS_UNITS.UNITS[num];
-
-    if (num < 20) return NUMBERS_DIGITS_UNITS.TEENS[num - 10];
-
-    const divisor = Math.pow(10, Math.floor(Math.log10(num)));
-    const quotient = Math.floor(num / divisor);
-    const remainder = num % divisor;
-
-    switch (divisor) {
-      case 1000000000:
-        return quotient + " billion " + convertInteger(remainder);
-      case 1000000:
-        return quotient + " million " + convertInteger(remainder);
-      case 1000:
-        return quotient + " thousand " + convertInteger(remainder);
-      case 100:
-        return (
-          NUMBERS_DIGITS_UNITS.TENS[quotient] +
-          (remainder ? " " + convertInteger(remainder) : "")
-        );
-      case 10:
-        return (
-          NUMBERS_DIGITS_UNITS.TENS[quotient] +
-          (remainder ? " " + convertInteger(remainder) : "")
-        );
-      default:
-        return "";
-    }
+function numberToWords(number) {
+  console.log(
+    "51",
+    typeof number,
+    typeof String(number),
+    String(number)?.split(".")
+  );
+  let [num, decimalPoints] = String(number)?.split(".");
+  if ((num = num.toString()).length > 9) return "Overflow";
+  let n = ("000000000" + num)
+    .substr(-9)
+    .match(/^(\d{2})(\d{2})(\d{2})(\d{1})(\d{2})$/);
+  console.log("56", n);
+  if (!n) return;
+  var str = "";
+  str +=
+    n[1] != 0
+      ? (a[Number(n[1])] || b[n[1][0]] + " " + a[n[1][1]]) + "Crore "
+      : "";
+  str +=
+    n[2] != 0
+      ? (a[Number(n[2])] || b[n[2][0]] + " " + a[n[2][1]]) + "Lakh "
+      : "";
+  str +=
+    n[3] != 0
+      ? (a[Number(n[3])] || b[n[3][0]] + " " + a[n[3][1]]) + "Thousand "
+      : "";
+  str +=
+    n[4] != 0
+      ? (a[Number(n[4])] || b[n[4][0]] + " " + a[n[4][1]]) + "Hundred "
+      : "";
+  str +=
+    n[5] != 0
+      ? (str != "" ? "and " : "") +
+        (a[Number(n[5])] || b[n[5][0]] + " " + a[n[5][1]]) +
+        ""
+      : "";
+  const decArr = decimalPoints?.split("");
+  if (decArr?.length) {
+    const lastDecmal = a[decArr?.[1]] ? a[decArr?.[1]] : "";
+    return str + "Points " + a[decArr[0]] + lastDecmal + " Only";
+  } else {
+    return str?.length ? str + " Only" : "";
   }
+}
 
-  const integerPartWords = convertInteger(integerPart);
-  const decimalPartWords = decimalPart
-    ? ` point ${convertInteger(decimalPart)}`
-    : "";
-
-  return integerPartWords + decimalPartWords;
+const convertFixedDecimal = (number) => {
+  return Math.round((number + Number.EPSILON) * 100) / 100;
 };
-
 const decryptData = (data = "") => {
   return AES.decrypt(data, process.env.REACT_APP_ENCRYPTED_SECRET).toString(
     enc.Utf8
@@ -90,6 +129,7 @@ module.exports = {
   formatDate,
   calculateGstAmount,
   numberToWords,
+  convertFixedDecimal,
   decryptData,
   encryptData,
   setSessionStorage,

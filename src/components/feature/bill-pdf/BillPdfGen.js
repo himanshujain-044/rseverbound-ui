@@ -1,5 +1,6 @@
 import React from "react";
 import { Page, Text, View, Document, StyleSheet } from "@react-pdf/renderer";
+import { numberToWords } from "../../../utils/helperFunction";
 
 const styles = StyleSheet.create({
   section: {
@@ -190,7 +191,7 @@ const BillPdfGen = ({ data = {} }) => {
               textAlign: "center",
             }}
           >
-            <Text>Quantity</Text>
+            <Text>Quantity (MT)</Text>
           </View>
           <View
             style={{
@@ -351,7 +352,10 @@ const BillPdfGen = ({ data = {} }) => {
         <View style={styles.section}>
           <View style={{ width: "60%", paddingLeft: "2px", paddingTop: "2px" }}>
             <Text>Amount Chargable</Text>
-            <Text style={{ fontFamily: "Helvetica-Bold" }}>Indian Rupees:</Text>
+            <Text style={{ fontFamily: "Helvetica-Bold" }}>
+              <Text style={{ marginRight: "4px" }}> INDIAN RUPEES: </Text>
+              {numberToWords(data?.productsSellDetails?.grandTotal)}
+            </Text>
           </View>
           <View
             style={{
