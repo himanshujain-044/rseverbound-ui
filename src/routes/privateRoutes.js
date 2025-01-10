@@ -3,6 +3,7 @@ import { ROUTES_LIST } from "../constants/routes";
 import Dashboard from "../pages/dashboard/Dashboard";
 import Header from "../layouts/header/Header";
 import PdfViewer from "../pages/pdf-viewer/PdfViewer";
+import SellHistory from "../pages/sell-history/SellHistory";
 
 const PrivateRoutes = () => {
   return (
@@ -12,6 +13,7 @@ const PrivateRoutes = () => {
         <Routes>
           <Route path={ROUTES_LIST.dashboard} element={<Dashboard />} />
           <Route path={ROUTES_LIST.pdfViewer} element={<PdfViewer />} />
+          <Route path={ROUTES_LIST.sellHistory} element={<SellHistory />} />
           <Route path="/*" element={<Dashboard />} />
         </Routes>
       </div>

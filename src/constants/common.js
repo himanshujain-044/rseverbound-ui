@@ -1,7 +1,6 @@
-import gpay from "../assets/icons/gpay.png";
-import phonepe from "../assets/icons/phonepe.png";
-import paytm from "../assets/icons/paytm.png";
-
+import WorkHistoryOutlinedIcon from "@mui/icons-material/WorkHistoryOutlined";
+import DashboardCustomizeOutlinedIcon from "@mui/icons-material/DashboardCustomizeOutlined";
+import { ROUTES_LIST } from "./routes";
 export const PAYMENT_MODE = {
   GPAY: "gpay",
   PHONEPE: "phonepe",
@@ -80,32 +79,16 @@ export const NUMBERS_DIGITS_UNITS = {
     "ninety",
   ],
 };
-export const paymentModeOptions = [
+
+export const SIDEBAR_MENU_LIST = [
   {
-    text: (
-      <div className="flex items-center justify-center gap-2">
-        <img src={gpay} alt="gpay icon" width="18px" />
-        <span className="mb-1">GPay</span>
-      </div>
-    ),
-    value: PAYMENT_MODE.GPAY,
+    icon: <DashboardCustomizeOutlinedIcon />,
+    text: "Dashboard",
+    route: ROUTES_LIST.dashboard,
   },
   {
-    text: (
-      <div className="flex items-center justify-center gap-2">
-        <img src={phonepe} alt="phonepe icon" width="18px" />
-        <span className="mb-1">Phonepe</span>
-      </div>
-    ),
-    value: PAYMENT_MODE.PHONEPE,
-  },
-  {
-    text: (
-      <div className="flex items-center justify-center gap-2">
-        <img src={paytm} alt="paytm icon" width="18px" />
-        <span className="mb-2">Paytm</span>
-      </div>
-    ),
-    value: PAYMENT_MODE.PAYTM,
+    icon: <WorkHistoryOutlinedIcon />,
+    text: "Sell History",
+    route: ROUTES_LIST.sellHistory,
   },
 ];

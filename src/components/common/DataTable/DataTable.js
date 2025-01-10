@@ -5,7 +5,7 @@ import "./DataTable.scss";
 
 const NoRowsOverlay = () => {
   return (
-    <div className="h-full flex justify-center items-center">
+    <div className="h-full top-[64px] relative flex justify-center items-center">
       <img
         src={noDataAvailableImg}
         alt="No Data Available"
@@ -31,7 +31,7 @@ const DataTable = ({
       slots={{ noRowsOverlay: NoRowsOverlay }}
       initialState={{
         pagination: {
-          paginationModel: { page: 0, pageSize: 5 },
+          paginationModel: { page: 0, pageSize: 10 },
         },
       }}
       pageSizeOptions={[5, 10]}

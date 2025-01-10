@@ -120,6 +120,23 @@ export const saveInvoiceDetails = createAsyncThunk(
   }
 );
 
+export const getSellsHistory = createAsyncThunk(
+  "sell-history",
+  async (apiData, { rejectWithValue }) => {
+    try {
+      const { method, endpoint, payload } = apiData;
+      const response = await apiReq({
+        method,
+        endpoint,
+        payload,
+      });
+      return response;
+    } catch (err) {
+      return rejectWithValue(err?.response || err);
+    }
+  }
+);
+
 const apiReducer = createSlice({
   name: "data",
   initialState: {
@@ -134,6 +151,7 @@ const apiReducer = createSlice({
     allVehicles: [],
     allProducts: [],
     isInvoiceSave: "",
+    allSellsHistory: "",
 
     // brokerageData: "",
     // paidBrokerageData: "",
@@ -153,6 +171,7 @@ const apiReducer = createSlice({
       state.allVehicles = "";
       state.allProducts = "";
       state.isInvoiceSave = "";
+      state.allSellsHistory = "";
 
       // state.brokerageData = "";
       // state.paidBrokerageData = "";
@@ -300,6 +319,26 @@ const apiReducer = createSlice({
       .addCase(saveInvoiceDetails.rejected, (state, action) => {
         const { code, message } = action.payload?.data;
         state.isInvoiceSave = false;
+        state.statusCode = code;
+        state.message = message;
+        state.reqCount -= 1;
+        state.success = false;
+      })
+      .addCase(getSellsHistory.pending, (state, action) => {
+        state.reqCount += 1;
+        state.message = "Fetching all the sells history ...";
+        state.isInvoiceSave = false;
+      })
+      .addCase(getSellsHistory.fulfilled, (state, action) => {
+        console.log("138", action.payload?.data);
+        const { data } = action.payload?.data;
+        state.allSellsHistory = data;
+        state.reqCount -= 1;
+        state.success = true;
+      })
+      .addCase(getSellsHistory.rejected, (state, action) => {
+        const { code, message } = action.payload?.data;
+        state.allSellsHistory = "";
         state.statusCode = code;
         state.message = message;
         state.reqCount -= 1;
