@@ -48,18 +48,11 @@ var b = [
 ];
 
 function numberToWords(number) {
-  console.log(
-    "51",
-    typeof number,
-    typeof String(number),
-    String(number)?.split(".")
-  );
   let [num, decimalPoints] = String(number)?.split(".");
   if ((num = num.toString()).length > 9) return "Overflow";
   let n = ("000000000" + num)
     .substr(-9)
     .match(/^(\d{2})(\d{2})(\d{2})(\d{1})(\d{2})$/);
-  console.log("56", n);
   if (!n) return;
   var str = "";
   str +=

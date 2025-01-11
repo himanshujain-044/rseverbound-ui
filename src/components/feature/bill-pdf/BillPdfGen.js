@@ -42,7 +42,6 @@ const data = {
   },
 };
 const BillPdfGen = ({ data = {} }) => {
-  console.log("49", data);
   return (
     <Document title={`${data?.buyerDetails?.name}_${data?.date}`}>
       <Page

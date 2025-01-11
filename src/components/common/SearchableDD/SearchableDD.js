@@ -8,7 +8,6 @@ const SearchableDD = ({
   onChangeDDOption = () => {},
   onInputChangeDDSearch = () => {},
 }) => {
-  console.log("searhc dd", ddValue);
   return (
     <div className="flex max-w-[100%] [&_div]:w-full w-full">
       <Autocomplete
@@ -35,6 +34,7 @@ const SearchableDD = ({
           //   display: "inline-block",
           "& input": {
             // width: 200,
+            marginTop: "1px",
             outline: "none",
             paddingLeft: "8px",
             overflow: "hidden",

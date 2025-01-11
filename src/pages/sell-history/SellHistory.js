@@ -19,7 +19,6 @@ const SellHistory = () => {
   const dispatch = useDispatch();
   const { allSellsHistory, isInvoiceSave } = useSelector((state) => state.api);
   useEffect(() => {
-    console.log("22", allSellsHistory);
     if (!allSellsHistory || isInvoiceSave) {
       dispatch(
         getSellsHistory({

@@ -30,17 +30,20 @@ const formInitValues = {
   ewayBillNo: "",
   vehicleNo: "",
   destination: "",
+  buyerOrderNoText: "Buyer's Order No.",
+  buyerOrderNoValue: "",
 };
 const BillForm = ({ className = "" }) => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const [formValues, setFormValues] = useState(formInitValues);
   const [itemsSell, setItemsSell] = useState();
-  // const [isUpdatedInvoiceFetched, setIsUpdatedInvoiceFetched] = useState();
-  const { invoiceDetails, allBuyers, allVehicles, allProducts, isInvoiceSave } =
-    useSelector((state) => state.api);
+  const { invoiceDetails, allBuyers, allProducts, isInvoiceSave } = useSelector(
+    (state) => state.api
+  );
   const [buyersNameDDOptions, setBuyersNameDDOptions] = useState([]);
   const [vehiclesDDOptions, setVehiclesDDOptions] = useState([]);
+  const [destinationsDDOptions, setDestinationsDDOptions] = useState([]);
 
   useEffect(() => {
     if (!invoiceDetails) {
@@ -59,14 +62,14 @@ const BillForm = ({ className = "" }) => {
         })
       );
     }
-    if (!allVehicles?.length) {
-      dispatch(
-        getAllVehicles({
-          method: "get",
-          endpoint: API_ENDPOINTS.getAllVehicles,
-        })
-      );
-    }
+    // if (!allVehicles?.length) {
+    //   dispatch(
+    //     getAllVehicles({
+    //       method: "get",
+    //       endpoint: API_ENDPOINTS.getAllVehicles,
+    //     })
+    //   );
+    // }
     if (!allProducts?.length) {
       dispatch(
         getAllProducts({
@@ -75,39 +78,28 @@ const BillForm = ({ className = "" }) => {
         })
       );
     }
-    console.log("74", invoiceDetails);
 
     if (allBuyers?.length) {
       const buyersNames = [];
       allBuyers.forEach((buyer) => {
         buyersNames.push(buyer?.name);
       });
-      console.log("38", buyersNames);
       setBuyersNameDDOptions(buyersNames);
     }
   }, [allBuyers]);
-
   useEffect(() => {
-    if (allVehicles?.length) {
-      const vehicles = [];
-      allVehicles.forEach((vehicle) => {
-        vehicles.push(vehicle?.vehicleNumber);
-      });
-      console.log("38", vehicles);
-      setVehiclesDDOptions(vehicles);
-    }
-  }, [allVehicles]);
+    setVehiclesDDOptions(invoiceDetails?.vehicles);
+    setDestinationsDDOptions(invoiceDetails?.destinations);
+  }, [invoiceDetails]);
   // useEffect(() => {
-  //   if (isInvoiceSave) {
-  //     setIsUpdatedInvoiceFetched
-  //     dispatch(
-  //       getInvoiceDetails({
-  //         method: "get",
-  //         endpoint: API_ENDPOINTS.getBillNumber,
-  //       })
-  //     );
+  //   if (allVehicles?.length) {
+  //     const vehicles = [];
+  //     allVehicles.forEach((vehicle) => {
+  //       vehicles.push(vehicle?.vehicleNumber);
+  //     });
+  //     setVehiclesDDOptions(vehicles);
   //   }
-  // }, [isInvoiceSave]);
+  // }, [allVehicles]);
 
   const handleChange = (e, value, type) => {
     const values = { ...formValues };
@@ -119,7 +111,7 @@ const BillForm = ({ className = "" }) => {
           values.buyerDetails = buyerDetails;
         } else {
           values.buyerDetails = {
-            name: value,
+            name: value?.toUpperCase(),
             address: "",
             gst: "",
             state: "",
@@ -128,12 +120,11 @@ const BillForm = ({ className = "" }) => {
       } else {
         values.buyerDetails = {
           ...values.buyerDetails,
-          [type]: value,
+          [type]: value?.toUpperCase(),
         };
       }
     }
-    values[type] = value;
-    console.log("input value", values, value, type);
+    values[type] = value?.toUpperCase();
     setFormValues(values);
   };
   const getUpdatedItemsSellValue = (values) => {
@@ -142,7 +133,7 @@ const BillForm = ({ className = "" }) => {
   const handleGenerateInvoice = () => {
     payload = {
       ...formValues,
-      invoiceNo: invoiceDetails?.nextInvoiceNo,
+      invoiceNo: invoiceDetails?.nextInvoiceNo || 1,
       productsSellDetails: {
         productsSell: itemsSell?.rowFields,
         [itemsSell?.gstType?.type]: itemsSell["gstType"].value,
@@ -162,7 +153,6 @@ const BillForm = ({ className = "" }) => {
   };
 
   const downloadPdf = async () => {
-    console.log("140", payload);
     const fileName = `${payload.buyerDetails.name}_${payload.date}.pdf`;
     const blob = await pdf(<BillPdfGen data={payload} />).toBlob();
     saveAs(blob, fileName);
@@ -175,6 +165,18 @@ const BillForm = ({ className = "" }) => {
     const values = { ...formValues };
     values.date = formatDate(new Date(e));
     setFormValues(values);
+  };
+
+  const isDisabled = (values) => {
+    const checkItemsQuantity = itemsSell?.rowFields.every(
+      (item) => item.quantity && item.ratePMT
+    );
+    return !(
+      values?.buyerDetails?.name &&
+      values?.vehicleNo &&
+      values?.destination &&
+      checkItemsQuantity
+    );
   };
 
   return (
@@ -205,8 +207,27 @@ const BillForm = ({ className = "" }) => {
             <p>Invoice No.</p>
             <strong>{invoiceDetails?.nextInvoiceNo}</strong>
           </div>
-          <div className="pl-1 pb-1 bottom-border">Buyer's Order No.</div>
-          <div className="pl-1 pb-1">Dispatched through</div>
+          <div className="pl-1 pb-1">
+            <input
+              type="text"
+              className="outline-none max-w-32"
+              placeholder="Buyer's Order No."
+              onChange={(e) => {
+                handleChange(e, e?.target?.value, "buyerOrderNoText");
+              }}
+              value={formValues.buyerOrderNoText}
+            />
+            -
+            <input
+              type="text"
+              className="outline-none w-28 pl-1"
+              onChange={(e) => {
+                handleChange(e, e?.target?.value, "buyerOrderNoValue");
+              }}
+              value={formValues.buyerOrderNoValue}
+            />
+          </div>
+          {/* <div className="pl-1 pb-1">Dispatched through</div> */}
         </Grid>
         <Grid xs={3} className="form-border no-top-border">
           <div className="pb-[0.4rem] bottom-border">
@@ -235,6 +256,7 @@ const BillForm = ({ className = "" }) => {
                 handleChange(e, value, "destination");
               }}
               ddValue={formValues.destination}
+              ddOptions={destinationsDDOptions}
             />
           </div>
         </Grid>
@@ -257,6 +279,7 @@ const BillForm = ({ className = "" }) => {
             }}
             ddValue={formValues?.buyerDetails.address}
           /> */}
+          <span className="min-w-[7.3rem]">Address -</span>
           <input
             type="text"
             placeholder="Bill Address"
@@ -264,7 +287,7 @@ const BillForm = ({ className = "" }) => {
             onChange={(e) => {
               handleChange(e, e?.target?.value, "address");
             }}
-            className="outline-none"
+            className="outline-none pl-2"
           />
 
           <div className="flex">
@@ -279,7 +302,7 @@ const BillForm = ({ className = "" }) => {
             />
           </div>
           <div className="flex">
-            <strong className="w-[4rem]">State -</strong>
+            <strong className="w-[3.3rem]">State -</strong>
             <SearchableDD
               onInputChangeDDSearch={(e, value) => {
                 handleChange(e, value, "state");
@@ -290,25 +313,25 @@ const BillForm = ({ className = "" }) => {
         </Grid>
         <Grid xs={3} className="bottom-border">
           <div className="pl-1 pb-1 ">
-            ETP No.
+            <span className="w-[60px]">ETP No.</span>
             <input
               type="text"
               value={formValues?.etpNo}
               onChange={(e) => {
                 handleChange(e, e?.target?.value, "etpNo");
               }}
-              className="outline-none ml-1"
+              className="outline-none ml-1 w-[calc(100%_-_64px)]"
             />
           </div>
           <div className="pl-1 pb-1 ">
-            E-way Bill No.
+            <span className="w-[102px]">E-way Bill No.</span>
             <input
               type="text"
               value={formValues?.ewayBillNo}
               onChange={(e) => {
                 handleChange(e, e?.target?.value, "ewayBillNo");
               }}
-              className="outline-none ml-1"
+              className="outline-none ml-1 w-[calc(100%_-_106px)]"
             />
           </div>
         </Grid>
@@ -367,7 +390,7 @@ const BillForm = ({ className = "" }) => {
             //   componentLoader && "bg-none",
             "bg-primary hover:bg-primary"
           )}
-          // disabled={!validator.isEmail(email) || componentLoader}
+          disabled={isDisabled(formValues)}
           onClick={handleGenerateInvoice}
         >
           Generate Invoice

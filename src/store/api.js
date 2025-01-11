@@ -232,7 +232,6 @@ const apiReducer = createSlice({
         state.message = "Getting the latest bill number ...";
       })
       .addCase(getInvoiceDetails.fulfilled, (state, action) => {
-        console.log("138", action.payload?.data);
         const invoiceDetails = action.payload?.data?.data;
         state.invoiceDetails = invoiceDetails;
         state.reqCount -= 1;
@@ -251,7 +250,6 @@ const apiReducer = createSlice({
         state.message = "Fetching all the buyers ...";
       })
       .addCase(getAllBuyers.fulfilled, (state, action) => {
-        console.log("138", action.payload?.data);
         const { data } = action.payload?.data;
         state.allBuyers = data;
         state.reqCount -= 1;
@@ -270,7 +268,6 @@ const apiReducer = createSlice({
         state.message = "Fetching all the vichels ...";
       })
       .addCase(getAllVehicles.fulfilled, (state, action) => {
-        console.log("138", action.payload?.data);
         const { data } = action.payload?.data;
         state.allVehicles = data;
         state.reqCount -= 1;
@@ -289,7 +286,6 @@ const apiReducer = createSlice({
         state.message = "Fetching all the vichels ...";
       })
       .addCase(getAllProducts.fulfilled, (state, action) => {
-        console.log("138", action.payload?.data);
         const { data } = action.payload?.data;
         state.allProducts = data;
         state.reqCount -= 1;
@@ -309,8 +305,6 @@ const apiReducer = createSlice({
         state.isInvoiceSave = false;
       })
       .addCase(saveInvoiceDetails.fulfilled, (state, action) => {
-        console.log("138", action.payload?.data);
-        // const { data } = action.payload?.data;
         state.isInvoiceSave = true;
         state.invoiceDetails = "";
         state.reqCount -= 1;
@@ -330,7 +324,6 @@ const apiReducer = createSlice({
         state.isInvoiceSave = false;
       })
       .addCase(getSellsHistory.fulfilled, (state, action) => {
-        console.log("138", action.payload?.data);
         const { data } = action.payload?.data;
         state.allSellsHistory = data;
         state.reqCount -= 1;
