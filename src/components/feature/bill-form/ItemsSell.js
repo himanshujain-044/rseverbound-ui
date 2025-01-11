@@ -45,8 +45,8 @@ const ItemsSell = ({ getUpdatedItemsSellValue = () => {} }) => {
     rowFields: [
       {
         sNo: 1,
-        description: productsDDOptions[0],
-        hsnCode: invoiceDetails?.hsnCodes?.[invoiceDetails?.hsnCodes - 1],
+        description: "",
+        hsnCode: "",
         quantity: "",
         ratePMT: "",
         amount: "",
@@ -70,8 +70,10 @@ const ItemsSell = ({ getUpdatedItemsSellValue = () => {} }) => {
           ...preVal?.rowFields,
           {
             sNo: preVal?.rowFields?.length + 1,
-            description: productsDDOptions[0],
-            hsnCode: invoiceDetails?.hsnCodes[invoiceDetails?.hsnCodes - 1],
+            description:
+              invoiceDetails?.products[invoiceDetails?.products?.length - 1],
+            hsnCode:
+              invoiceDetails?.hsnCodes[invoiceDetails?.hsnCodes?.length - 1],
             quantity: "",
             ratePMT: "",
             amount: "",
@@ -90,34 +92,37 @@ const ItemsSell = ({ getUpdatedItemsSellValue = () => {} }) => {
     });
     // setRowFields(updatedRows);
   };
-  useEffect(() => {
-    if (!allProducts?.length) {
-      dispatch(
-        getAllProducts({
-          method: "get",
-          endpoint: API_ENDPOINTS.getAllProducts,
-        })
-      );
-    }
-  }, []);
+  // useEffect(() => {
+  //   if (!allProducts?.length) {
+  //     dispatch(
+  //       getAllProducts({
+  //         method: "get",
+  //         endpoint: API_ENDPOINTS.getAllProducts,
+  //       })
+  //     );
+  //   }
+  // }, []);
 
-  useEffect(() => {
-    if (allProducts?.length) {
-      const products = [];
-      allProducts.forEach((product) => {
-        products.push(product?.name);
-      });
-      const values = { ...itemsSellForm };
-      values.rowFields[0]["description"] = products[0];
-      setItemsSellForm(values);
-      setProductsDDOptions(products);
-    }
-  }, [allProducts]);
+  // useEffect(() => {
+  //   if (allProducts?.length) {
+  //     const products = [];
+  //     allProducts.forEach((product) => {
+  //       products.push(product?.name);
+  //     });
+  //     const values = { ...itemsSellForm };
+  //     values.rowFields[0]["description"] = products[0];
+  //     setItemsSellForm(values);
+  //     setProductsDDOptions(products);
+  //   }
+  // }, [allProducts]);
   useEffect(() => {
     setHsnCodeDDOptions(invoiceDetails?.hsnCodes);
+    setProductsDDOptions(invoiceDetails?.products);
     const values = { ...itemsSellForm };
     values.rowFields[0]["hsnCode"] =
       invoiceDetails?.hsnCodes?.[invoiceDetails?.hsnCodes?.length - 1];
+    values.rowFields[0]["description"] =
+      invoiceDetails?.products?.[invoiceDetails?.products?.length - 1];
     setItemsSellForm(values);
   }, [invoiceDetails]);
   useEffect(() => {

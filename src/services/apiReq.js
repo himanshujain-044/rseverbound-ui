@@ -26,6 +26,7 @@ export const apiReq = async ({
   }
   if (method === "get") {
     return axios[method](endpoint, {
+      params: payload,
       headers: {
         Authorization: `Bearer ${token}`,
       },

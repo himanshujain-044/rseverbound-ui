@@ -16,14 +16,17 @@ import {
 } from "../../../store/api";
 import { API_ENDPOINTS } from "../../../constants/apiEndPoints";
 import { DATED_OPTIONS } from "../../../constants/common";
-import { formatDate } from "../../../utils/helperFunction";
+import {
+  formatDate,
+  getStateNameByGstCode,
+} from "../../../utils/helperFunction";
 import ItemsSell from "./ItemsSell";
 import BillPdfGen from "../bill-pdf/BillPdfGen";
 import { ROUTES_LIST } from "../../../constants/routes";
 import DatePickerComp from "../../common/DatePickerComp/DatePickerComp";
 let payload = {};
 const formInitValues = {
-  buyerDetails: { name: "", address: "", gst: "", state: "" },
+  buyerDetails: { name: "", address: "", gst: "", state: "MP" },
   dated: DATED_OPTIONS[1],
   date: formatDate(new Date()),
   etpNo: "",
@@ -62,14 +65,6 @@ const BillForm = ({ className = "" }) => {
         })
       );
     }
-    // if (!allVehicles?.length) {
-    //   dispatch(
-    //     getAllVehicles({
-    //       method: "get",
-    //       endpoint: API_ENDPOINTS.getAllVehicles,
-    //     })
-    //   );
-    // }
     if (!allProducts?.length) {
       dispatch(
         getAllProducts({
@@ -91,19 +86,9 @@ const BillForm = ({ className = "" }) => {
     setVehiclesDDOptions(invoiceDetails?.vehicles);
     setDestinationsDDOptions(invoiceDetails?.destinations);
   }, [invoiceDetails]);
-  // useEffect(() => {
-  //   if (allVehicles?.length) {
-  //     const vehicles = [];
-  //     allVehicles.forEach((vehicle) => {
-  //       vehicles.push(vehicle?.vehicleNumber);
-  //     });
-  //     setVehiclesDDOptions(vehicles);
-  //   }
-  // }, [allVehicles]);
 
   const handleChange = (e, value, type) => {
     const values = { ...formValues };
-
     if (["name", "address", "gst", "state"].includes(type)) {
       if (type === "name" && value) {
         const buyerDetails = allBuyers.find((buyer) => buyer.name === value);
@@ -122,6 +107,11 @@ const BillForm = ({ className = "" }) => {
           ...values.buyerDetails,
           [type]: value?.toUpperCase(),
         };
+        if (type === "gst" && value) {
+          values.buyerDetails.state = getStateNameByGstCode(
+            value.substring(0, 2)
+          );
+        }
       }
     }
     values[type] = value?.toUpperCase();
@@ -188,8 +178,8 @@ const BillForm = ({ className = "" }) => {
     >
       <Grid container className="bg-[#fff]">
         <Grid xs={12}>
-          <h2 className="form-border text-center">
-            <u className="pt-[2px]">TAX INVOICE</u>
+          <h2 className="form-border text-center py-1 underline underline-offset-2">
+            TAX INVOICE
           </h2>
         </Grid>
         <Grid
@@ -302,13 +292,14 @@ const BillForm = ({ className = "" }) => {
             />
           </div>
           <div className="flex">
-            <strong className="w-[3.3rem]">State -</strong>
-            <SearchableDD
+            <strong className="w-[3.4rem]">State -</strong>
+            {/* <SearchableDD
               onInputChangeDDSearch={(e, value) => {
                 handleChange(e, value, "state");
               }}
               ddValue={formValues?.buyerDetails.state}
-            />
+            /> */}
+            <span>{formValues?.buyerDetails.state}</span>
           </div>
         </Grid>
         <Grid xs={3} className="bottom-border">

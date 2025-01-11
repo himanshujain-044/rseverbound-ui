@@ -327,7 +327,11 @@ const BillPdfGen = ({ data = {} }) => {
                   </Text>
                 </>
               )}
-              <Text>{data?.productsSellDetails?.otherExpenses}</Text>
+              <Text>
+                {data?.productsSellDetails?.otherExpenses > 0
+                  ? data?.productsSellDetails?.otherExpenses
+                  : ""}
+              </Text>
             </View>
           </View>
         </View>
@@ -350,9 +354,8 @@ const BillPdfGen = ({ data = {} }) => {
 
         <View style={styles.section}>
           <View style={{ width: "60%", paddingLeft: "2px", paddingTop: "2px" }}>
-            <Text>Amount Chargable</Text>
+            <Text>Amount in words</Text>
             <Text style={{ fontFamily: "Helvetica-Bold" }}>
-              <Text style={{ marginRight: "4px" }}> INDIAN RUPEES: </Text>
               {numberToWords(data?.productsSellDetails?.grandTotal)}
             </Text>
           </View>

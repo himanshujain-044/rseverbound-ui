@@ -5,19 +5,15 @@ import { useEffect } from "react";
 import DataTable from "../../components/common/DataTable/DataTable";
 import { sellHistoryCols } from "./sellHistoryCols";
 import { useDispatch, useSelector } from "react-redux";
-import { getSellsHistory } from "../../store/api";
+import { getSellData, getSellsHistory } from "../../store/api";
 import { API_ENDPOINTS } from "../../constants/apiEndPoints";
 const SellHistory = () => {
-  //   const location = useLocation();
-  //   const navigate = useNavigate();
-  //   const data = location.state;
-  //   const onClickBackToDashboard = () => {
-  //     navigate({
-  //       pathname: ROUTES_LIST.dashboard,
-  //     });
-  //   };
   const dispatch = useDispatch();
-  const { allSellsHistory, isInvoiceSave } = useSelector((state) => state.api);
+  const navigate = useNavigate();
+  const { allSellsHistory, isInvoiceSave, sellData } = useSelector(
+    (state) => state.api
+  );
+
   useEffect(() => {
     if (!allSellsHistory || isInvoiceSave) {
       dispatch(
@@ -28,13 +24,32 @@ const SellHistory = () => {
       );
     }
   }, []);
+
+  useEffect(() => {
+    console.log("sell data", sellData);
+    console.log("29 da", isInvoiceSave, allSellsHistory);
+    if (sellData?.invoiceNo) {
+      navigate(ROUTES_LIST.pdfViewer, { state: sellData });
+    }
+  }, [sellData]);
+
+  const handleGetSelectedRows = (rowIds) => {
+    console.log("row", rowIds);
+    dispatch(
+      getSellData({
+        method: "get",
+        endpoint: API_ENDPOINTS.getSellData,
+        payload: { invoiceNo: rowIds[0] },
+      })
+    );
+  };
   return (
     <div className="h-full items-center justify-center">
       <DataTable
         cols={sellHistoryCols}
         data={allSellsHistory?.length ? allSellsHistory : []}
         // checkboxSelection={true}
-        // getSelectedRows={handleGetSelectedRows}
+        getSelectedRows={handleGetSelectedRows}
         // rowSelectionModel={selectedRows}
         // tableProps={{
         //   isRowSelectable: (params) =>

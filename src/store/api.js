@@ -137,6 +137,23 @@ export const getSellsHistory = createAsyncThunk(
   }
 );
 
+export const getSellData = createAsyncThunk(
+  "sell-data",
+  async (apiData, { rejectWithValue }) => {
+    try {
+      const { method, endpoint, payload } = apiData;
+      const response = await apiReq({
+        method,
+        endpoint,
+        payload,
+      });
+      return response;
+    } catch (err) {
+      return rejectWithValue(err?.response || err);
+    }
+  }
+);
+
 const apiReducer = createSlice({
   name: "data",
   initialState: {
@@ -152,6 +169,7 @@ const apiReducer = createSlice({
     allProducts: [],
     isInvoiceSave: "",
     allSellsHistory: "",
+    sellData: "",
 
     // brokerageData: "",
     // paidBrokerageData: "",
@@ -172,6 +190,7 @@ const apiReducer = createSlice({
       state.allProducts = "";
       state.isInvoiceSave = "";
       state.allSellsHistory = "";
+      state.sellData = "";
 
       // state.brokerageData = "";
       // state.paidBrokerageData = "";
@@ -325,6 +344,7 @@ const apiReducer = createSlice({
       })
       .addCase(getSellsHistory.fulfilled, (state, action) => {
         const { data } = action.payload?.data;
+        console.log("sell history is calling", data);
         state.allSellsHistory = data;
         state.reqCount -= 1;
         state.success = true;
@@ -332,6 +352,25 @@ const apiReducer = createSlice({
       .addCase(getSellsHistory.rejected, (state, action) => {
         const { code, message } = action.payload?.data;
         state.allSellsHistory = "";
+        state.statusCode = code;
+        state.message = message;
+        state.reqCount -= 1;
+        state.success = false;
+      })
+      .addCase(getSellData.pending, (state, action) => {
+        state.reqCount += 1;
+        state.message = "Fetching sell data ...";
+      })
+      .addCase(getSellData.fulfilled, (state, action) => {
+        const { data } = action.payload?.data;
+        console.log("api", action.payload?.data, data);
+        state.sellData = data;
+        state.reqCount -= 1;
+        state.success = true;
+      })
+      .addCase(getSellData.rejected, (state, action) => {
+        const { code, message } = action.payload?.data;
+        state.sellData = "";
         state.statusCode = code;
         state.message = message;
         state.reqCount -= 1;

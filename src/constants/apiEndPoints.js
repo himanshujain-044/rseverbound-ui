@@ -14,6 +14,7 @@ export const API_ENDPOINTS = {
   getAllProducts: `${productsBaseUrl}/all-products`,
   saveInvoiceDetails: `${sellsBaseUrl}/save-invoice-details`,
   getSellsHistoryData: `${sellsBaseUrl}/sells-history`,
+  getSellData: `${sellsBaseUrl}/sell-data`,
   // getBrokerage: `${userBaseUrl}/get-user-brokerage`,
   // getPaidBrokerageHistory: `${userBaseUrl}/paid-user-brokerage`,
   // updatePaymentMethod: `${userBaseUrl}/update-payment-method`,

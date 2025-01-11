@@ -1,5 +1,9 @@
 const { AES, enc } = require("crypto-js");
-const { MONTH_NAMES, NUMBERS_DIGITS_UNITS } = require("../constants/common");
+const {
+  MONTH_NAMES,
+  NUMBERS_DIGITS_UNITS,
+  STATES_GST_CODE,
+} = require("../constants/common");
 
 const formatDate = (date) => {
   const day = date.getDate();
@@ -118,6 +122,16 @@ const clearSessionStorage = (key = "") => {
   sessionStorage.clear();
 };
 
+const getStateNameByGstCode = (gstCode) => {
+  const gstRecord = STATES_GST_CODE.find(
+    (record) => record.gst_code === gstCode
+  );
+  if (gstRecord) {
+    return gstRecord.state;
+  } else {
+    return "State not found for the given GST code";
+  }
+};
 module.exports = {
   formatDate,
   calculateGstAmount,
@@ -128,4 +142,5 @@ module.exports = {
   setSessionStorage,
   getSessionStorage,
   clearSessionStorage,
+  getStateNameByGstCode,
 };
