@@ -10,7 +10,7 @@ axios.interceptors.response.use(
   (error) => {
     if (error.response.status === 401) {
       clearSessionStorage();
-      window.location.reload();
+      window.location.replace("/");
     }
     return Promise.reject(error);
   }

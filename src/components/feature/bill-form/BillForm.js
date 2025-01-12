@@ -369,8 +369,15 @@ const BillForm = ({ className = "" }) => {
           </div>
           <div className="pr-1 pb-1 flex flex-col text-right top-border">
             <strong>for MADHUVAN MINERALS & INDUSTRIES</strong>
-            <span>Authorised Signatory</span>
+            <span className="mt-[3rem]">Authorised Signatory</span>
           </div>
+        </Grid>
+        <Grid
+          xs={12}
+          className="mt-2 mb-1 flex flex-col justify-center items-center"
+        >
+          <span>SUBJECT TO TIKAMGARH JURISDICTION</span>
+          <span>This is a computer generated invoice</span>
         </Grid>
       </Grid>
       <div className="mt-2 flex flex-col gap-4">

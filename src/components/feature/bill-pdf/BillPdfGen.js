@@ -233,6 +233,7 @@ const BillPdfGen = ({ data = {} }) => {
                   borderLeft: "1px solid black",
                   paddingLeft: "2px",
                   paddingTop: "5px",
+                  fontFamily: "Helvetica-Bold",
                 }}
               >
                 <Text>{productSell?.description}</Text>
@@ -253,6 +254,8 @@ const BillPdfGen = ({ data = {} }) => {
                   borderLeft: "1px solid black",
                   paddingLeft: "2px",
                   paddingTop: "5px",
+
+                  fontFamily: "Helvetica-Bold",
                 }}
               >
                 <Text>{productSell?.quantity}</Text>
@@ -274,6 +277,7 @@ const BillPdfGen = ({ data = {} }) => {
                   paddingRight: "2px",
                   paddingTop: "5px",
                   textAlign: "right",
+                  fontFamily: "Helvetica-Bold",
                 }}
               >
                 <Text>{productSell?.amount}</Text>
@@ -283,7 +287,9 @@ const BillPdfGen = ({ data = {} }) => {
         })}
 
         <View style={styles.section}>
-          <View style={{ width: "50%", paddingTop: "2px" }}>
+          <View
+            style={{ width: "50%", paddingTop: "2px", paddingBottom: "220px" }}
+          >
             <Text></Text>
           </View>
           <View
@@ -294,6 +300,7 @@ const BillPdfGen = ({ data = {} }) => {
               paddingTop: "2px",
               flexDirection: "row",
               justifyContent: "space-between",
+              paddingBottom: "220px",
             }}
           >
             <View style={{ paddingLeft: "2px" }}>
@@ -419,7 +426,9 @@ const BillPdfGen = ({ data = {} }) => {
                 paddingTop: "2px",
               }}
             >
-              <Text style={{ fontFamily: "Helvetica-Bold" }}>
+              <Text
+                style={{ fontFamily: "Helvetica-Bold", paddingBottom: "18px" }}
+              >
                 for MADHUVAN MINERALS & INDUSTRIES
               </Text>
               <Text>Authorised Signatory</Text>
@@ -429,6 +438,17 @@ const BillPdfGen = ({ data = {} }) => {
         <View
           style={{ borderBottomWidth: 1, borderBottomColor: "black" }}
         ></View>
+        <View
+          style={{
+            width: "100%",
+            marginTop: "8px",
+            justifyContent: "center",
+            alignItems: "center",
+          }}
+        >
+          <Text>SUBJECT TO TIKAMGARH JURISDICTION</Text>
+          <Text>This is a computer generated invoice</Text>
+        </View>
       </Page>
     </Document>
   );

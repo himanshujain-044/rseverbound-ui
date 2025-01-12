@@ -232,7 +232,7 @@ const ItemsSell = ({ getUpdatedItemsSellValue = () => {} }) => {
             <Grid xs={1} className="left-border flex justify-center">
               <div className="pl-1">{row.sNo}</div>
             </Grid>
-            <Grid xs={4} className="left-border">
+            <Grid xs={4} className="left-border font-bold">
               <SearchableDD
                 // onChangeDDOption={handleOnChangeDatedDD}
                 ddValue={itemsSellForm.rowFields[index]["description"]}
@@ -265,7 +265,7 @@ const ItemsSell = ({ getUpdatedItemsSellValue = () => {} }) => {
               <div className="pl-1">
                 <input
                   placeholder="Enter "
-                  className="outline-none block w-[100%]"
+                  className="outline-none block w-[100%] font-bold"
                   type="number"
                   onChange={(e) => {
                     handleChange(e, e?.target?.value, "quantity", index);
@@ -299,7 +299,7 @@ const ItemsSell = ({ getUpdatedItemsSellValue = () => {} }) => {
       })}
       <Grid
         xs={7}
-        className="pl-1 form-border no-bottom-border no-right-border flex items-center gap-2"
+        className="pl-1 pt-[2rem] form-border no-bottom-border no-right-border flex items-start gap-2"
       >
         <button onClick={handleAddField}>
           <AddCircleOutlinedIcon className="fill-primary" />
@@ -319,7 +319,7 @@ const ItemsSell = ({ getUpdatedItemsSellValue = () => {} }) => {
       </Grid>
       <Grid
         xs={5}
-        className="pl-1 pb-1 form-border no-bottom-border flex flex-col"
+        className="pl-1 pb-[9rem] form-border no-bottom-border flex flex-col"
       >
         {options.map((option) => (
           <div
@@ -388,6 +388,7 @@ const ItemsSell = ({ getUpdatedItemsSellValue = () => {} }) => {
           <i>{itemsSellForm.otherExpenses}</i>
         </div>
       </Grid>
+
       <Grid xs={6} className="pr-1 pb-1 form-border flex justify-end">
         <strong>Grand Total</strong>
       </Grid>
