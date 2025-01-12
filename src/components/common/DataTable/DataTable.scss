@@ -12,6 +12,10 @@
   .MuiDataGrid-virtualScroller {
     min-height: 9rem;
   }
+  .MuiDataGrid-row:hover {
+    background-color: rgba(90, 41, 139, 0.1) !important;
+    cursor: pointer;
+  }
 }
 @media only screen and (max-width: 370px) {
   .data-table {

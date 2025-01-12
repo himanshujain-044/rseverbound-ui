@@ -202,6 +202,11 @@ const apiReducer = createSlice({
       // state.isRequestedOTP = false;
       // state.otpVerified = false;
     },
+    clearSomeStates: (state, action) => {
+      action.payload.stateKeys.map((key) => {
+        state[key] = "";
+      });
+    },
     // closeRequestedPayoutModal: (state, action) => {
     //   state.isRequestedPayoutModalOpen = false;
     // },
@@ -378,5 +383,6 @@ const apiReducer = createSlice({
       });
   },
 });
-export const { clearAPIState, closeRequestedPayoutModal } = apiReducer.actions;
+export const { clearAPIState, clearSomeStates, closeRequestedPayoutModal } =
+  apiReducer.actions;
 export default apiReducer.reducer;

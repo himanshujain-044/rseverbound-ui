@@ -63,6 +63,7 @@
 
 :root {
   --primary: rgb(90, 41, 139);
+  --primaryhover: rgba(90, 41, 139, 0.04);
   --bg-color-scroll-bar: rgb(149 149 149);
 }
 body {

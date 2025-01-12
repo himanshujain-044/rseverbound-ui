@@ -1,5 +1,6 @@
 import WorkHistoryOutlinedIcon from "@mui/icons-material/WorkHistoryOutlined";
 import DashboardCustomizeOutlinedIcon from "@mui/icons-material/DashboardCustomizeOutlined";
+import AssessmentOutlinedIcon from "@mui/icons-material/AssessmentOutlined";
 import { ROUTES_LIST } from "./routes";
 export const PAYMENT_MODE = {
   GPAY: "gpay",
@@ -126,10 +127,18 @@ export const SIDEBAR_MENU_LIST = [
     icon: <DashboardCustomizeOutlinedIcon />,
     text: "Dashboard",
     route: ROUTES_LIST.dashboard,
+    active: true,
   },
   {
     icon: <WorkHistoryOutlinedIcon />,
     text: "Sell History",
     route: ROUTES_LIST.sellHistory,
+    active: false,
+  },
+  {
+    icon: <AssessmentOutlinedIcon />,
+    text: "Reports",
+    route: ROUTES_LIST.reports,
+    active: false,
   },
 ];

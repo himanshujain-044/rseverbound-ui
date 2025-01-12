@@ -3,4 +3,5 @@ export const ROUTES_LIST = {
   dashboard: "/dashboard",
   pdfViewer: "/pdf-viewer",
   sellHistory: "/sell-history",
+  reports: "/reports",
 };

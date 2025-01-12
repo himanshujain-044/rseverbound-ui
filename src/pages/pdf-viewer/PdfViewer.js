@@ -1,20 +1,30 @@
+import { useEffect } from "react";
 import { saveAs } from "file-saver";
 import { pdf, PDFViewer } from "@react-pdf/renderer";
 import BillPdfGen from "../../components/feature/bill-pdf/BillPdfGen";
 import { useLocation, useNavigate } from "react-router-dom";
 import { Button } from "@mui/material";
 import { ROUTES_LIST } from "../../constants/routes";
+import { clearSomeStates } from "../../store/api";
+import { useDispatch } from "react-redux";
 
 const PdfViewer = () => {
   const location = useLocation();
+  const dispatch = useDispatch();
   const navigate = useNavigate();
   const data = location.state;
+  useEffect(() => {
+    dispatch(
+      clearSomeStates({
+        stateKeys: ["allSellsHistory", "isInvoiceSave", "sellData"],
+      })
+    );
+  }, []);
   const onClickBackToDashboard = () => {
     navigate({
       pathname: ROUTES_LIST.dashboard,
     });
   };
-
   const downloadPdf = async () => {
     const fileName = `${data.buyerDetails.name}_${data.date}.pdf`;
     const blob = await pdf(<BillPdfGen data={data} />).toBlob();
