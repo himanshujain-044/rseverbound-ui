@@ -1,14 +1,10 @@
 import React, { useEffect, useReducer, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 import Grid from "@mui/material/Grid";
 import cx from "classnames";
-import { Button, Typography } from "@mui/material";
-
 import AddCircleOutlinedIcon from "@mui/icons-material/AddCircleOutlined";
 import RemoveCircleOutlinedIcon from "@mui/icons-material/RemoveCircleOutlined";
 import SearchableDD from "../../common/SearchableDD/SearchableDD";
-import { getAllProducts } from "../../../store/api";
-import { API_ENDPOINTS } from "../../../constants/apiEndPoints";
 import {
   calculateGstAmount,
   convertFixedDecimal,
@@ -16,16 +12,7 @@ import {
 } from "../../../utils/helperFunction";
 
 const ItemsSell = ({ getUpdatedItemsSellValue = () => {} }) => {
-  const dispatch = useDispatch();
-  const { allProducts, invoiceDetails } = useSelector((state) => state.api);
-  console.log(
-    "invoiced detals",
-    typeof invoiceDetails?.sgst,
-    invoiceDetails?.sgst,
-    typeof invoiceDetails?.cgst,
-    invoiceDetails?.cgst,
-    Number(invoiceDetails?.sgst) + Number(invoiceDetails?.cgst)
-  );
+  const { invoiceDetails } = useSelector((state) => state.api);
   const options = [
     { value: "igst", label: "IGST % -", inputValue: invoiceDetails?.igst },
     {
@@ -83,38 +70,14 @@ const ItemsSell = ({ getUpdatedItemsSellValue = () => {} }) => {
     });
   };
   const handleRemoveLastRowField = () => {
-    // const updatedRows = rowFields.slice(0, rowFields.length - 1);
     setItemsSellForm((preVal) => {
       return {
         ...preVal,
         rowFields: [...preVal.rowFields.slice(0, preVal.rowFields.length - 1)],
       };
     });
-    // setRowFields(updatedRows);
   };
-  // useEffect(() => {
-  //   if (!allProducts?.length) {
-  //     dispatch(
-  //       getAllProducts({
-  //         method: "get",
-  //         endpoint: API_ENDPOINTS.getAllProducts,
-  //       })
-  //     );
-  //   }
-  // }, []);
 
-  // useEffect(() => {
-  //   if (allProducts?.length) {
-  //     const products = [];
-  //     allProducts.forEach((product) => {
-  //       products.push(product?.name);
-  //     });
-  //     const values = { ...itemsSellForm };
-  //     values.rowFields[0]["description"] = products[0];
-  //     setItemsSellForm(values);
-  //     setProductsDDOptions(products);
-  //   }
-  // }, [allProducts]);
   useEffect(() => {
     setHsnCodeDDOptions(invoiceDetails?.hsnCodes);
     setProductsDDOptions(invoiceDetails?.products);
@@ -130,7 +93,6 @@ const ItemsSell = ({ getUpdatedItemsSellValue = () => {} }) => {
   }, [itemsSellForm]);
 
   const handleChange = (e, value, type, index) => {
-    console.log("124", e, value, type, index);
     const values = { ...itemsSellForm };
     if (index || index === 0) {
       values.rowFields[index][type] =
@@ -175,6 +137,7 @@ const ItemsSell = ({ getUpdatedItemsSellValue = () => {} }) => {
     }
     setItemsSellForm(values);
   };
+
   const updateGstType = (values, gstVal) => {
     const totalAmount =
       values.rowFields.reduce(
@@ -194,6 +157,7 @@ const ItemsSell = ({ getUpdatedItemsSellValue = () => {} }) => {
       ),
     ];
   };
+
   return (
     <>
       <Grid xs={1} className="left-border">
@@ -234,7 +198,6 @@ const ItemsSell = ({ getUpdatedItemsSellValue = () => {} }) => {
             </Grid>
             <Grid xs={4} className="left-border font-bold">
               <SearchableDD
-                // onChangeDDOption={handleOnChangeDatedDD}
                 ddValue={itemsSellForm.rowFields[index]["description"]}
                 onInputChangeDDSearch={(event, value) => {
                   handleChange(event, value, "description", index);
@@ -244,14 +207,6 @@ const ItemsSell = ({ getUpdatedItemsSellValue = () => {} }) => {
             </Grid>
             <Grid xs={2} className="left-border">
               <div className="pl-1">
-                {/* <input
-                  className="outline-none block max-w-[100%]"
-                  value={itemsSellForm.rowFields[index]["hsnCode"]}
-                  onChange={(e) => {
-                    handleChange(e, e?.target?.value, "hsnCode", index);
-                  }}
-                /> */}
-
                 <SearchableDD
                   ddValue={itemsSellForm.rowFields[index]["hsnCode"]}
                   onInputChangeDDSearch={(event, value) => {
@@ -267,6 +222,7 @@ const ItemsSell = ({ getUpdatedItemsSellValue = () => {} }) => {
                   placeholder="Enter "
                   className="outline-none block w-[100%] font-bold"
                   type="number"
+                  min={1}
                   onChange={(e) => {
                     handleChange(e, e?.target?.value, "quantity", index);
                   }}
@@ -279,6 +235,7 @@ const ItemsSell = ({ getUpdatedItemsSellValue = () => {} }) => {
                   placeholder="Enter "
                   className="outline-none block w-[100%]"
                   type="number"
+                  min={1}
                   onChange={(e) => {
                     handleChange(e, e?.target?.value, "ratePMT", index);
                   }}
@@ -287,10 +244,6 @@ const ItemsSell = ({ getUpdatedItemsSellValue = () => {} }) => {
             </Grid>
             <Grid xs={2} className="left-border right-border">
               <div className="pr-1 text-right">
-                {/* <input
-                  placeholder="Enter "
-                  className="outline-none block max-w-[100%]"
-                /> */}
                 <strong>{itemsSellForm.rowFields[index].amount}</strong>
               </div>
             </Grid>

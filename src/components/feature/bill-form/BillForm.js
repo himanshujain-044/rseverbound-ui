@@ -9,8 +9,6 @@ import { pdf, PDFViewer } from "@react-pdf/renderer";
 import SearchableDD from "../../common/SearchableDD/SearchableDD";
 import {
   getAllBuyers,
-  getAllProducts,
-  getAllVehicles,
   getInvoiceDetails,
   saveInvoiceDetails,
 } from "../../../store/api";
@@ -41,7 +39,7 @@ const BillForm = ({ className = "" }) => {
   const navigate = useNavigate();
   const [formValues, setFormValues] = useState(formInitValues);
   const [itemsSell, setItemsSell] = useState();
-  const { invoiceDetails, allBuyers, allProducts, isInvoiceSave } = useSelector(
+  const { invoiceDetails, allBuyers, isInvoiceSave } = useSelector(
     (state) => state.api
   );
   const [buyersNameDDOptions, setBuyersNameDDOptions] = useState([]);
@@ -62,14 +60,6 @@ const BillForm = ({ className = "" }) => {
         getAllBuyers({
           method: "get",
           endpoint: API_ENDPOINTS.getAllBuyers,
-        })
-      );
-    }
-    if (!allProducts?.length) {
-      dispatch(
-        getAllProducts({
-          method: "get",
-          endpoint: API_ENDPOINTS.getAllProducts,
         })
       );
     }

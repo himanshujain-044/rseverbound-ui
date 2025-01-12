@@ -16,41 +16,6 @@ const calculateGstAmount = (percent, amount) => {
   return (amount * percent) / 100;
 };
 
-var a = [
-  "",
-  "One ",
-  "Two ",
-  "Three ",
-  "Four ",
-  "Five ",
-  "Six ",
-  "Seven ",
-  "Eight ",
-  "Nine ",
-  "Ten ",
-  "Eleven ",
-  "Twelve ",
-  "Thirteen ",
-  "Fourteen ",
-  "Fifteen ",
-  "Sixteen ",
-  "Seventeen ",
-  "Eighteen ",
-  "Nineteen ",
-];
-var b = [
-  "",
-  "",
-  "Twenty",
-  "Thirty",
-  "Forty",
-  "Fifty",
-  "Sixty",
-  "Seventy",
-  "Eighty",
-  "Ninety",
-];
-
 function numberToWords(number) {
   let [num, decimalPoints] = String(number)?.split(".");
   if ((num = num.toString()).length > 9) return "Overflow";
@@ -61,30 +26,53 @@ function numberToWords(number) {
   var str = "";
   str +=
     n[1] != 0
-      ? (a[Number(n[1])] || b[n[1][0]] + " " + a[n[1][1]]) + "Crore "
+      ? (NUMBERS_DIGITS_UNITS.TEENS[Number(n[1])] ||
+          NUMBERS_DIGITS_UNITS.TENS[n[1][0]] +
+            " " +
+            NUMBERS_DIGITS_UNITS.TEENS[n[1][1]]) + "Crore "
       : "";
   str +=
     n[2] != 0
-      ? (a[Number(n[2])] || b[n[2][0]] + " " + a[n[2][1]]) + "Lakh "
+      ? (NUMBERS_DIGITS_UNITS.TEENS[Number(n[2])] ||
+          NUMBERS_DIGITS_UNITS.TENS[n[2][0]] +
+            " " +
+            NUMBERS_DIGITS_UNITS.TEENS[n[2][1]]) + "Lakh "
       : "";
   str +=
     n[3] != 0
-      ? (a[Number(n[3])] || b[n[3][0]] + " " + a[n[3][1]]) + "Thousand "
+      ? (NUMBERS_DIGITS_UNITS.TEENS[Number(n[3])] ||
+          NUMBERS_DIGITS_UNITS.TENS[n[3][0]] +
+            " " +
+            NUMBERS_DIGITS_UNITS.TEENS[n[3][1]]) + "Thousand "
       : "";
   str +=
     n[4] != 0
-      ? (a[Number(n[4])] || b[n[4][0]] + " " + a[n[4][1]]) + "Hundred "
+      ? (NUMBERS_DIGITS_UNITS.TEENS[Number(n[4])] ||
+          NUMBERS_DIGITS_UNITS.TENS[n[4][0]] +
+            " " +
+            NUMBERS_DIGITS_UNITS.TEENS[n[4][1]]) + "Hundred "
       : "";
   str +=
     n[5] != 0
       ? (str != "" ? "and " : "") +
-        (a[Number(n[5])] || b[n[5][0]] + " " + a[n[5][1]]) +
+        (NUMBERS_DIGITS_UNITS.TEENS[Number(n[5])] ||
+          NUMBERS_DIGITS_UNITS.TENS[n[5][0]] +
+            " " +
+            NUMBERS_DIGITS_UNITS.TEENS[n[5][1]]) +
         ""
       : "";
   const decArr = decimalPoints?.split("");
   if (decArr?.length) {
-    const lastDecmal = a[decArr?.[1]] ? a[decArr?.[1]] : "";
-    return str + "Points " + a[decArr[0]] + lastDecmal + " Only";
+    const lastDecmal = NUMBERS_DIGITS_UNITS.TEENS[decArr?.[1]]
+      ? NUMBERS_DIGITS_UNITS.TEENS[decArr?.[1]]
+      : "";
+    return (
+      str +
+      "Points " +
+      NUMBERS_DIGITS_UNITS.TEENS[decArr[0]] +
+      lastDecmal +
+      " Only"
+    );
   } else {
     return str?.length ? str + " Only" : "";
   }
@@ -103,23 +91,23 @@ const encryptData = (data = "") => {
   return AES.encrypt(data, process.env.REACT_APP_ENCRYPTED_SECRET).toString();
 };
 
-const setSessionStorage = (key = "", value = "") => {
+const setLocalStorage = (key = "", value = "") => {
   if (key) {
-    sessionStorage.setItem(key, encryptData(JSON.stringify(value)));
+    localStorage.setItem(key, encryptData(JSON.stringify(value)));
   }
 };
 
-const getSessionStorage = (key = "") => {
+const getLocalStorage = (key = "") => {
   if (key) {
-    const sessionData = sessionStorage.getItem(key);
+    const sessionData = localStorage.getItem(key);
     const data =
-      sessionData && JSON.parse(decryptData(sessionStorage.getItem(key)));
+      sessionData && JSON.parse(decryptData(localStorage.getItem(key)));
     return data;
   }
 };
 
-const clearSessionStorage = (key = "") => {
-  sessionStorage.clear();
+const clearLocalStorage = (key = "") => {
+  localStorage.clear();
 };
 
 const getStateNameByGstCode = (gstCode) => {
@@ -139,8 +127,8 @@ module.exports = {
   convertFixedDecimal,
   decryptData,
   encryptData,
-  setSessionStorage,
-  getSessionStorage,
-  clearSessionStorage,
+  setLocalStorage,
+  getLocalStorage,
+  clearLocalStorage,
   getStateNameByGstCode,
 };

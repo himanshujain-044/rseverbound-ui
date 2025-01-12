@@ -15,10 +15,4 @@ export const API_ENDPOINTS = {
   saveInvoiceDetails: `${sellsBaseUrl}/save-invoice-details`,
   getSellsHistoryData: `${sellsBaseUrl}/sells-history`,
   getSellData: `${sellsBaseUrl}/sell-data`,
-  // getBrokerage: `${userBaseUrl}/get-user-brokerage`,
-  // getPaidBrokerageHistory: `${userBaseUrl}/paid-user-brokerage`,
-  // updatePaymentMethod: `${userBaseUrl}/update-payment-method`,
-  // requestPayout: `${userBaseUrl}/update-user-brokerage`,
-  // requestOTP: `${userBaseUrl}/request-otp`,
-  // verifyOTP: `${userBaseUrl}/verify-otp`,
 };

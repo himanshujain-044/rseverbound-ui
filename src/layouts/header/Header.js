@@ -1,27 +1,14 @@
 import PersonOutlineOutlinedIcon from "@mui/icons-material/PersonOutlineOutlined";
-import ControlPointOutlinedIcon from "@mui/icons-material/ControlPointOutlined";
 import { Button } from "@mui/material";
 import { useDispatch, useSelector } from "react-redux";
-import ModalComp from "../../components/common/ModalComp/ModalComp";
-import { useEffect, useState } from "react";
-import {
-  getSessionStorage,
-  setSessionStorage,
-} from "../../utils/helperFunction";
-import { updateUserData } from "../../store/userData";
 import { logout } from "../../store/api";
 import { API_ENDPOINTS } from "../../constants/apiEndPoints";
 import LogoutOutlinedIcon from "@mui/icons-material/LogoutOutlined";
-import InfoOutlinedIcon from "@mui/icons-material/InfoOutlined";
-import MsgModalContent from "../../components/common/MsgModalContent/MsgModalContent";
 import Sidebar from "../../components/common/Sidebar/Sidebar";
 
 const Header = () => {
   const dispatch = useDispatch();
-  const { name, paymentMethod } = useSelector((state) => state.userData.data);
-  const { updatedPaymentModeData, success } = useSelector((state) => state.api);
-  const [isPymtModeModalOpen, setIsPymtModeModalOpen] = useState(false);
-  const [isInfoModalOpen, setIsInfoModalOpen] = useState(false);
+  const { name } = useSelector((state) => state.userData.data);
   const handleLogout = () => {
     dispatch(
       logout({
@@ -30,23 +17,6 @@ const Header = () => {
       })
     );
   };
-  const togglePymtModeModal = () => {
-    setIsPymtModeModalOpen((preVal) => !preVal);
-  };
-  const toggleInfoModal = () => {
-    setIsInfoModalOpen((preVal) => !preVal);
-  };
-
-  useEffect(() => {
-    if (updatedPaymentModeData && success) {
-      const userData = {
-        ...getSessionStorage("userData"),
-        ...updatedPaymentModeData,
-      };
-      setSessionStorage("userData", userData);
-      dispatch(updateUserData(userData));
-    }
-  }, [updatedPaymentModeData, success, dispatch]);
 
   return (
     <>

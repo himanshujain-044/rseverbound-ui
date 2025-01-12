@@ -69,40 +69,6 @@ export const getAllBuyers = createAsyncThunk(
   }
 );
 
-export const getAllVehicles = createAsyncThunk(
-  "all-vehicles",
-  async (apiData, { rejectWithValue }) => {
-    try {
-      const { method, endpoint, payload } = apiData;
-      const response = await apiReq({
-        method,
-        endpoint,
-        payload,
-      });
-      return response;
-    } catch (err) {
-      return rejectWithValue(err?.response || err);
-    }
-  }
-);
-
-export const getAllProducts = createAsyncThunk(
-  "all-products",
-  async (apiData, { rejectWithValue }) => {
-    try {
-      const { method, endpoint, payload } = apiData;
-      const response = await apiReq({
-        method,
-        endpoint,
-        payload,
-      });
-      return response;
-    } catch (err) {
-      return rejectWithValue(err?.response || err);
-    }
-  }
-);
-
 export const saveInvoiceDetails = createAsyncThunk(
   "save-invoice-details",
   async (apiData, { rejectWithValue }) => {
@@ -165,19 +131,9 @@ const apiReducer = createSlice({
     success: false,
     invoiceDetails: "",
     allBuyers: [],
-    allVehicles: [],
-    allProducts: [],
     isInvoiceSave: "",
     allSellsHistory: "",
     sellData: "",
-
-    // brokerageData: "",
-    // paidBrokerageData: "",
-    // updatedPaymentModeData: "",
-    // isUserLogout: false,
-    // isRequestedPayoutModalOpen: false,
-    // isRequestedOTP: false,
-    // otpVerified: false,
   },
   reducers: {
     clearAPIState: (state, action) => {
@@ -186,30 +142,15 @@ const apiReducer = createSlice({
       state.data = "";
       state.invoiceDetails = "";
       state.allBuyers = "";
-      state.allVehicles = "";
-      state.allProducts = "";
       state.isInvoiceSave = "";
       state.allSellsHistory = "";
       state.sellData = "";
-
-      // state.brokerageData = "";
-      // state.paidBrokerageData = "";
-      // state.updatedPaymentModeData = "";
-      // state.isUserLogout = false;
-      // state.statusCode = "";
-      // state.success = false;
-      // state.isRequestedPayoutModalOpen = false;
-      // state.isRequestedOTP = false;
-      // state.otpVerified = false;
     },
     clearSomeStates: (state, action) => {
       action.payload.stateKeys.map((key) => {
         state[key] = "";
       });
     },
-    // closeRequestedPayoutModal: (state, action) => {
-    //   state.isRequestedPayoutModalOpen = false;
-    // },
   },
   extraReducers: (builder) => {
     builder
@@ -287,42 +228,6 @@ const apiReducer = createSlice({
         state.reqCount -= 1;
         state.success = false;
       })
-      .addCase(getAllVehicles.pending, (state, action) => {
-        state.reqCount += 1;
-        state.message = "Fetching all the vichels ...";
-      })
-      .addCase(getAllVehicles.fulfilled, (state, action) => {
-        const { data } = action.payload?.data;
-        state.allVehicles = data;
-        state.reqCount -= 1;
-        state.success = true;
-      })
-      .addCase(getAllVehicles.rejected, (state, action) => {
-        const { code, message } = action.payload?.data;
-        state.allVehicles = "";
-        state.statusCode = code;
-        state.message = message;
-        state.reqCount -= 1;
-        state.success = false;
-      })
-      .addCase(getAllProducts.pending, (state, action) => {
-        state.reqCount += 1;
-        state.message = "Fetching all the vichels ...";
-      })
-      .addCase(getAllProducts.fulfilled, (state, action) => {
-        const { data } = action.payload?.data;
-        state.allProducts = data;
-        state.reqCount -= 1;
-        state.success = true;
-      })
-      .addCase(getAllProducts.rejected, (state, action) => {
-        const { code, message } = action.payload?.data;
-        state.allProducts = "";
-        state.statusCode = code;
-        state.message = message;
-        state.reqCount -= 1;
-        state.success = false;
-      })
       .addCase(saveInvoiceDetails.pending, (state, action) => {
         state.reqCount += 1;
         state.message = "Fetching all the vichels ...";
@@ -331,6 +236,7 @@ const apiReducer = createSlice({
       .addCase(saveInvoiceDetails.fulfilled, (state, action) => {
         state.isInvoiceSave = true;
         state.invoiceDetails = "";
+        state.allBuyers = "";
         state.reqCount -= 1;
         state.success = true;
       })

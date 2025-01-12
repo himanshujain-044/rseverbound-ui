@@ -1,15 +1,12 @@
 import axios from "axios";
-import {
-  clearSessionStorage,
-  getSessionStorage,
-} from "../utils/helperFunction";
+import { clearLocalStorage, getLocalStorage } from "../utils/helperFunction";
 axios.interceptors.response.use(
   (response) => {
     return response;
   },
   (error) => {
     if (error.response.status === 401) {
-      clearSessionStorage();
+      clearLocalStorage();
       window.location.replace("/");
     }
     return Promise.reject(error);
@@ -22,7 +19,7 @@ export const apiReq = async ({
 }) => {
   let token = "";
   if (!endpoint.includes("/login")) {
-    token = getSessionStorage("userData")?.token;
+    token = getLocalStorage("userData")?.token;
   }
   if (method === "get") {
     return axios[method](endpoint, {

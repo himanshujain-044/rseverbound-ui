@@ -4,7 +4,7 @@ import Footer from "./layouts/footer/Footer";
 import PublicRoutes from "./routes/publicRoutes";
 import PrivateRoutes from "./routes/privateRoutes";
 import SnackbarsComp from "./components/common/SnackbarsComp/SnackbarsComp";
-import { clearSessionStorage, setSessionStorage } from "./utils/helperFunction";
+import { clearLocalStorage, setLocalStorage } from "./utils/helperFunction";
 import { useEffect } from "react";
 import { updateUserData } from "./store/userData";
 import { clearAPIState } from "./store/api";
@@ -19,13 +19,13 @@ function App() {
 
   useEffect(() => {
     if (data?.token) {
-      setSessionStorage("userData", data);
+      setLocalStorage("userData", data);
       dispatch(updateUserData(data));
     }
   }, [data, dispatch]);
   useEffect(() => {
     if ((isUserLogout && success) || statusCode === 401) {
-      clearSessionStorage();
+      clearLocalStorage();
       dispatch(updateUserData(""));
       dispatch(clearAPIState());
     }

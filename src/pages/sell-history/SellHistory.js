@@ -26,15 +26,12 @@ const SellHistory = () => {
   }, []);
 
   useEffect(() => {
-    console.log("sell data", sellData);
-    console.log("29 da", isInvoiceSave, allSellsHistory);
     if (sellData?.invoiceNo) {
       navigate(ROUTES_LIST.pdfViewer, { state: sellData });
     }
   }, [sellData]);
 
   const handleGetSelectedRows = (rowIds) => {
-    console.log("row", rowIds);
     dispatch(
       getSellData({
         method: "get",
@@ -48,13 +45,7 @@ const SellHistory = () => {
       <DataTable
         cols={sellHistoryCols}
         data={allSellsHistory?.length ? allSellsHistory : []}
-        // checkboxSelection={true}
         getSelectedRows={handleGetSelectedRows}
-        // rowSelectionModel={selectedRows}
-        // tableProps={{
-        //   isRowSelectable: (params) =>
-        //     params.row.status !== AMOUNT_PAID.PENDING,
-        // }}
       />
     </div>
   );

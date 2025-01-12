@@ -2,31 +2,8 @@ import WorkHistoryOutlinedIcon from "@mui/icons-material/WorkHistoryOutlined";
 import DashboardCustomizeOutlinedIcon from "@mui/icons-material/DashboardCustomizeOutlined";
 import AssessmentOutlinedIcon from "@mui/icons-material/AssessmentOutlined";
 import { ROUTES_LIST } from "./routes";
-export const PAYMENT_MODE = {
-  GPAY: "gpay",
-  PHONEPE: "phonepe",
-  PAYTM: "paytm",
-};
-
-export const AMOUNT_PAID = {
-  PAID: "Paid",
-  NOT_PAID: "Not Paid",
-  PENDING: "Pending",
-};
-
-export const OTP_TYPE = {
-  FORGOT_PASSWORD: "forgotPassword",
-};
-
-export const RESEND_OTP_TIMER = 120;
-
-export const FORM_REDUCER = {
-  SET_FORM_DETAILS: "set_form_details",
-  UPDATE_FORM_VALUES: "update_form_values",
-};
 
 export const DATED_OPTIONS = ["Date", "Telephonic", "On Delivery"];
-
 export const MONTH_NAMES = [
   "Jan",
   "Feb",
@@ -43,41 +20,39 @@ export const MONTH_NAMES = [
 ];
 
 export const NUMBERS_DIGITS_UNITS = {
-  UNITS: [
-    "",
-    "one",
-    "two",
-    "three",
-    "four",
-    "five",
-    "six",
-    "seven",
-    "eight",
-    "nine",
-  ],
   TEENS: [
-    "ten",
-    "eleven",
-    "twelve",
-    "thirteen",
-    "fourteen",
-    "fifteen",
-    "sixteen",
-    "seventeen",
-    "eighteen",
-    "nineteen",
+    "",
+    "One ",
+    "Two ",
+    "Three ",
+    "Four ",
+    "Five ",
+    "Six ",
+    "Seven ",
+    "Eight ",
+    "Nine ",
+    "Ten ",
+    "Eleven ",
+    "Twelve ",
+    "Thirteen ",
+    "Fourteen ",
+    "Fifteen ",
+    "Sixteen ",
+    "Seventeen ",
+    "Eighteen ",
+    "Nineteen ",
   ],
   TENS: [
     "",
     "",
-    "twenty",
-    "thirty",
-    "forty",
-    "fifty",
-    "sixty",
-    "seventy",
-    "eighty",
-    "ninety",
+    "Twenty",
+    "Thirty",
+    "Forty",
+    "Fifty",
+    "Sixty",
+    "Seventy",
+    "Eighty",
+    "Ninety",
   ],
 };
 

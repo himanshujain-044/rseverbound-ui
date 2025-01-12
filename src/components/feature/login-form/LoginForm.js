@@ -1,7 +1,7 @@
 import { Button, FormControl, OutlinedInput } from "@mui/material";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import SnackbarsComp from "../../common/SnackbarsComp/SnackbarsComp";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { userLogin } from "../../../store/api";
 import { API_ENDPOINTS } from "../../../constants/apiEndPoints";
 import { encryptData } from "../../../utils/helperFunction";
@@ -9,11 +9,6 @@ import logo from "../../../assets/logo/logo.png";
 
 const LoginForm = () => {
   const dispatch = useDispatch();
-  const [isSnackBarDisplay, setIsSnackBarDisplay] = useState({
-    msg: "",
-    severity: "",
-  });
-  const { isRequestedOTP } = useSelector((state) => state.api);
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
 
@@ -31,13 +26,6 @@ const LoginForm = () => {
       })
     );
   };
-
-  // useEffect(() => {
-  //   if (isRequestedOTP) {
-  //     setIsForgotPwdModalOpen(false);
-  //     setIsNewPasswordModalOpen(true);
-  //   }
-  // }, [isRequestedOTP]);
 
   return (
     <div className="w-2/6 max-h-full pr-12 laptop:pr-6 tablet:w-full tablet:px-12 mobile:w-full mobile:px-3 mobile:mt-6">
@@ -95,13 +83,6 @@ const LoginForm = () => {
           </Button>
         </div>
       </div>
-
-      {isSnackBarDisplay.msg && (
-        <SnackbarsComp
-          message={isSnackBarDisplay.msg}
-          severity={isSnackBarDisplay.severity}
-        />
-      )}
     </div>
   );
 };

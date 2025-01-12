@@ -1,9 +1,9 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { getSessionStorage } from "../utils/helperFunction";
+import { getLocalStorage } from "../utils/helperFunction";
 
 const userData = createSlice({
   name: "userData",
-  initialState: { data: getSessionStorage("userData") },
+  initialState: { data: getLocalStorage("userData") },
   reducers: {
     updateUserData: (state, action) => {
       state.data = action.payload;

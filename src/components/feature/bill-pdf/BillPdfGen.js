@@ -10,37 +10,7 @@ const styles = StyleSheet.create({
     borderBottom: "none",
   },
 });
-const data = {
-  buyerDetails: {
-    name: "H.J Chemical Pvt Ltd",
-    gst: "9AABCJ6679L1ZW",
-    state: "Uttar Pradesh",
-    address: "Janaura, Feijabad, U.P",
-  },
-  dated: "Telephonic",
-  date: "8-Jan-25",
-  vehicleNo: "UP95T359",
-  destination: "sagar",
-  name: "H.J Chemical Pvt Ltd",
-  state: "Uttar Pradesh",
-  invoiceNo: "1",
-  productsSellDetails: {
-    productsSell: [
-      {
-        sNo: 1,
-        description: 0,
-        hsnCode: "12",
-        quantity: "22",
-        ratePMT: "2",
-        amount: 44,
-      },
-    ],
-    igst: 5,
-    gstAmount: 2.2,
-    otherExpenses: 0,
-    grandTotal: 0,
-  },
-};
+
 const BillPdfGen = ({ data = {} }) => {
   return (
     <Document title={`${data?.buyerDetails?.name}_${data?.date}`}>
@@ -98,11 +68,7 @@ const BillPdfGen = ({ data = {} }) => {
             <View style={{ borderBottom: "1px solid black" }}></View>
 
             <Text style={{ paddingLeft: "2px", paddingTop: "2px" }}>
-              Buyer Order number
-            </Text>
-            <View style={{ borderBottom: "1px solid black" }}></View>
-            <Text style={{ paddingLeft: "2px", paddingTop: "2px" }}>
-              Dispatched through
+              {data?.buyerOrderNoText} - {data?.buyerOrderNoValue}
             </Text>
           </View>
 
