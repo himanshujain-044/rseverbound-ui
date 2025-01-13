@@ -120,6 +120,23 @@ export const getSellData = createAsyncThunk(
   }
 );
 
+export const getSellsReportsData = createAsyncThunk(
+  "sells-report-data",
+  async (apiData, { rejectWithValue }) => {
+    try {
+      const { method, endpoint, payload } = apiData;
+      const response = await apiReq({
+        method,
+        endpoint,
+        payload,
+      });
+      return response;
+    } catch (err) {
+      return rejectWithValue(err?.response || err);
+    }
+  }
+);
+
 const apiReducer = createSlice({
   name: "data",
   initialState: {
@@ -134,6 +151,7 @@ const apiReducer = createSlice({
     isInvoiceSave: "",
     allSellsHistory: "",
     sellData: "",
+    sellsReportsData: "",
   },
   reducers: {
     clearAPIState: (state, action) => {
@@ -145,8 +163,10 @@ const apiReducer = createSlice({
       state.isInvoiceSave = "";
       state.allSellsHistory = "";
       state.sellData = "";
+      state.sellsReportsData = "";
     },
     clearSomeStates: (state, action) => {
+      console.log("169", action.payload);
       action.payload.stateKeys.map((key) => {
         state[key] = "";
       });
@@ -255,7 +275,6 @@ const apiReducer = createSlice({
       })
       .addCase(getSellsHistory.fulfilled, (state, action) => {
         const { data } = action.payload?.data;
-        console.log("sell history is calling", data);
         state.allSellsHistory = data;
         state.reqCount -= 1;
         state.success = true;
@@ -274,7 +293,6 @@ const apiReducer = createSlice({
       })
       .addCase(getSellData.fulfilled, (state, action) => {
         const { data } = action.payload?.data;
-        console.log("api", action.payload?.data, data);
         state.sellData = data;
         state.reqCount -= 1;
         state.success = true;
@@ -282,6 +300,24 @@ const apiReducer = createSlice({
       .addCase(getSellData.rejected, (state, action) => {
         const { code, message } = action.payload?.data;
         state.sellData = "";
+        state.statusCode = code;
+        state.message = message;
+        state.reqCount -= 1;
+        state.success = false;
+      })
+      .addCase(getSellsReportsData.pending, (state, action) => {
+        state.reqCount += 1;
+        state.message = "Fetching sells report data ...";
+      })
+      .addCase(getSellsReportsData.fulfilled, (state, action) => {
+        const { data } = action.payload?.data;
+        state.sellsReportsData = data;
+        state.reqCount -= 1;
+        state.success = true;
+      })
+      .addCase(getSellsReportsData.rejected, (state, action) => {
+        const { code, message } = action.payload?.data;
+        state.sellsReportsData = "";
         state.statusCode = code;
         state.message = message;
         state.reqCount -= 1;

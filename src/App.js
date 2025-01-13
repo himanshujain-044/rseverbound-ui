@@ -31,14 +31,6 @@ function App() {
     }
   }, [isUserLogout, success, statusCode, dispatch]);
 
-  if (reqCount) {
-    return (
-      <>
-        <FullPageLoadingSpinner msg={message} /> <Footer />
-      </>
-    );
-  }
-
   return (
     <div className="background-img h-[calc(100vh_-1px)] mobile:h-[calc(100vh_-_20px)]">
       {userData ? <PrivateRoutes /> : <PublicRoutes />}
@@ -49,6 +41,7 @@ function App() {
           severity={success ? "success" : "error"}
         />
       )}
+      {reqCount > 0 && <FullPageLoadingSpinner msg={message} />}
     </div>
   );
 }

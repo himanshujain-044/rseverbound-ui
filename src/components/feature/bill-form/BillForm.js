@@ -366,7 +366,7 @@ const BillForm = ({ className = "" }) => {
           xs={12}
           className="mt-2 mb-1 flex flex-col justify-center items-center"
         >
-          <span>SUBJECT TO TIKAMGARH JURISDICTION</span>
+          <span>SUBJECT TO SAGAR JURISDICTION</span>
           <span>This is a computer generated invoice</span>
         </Grid>
       </Grid>

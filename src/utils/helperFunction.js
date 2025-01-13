@@ -9,8 +9,7 @@ const formatDate = (date) => {
   const day = date.getDate();
   const monthIndex = date.getMonth();
   const year = date.getFullYear();
-
-  return `${day}-${MONTH_NAMES[monthIndex]}-${year.toString().slice(-2)}`;
+  return `${day}-${MONTH_NAMES[monthIndex]}-${year}`;
 };
 const calculateGstAmount = (percent, amount) => {
   return (amount * percent) / 100;
@@ -120,6 +119,13 @@ const getStateNameByGstCode = (gstCode) => {
     return "State not found for the given GST code";
   }
 };
+
+const convertDDOptions = (list = []) => {
+  const ddOptionsList = list.map((item = "") => {
+    return { text: item, value: String(item)?.toLowerCase() };
+  });
+  return ddOptionsList;
+};
 module.exports = {
   formatDate,
   calculateGstAmount,
@@ -131,4 +137,5 @@ module.exports = {
   getLocalStorage,
   clearLocalStorage,
   getStateNameByGstCode,
+  convertDDOptions,
 };

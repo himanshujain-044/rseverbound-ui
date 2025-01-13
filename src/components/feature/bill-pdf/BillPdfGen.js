@@ -412,7 +412,7 @@ const BillPdfGen = ({ data = {} }) => {
             alignItems: "center",
           }}
         >
-          <Text>SUBJECT TO TIKAMGARH JURISDICTION</Text>
+          <Text>SUBJECT TO SAGAR JURISDICTION</Text>
           <Text>This is a computer generated invoice</Text>
         </View>
       </Page>

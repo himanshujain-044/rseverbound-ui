@@ -15,4 +15,5 @@ export const API_ENDPOINTS = {
   saveInvoiceDetails: `${sellsBaseUrl}/save-invoice-details`,
   getSellsHistoryData: `${sellsBaseUrl}/sells-history`,
   getSellData: `${sellsBaseUrl}/sell-data`,
+  getSellsReportsData: `${sellsBaseUrl}/sells-reports`,
 };

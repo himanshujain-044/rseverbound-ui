@@ -2,6 +2,7 @@ import WorkHistoryOutlinedIcon from "@mui/icons-material/WorkHistoryOutlined";
 import DashboardCustomizeOutlinedIcon from "@mui/icons-material/DashboardCustomizeOutlined";
 import AssessmentOutlinedIcon from "@mui/icons-material/AssessmentOutlined";
 import { ROUTES_LIST } from "./routes";
+export const CURRENT_YEAR = new Date().getFullYear();
 
 export const DATED_OPTIONS = ["Date", "Telephonic", "On Delivery"];
 export const MONTH_NAMES = [
@@ -18,6 +19,23 @@ export const MONTH_NAMES = [
   "Nov",
   "Dec",
 ];
+
+export const MONTH_FULL_NAMES = {
+  jan: "January",
+  feb: "February",
+  mar: "March",
+  apr: "April",
+  may: "May",
+  jun: "June",
+  jul: "July",
+  aug: "August",
+  sep: "September",
+  oct: "October",
+  nov: "November",
+  dec: "December",
+};
+
+export const YEARS = [CURRENT_YEAR - 2, CURRENT_YEAR - 1, CURRENT_YEAR];
 
 export const NUMBERS_DIGITS_UNITS = {
   TEENS: [

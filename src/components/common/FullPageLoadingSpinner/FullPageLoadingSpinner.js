@@ -4,7 +4,7 @@ import Box from "@mui/material/Box";
 
 const FullPageLoadingSpinner = ({ msg = "" }) => {
   return (
-    <Box className="h-[calc(100vh_-_64px)] flex flex-col items-center justify-center">
+    <Box className="h-full w-full top-0 flex flex-col items-center justify-center absolute bg-[rgba(0,0,0,0.3)] z-[999]">
       <CircularProgress variant="indeterminate" className="text-primary" />
       <strong className="text-primary">{msg}</strong>
     </Box>
