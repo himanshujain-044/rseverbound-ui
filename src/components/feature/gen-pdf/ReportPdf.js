@@ -200,7 +200,7 @@ const ReportPdf = ({ data = [], title }) => {
                   paddingTop: "12px",
                 }}
               >
-                {reportItem?.["cgst"] ? reportItem?.gstAmount / 2 : ""}
+                {reportItem?.["sgst"] ? reportItem?.gstAmount / 2 : ""}
               </Text>
               <Text
                 style={{
