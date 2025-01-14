@@ -19,7 +19,7 @@ import {
   getStateNameByGstCode,
 } from "../../../utils/helperFunction";
 import ItemsSell from "./ItemsSell";
-import BillPdfGen from "../bill-pdf/BillPdfGen";
+import BillPdf from "../gen-pdf/BillPdf";
 import { ROUTES_LIST } from "../../../constants/routes";
 import DatePickerComp from "../../common/DatePickerComp/DatePickerComp";
 let payload = {};
@@ -134,7 +134,7 @@ const BillForm = ({ className = "" }) => {
 
   const downloadPdf = async () => {
     const fileName = `${payload.buyerDetails.name}_${payload.date}.pdf`;
-    const blob = await pdf(<BillPdfGen data={payload} />).toBlob();
+    const blob = await pdf(<BillPdf data={payload} />).toBlob();
     saveAs(blob, fileName);
   };
 

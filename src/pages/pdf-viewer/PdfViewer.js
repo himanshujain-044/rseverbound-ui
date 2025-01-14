@@ -1,7 +1,7 @@
 import { useEffect } from "react";
 import { saveAs } from "file-saver";
 import { pdf, PDFViewer } from "@react-pdf/renderer";
-import BillPdfGen from "../../components/feature/bill-pdf/BillPdfGen";
+import BillPdf from "../../components/feature/gen-pdf/BillPdf";
 import { useLocation, useNavigate } from "react-router-dom";
 import { Button } from "@mui/material";
 import { ROUTES_LIST } from "../../constants/routes";
@@ -27,14 +27,14 @@ const PdfViewer = () => {
   };
   const downloadPdf = async () => {
     const fileName = `${data.buyerDetails.name}_${data.date}.pdf`;
-    const blob = await pdf(<BillPdfGen data={data} />).toBlob();
+    const blob = await pdf(<BillPdf data={data} />).toBlob();
     saveAs(blob, fileName);
   };
   return (
     <div className="flex flex-col gap-4 items-center justify-center h-full">
       <div className="mobile:hidden">
         <PDFViewer height={600} width={850}>
-          <BillPdfGen data={data} />
+          <BillPdf data={data} />
         </PDFViewer>
         <Button
           variant="contained"

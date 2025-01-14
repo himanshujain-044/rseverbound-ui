@@ -1,11 +1,14 @@
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
+import { saveAs } from "file-saver";
+import { pdf } from "@react-pdf/renderer";
 import Dropdown from "../../components/common/Dropdown/Dropdown";
 import { MONTH_FULL_NAMES, MONTH_NAMES, YEARS } from "../../constants/common";
 import { convertDDOptions } from "../../utils/helperFunction";
 import { getSellsReportsData } from "../../store/api";
 import { API_ENDPOINTS } from "../../constants/apiEndPoints";
 import { Button } from "@mui/material";
+import ReportPdf from "../../components/feature/gen-pdf/ReportPdf";
 
 const monthsDDOptions = convertDDOptions(MONTH_NAMES);
 const yearsDDOptions = convertDDOptions(YEARS);
@@ -16,6 +19,7 @@ const Reports = () => {
     month: monthsDDOptions[0].value,
     year: yearsDDOptions[2].value,
   });
+  const reportTitle = `${MONTH_FULL_NAMES[filter.month]} ${filter.year}`;
 
   useEffect(() => {
     if (!sellsReportsData) {
@@ -43,7 +47,13 @@ const Reports = () => {
     getReports(value);
     setFilter(value);
   };
-  const handleExportReport = () => {};
+  const handleExportReport = async () => {
+    const fileName = `${reportTitle}.pdf`;
+    const blob = await pdf(
+      <ReportPdf data={sellsReportsData} title={reportTitle} />
+    ).toBlob();
+    saveAs(blob, fileName);
+  };
   return (
     <div className="flex flex-col justify-center  gap-4 m-4 min-w-[50rem] overflow-auto bg-[#fff]  p-4">
       <div className="flex gap-4 items-center">

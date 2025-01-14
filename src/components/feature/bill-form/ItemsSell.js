@@ -14,7 +14,11 @@ import {
 const ItemsSell = ({ getUpdatedItemsSellValue = () => {} }) => {
   const { invoiceDetails } = useSelector((state) => state.api);
   const options = [
-    { value: "igst", label: "IGST % -", inputValue: invoiceDetails?.igst },
+    {
+      value: "igst",
+      label: "IGST % -",
+      inputValue: Number(invoiceDetails?.igst),
+    },
     {
       value: "sgst",
       label: (
@@ -42,8 +46,8 @@ const ItemsSell = ({ getUpdatedItemsSellValue = () => {} }) => {
     otherExpensesText: "",
     otherExpenses: "",
     gstType: {
-      type: options[0].value,
-      value: options[0].inputValue,
+      type: "",
+      value: "",
       gstAmount: 0,
     },
     grandTotal: 0,
@@ -86,6 +90,11 @@ const ItemsSell = ({ getUpdatedItemsSellValue = () => {} }) => {
       invoiceDetails?.hsnCodes?.[invoiceDetails?.hsnCodes?.length - 1];
     values.rowFields[0]["description"] =
       invoiceDetails?.products?.[invoiceDetails?.products?.length - 1];
+    values.gstType = {
+      type: options[0].value,
+      value: Number(invoiceDetails?.igst),
+      gstAmount: 0,
+    };
     setItemsSellForm(values);
   }, [invoiceDetails]);
   useEffect(() => {
