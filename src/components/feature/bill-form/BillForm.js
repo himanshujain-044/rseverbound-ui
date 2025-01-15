@@ -5,7 +5,7 @@ import Grid from "@mui/material/Grid";
 import cx from "classnames";
 import { Button } from "@mui/material";
 import { saveAs } from "file-saver";
-import { pdf, PDFViewer } from "@react-pdf/renderer";
+import { pdf } from "@react-pdf/renderer";
 import SearchableDD from "../../common/SearchableDD/SearchableDD";
 import {
   getAllBuyers,

@@ -18,10 +18,8 @@ const NoRowsOverlay = () => {
 const DataTable = ({
   data = [],
   cols = [],
-  checkboxSelection = false,
-  getSelectedRows = () => {},
-  rowSelectionModel = [],
   tableProps = {},
+  onCellClick = () => {},
 }) => {
   return (
     <DataGrid
@@ -35,9 +33,7 @@ const DataTable = ({
         },
       }}
       pageSizeOptions={[5, 10]}
-      checkboxSelection={checkboxSelection}
-      onRowSelectionModelChange={getSelectedRows}
-      rowSelectionModel={rowSelectionModel}
+      onCellClick={onCellClick}
       className="data-table min-h-[8rem] mobile:text-[12px] mx-[4rem] mobile:mx-1 bg-[#fff]"
       {...tableProps}
     />

@@ -10,12 +10,10 @@ import { API_ENDPOINTS } from "../../constants/apiEndPoints";
 const SellHistory = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const { allSellsHistory, isInvoiceSave, sellData } = useSelector(
-    (state) => state.api
-  );
-
+  const { allSellsHistory, isInvoiceSave, sellData, isInvoiceUpdated } =
+    useSelector((state) => state.api);
   useEffect(() => {
-    if (!allSellsHistory || isInvoiceSave) {
+    if (!allSellsHistory || isInvoiceSave || isInvoiceUpdated) {
       dispatch(
         getSellsHistory({
           method: "get",
@@ -23,7 +21,7 @@ const SellHistory = () => {
         })
       );
     }
-  }, []);
+  }, [isInvoiceUpdated, isInvoiceSave]);
 
   useEffect(() => {
     if (sellData?.invoiceNo) {
@@ -31,21 +29,30 @@ const SellHistory = () => {
     }
   }, [sellData]);
 
-  const handleGetSelectedRows = (rowIds) => {
-    dispatch(
-      getSellData({
-        method: "get",
-        endpoint: API_ENDPOINTS.getSellData,
-        payload: { invoiceNo: rowIds[0] },
-      })
-    );
+  const handleOnCellClick = (cellParams) => {
+    if (cellParams.field !== "_id") {
+      dispatch(
+        getSellData({
+          method: "get",
+          endpoint: API_ENDPOINTS.getSellData,
+          payload: { invoiceNo: cellParams?.id },
+        })
+      );
+    }
+  };
+  const getRowClassName = (params) => {
+    if (params.row.isInvoiceCancel) {
+      return "pointer-events-none bg-[#f5f5f5] text-[#b0b0b0]"; // Apply a CSS class to disable this row
+    }
+    return "";
   };
   return (
     <div className="h-full items-center justify-center">
       <DataTable
         cols={sellHistoryCols}
         data={allSellsHistory?.length ? allSellsHistory : []}
-        getSelectedRows={handleGetSelectedRows}
+        onCellClick={handleOnCellClick}
+        tableProps={{ getRowClassName: getRowClassName }}
       />
     </div>
   );
