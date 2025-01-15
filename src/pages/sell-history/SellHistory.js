@@ -42,7 +42,7 @@ const SellHistory = () => {
   };
   const getRowClassName = (params) => {
     if (params.row.isInvoiceCancel) {
-      return "pointer-events-none bg-[#f5f5f5] text-[#b0b0b0]"; // Apply a CSS class to disable this row
+      return "line-through"; // Apply a CSS class to disable this row
     }
     return "";
   };

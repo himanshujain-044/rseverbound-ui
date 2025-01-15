@@ -1,6 +1,14 @@
 import React from "react";
-import { Page, Text, View, Document, StyleSheet } from "@react-pdf/renderer";
+import {
+  Page,
+  Text,
+  View,
+  Document,
+  StyleSheet,
+  Image,
+} from "@react-pdf/renderer";
 import { numberToWords } from "../../../utils/helperFunction";
+import cancelled from "../../../assets/images/cancelled.png";
 
 const styles = StyleSheet.create({
   section: {
@@ -415,6 +423,19 @@ const BillPdfGen = ({ data = {} }) => {
           <Text>SUBJECT TO SAGAR JURISDICTION</Text>
           <Text>This is a computer generated invoice</Text>
         </View>
+
+        {data?.isInvoiceCancel && (
+          <Image
+            style={{
+              position: "absolute",
+              display: "block",
+              height: "100%",
+              width: "100%",
+              zIndex: "-1",
+            }}
+            src={cancelled}
+          />
+        )}
       </Page>
     </Document>
   );

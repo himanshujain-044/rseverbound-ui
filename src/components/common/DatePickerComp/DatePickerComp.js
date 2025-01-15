@@ -3,6 +3,8 @@ import { DemoItem } from "@mui/x-date-pickers/internals/demo";
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
+import EventOutlinedIcon from "@mui/icons-material/EventOutlined";
+
 const DatePickerComp = ({ value = new Date(), onDateChange = () => {} }) => {
   return (
     <LocalizationProvider dateAdapter={AdapterDayjs}>
@@ -30,6 +32,7 @@ const DatePickerComp = ({ value = new Date(), onDateChange = () => {} }) => {
           }}
         />
       </DemoItem>
+      <EventOutlinedIcon className="fill-primary hidden mobile:flex" />
     </LocalizationProvider>
   );
 };

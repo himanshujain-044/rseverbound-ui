@@ -1,4 +1,4 @@
-import React, { useEffect, useReducer, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import Grid from "@mui/material/Grid";
@@ -212,7 +212,7 @@ const BillForm = ({ className = "" }) => {
         <Grid xs={3} className="form-border no-top-border">
           <div className="pb-[0.4rem] bottom-border">
             <p className="pl-1">Date</p>
-            <div className="mx-1">
+            <div className="mx-1 flex">
               <DatePickerComp
                 value={formValues.date}
                 onDateChange={handleOnDateChange}
@@ -251,14 +251,6 @@ const BillForm = ({ className = "" }) => {
               ddOptions={buyersNameDDOptions}
             />
           </div>
-          {/* <input placeholder="Enter " className="outline-none block" /> */}
-
-          {/* <SearchableDD
-            onInputChangeDDSearch={(e, value) => {
-              handleChange(e, value, "address");
-            }}
-            ddValue={formValues?.buyerDetails.address}
-          /> */}
           <span className="min-w-[7.3rem]">Address -</span>
           <input
             type="text"
@@ -283,12 +275,6 @@ const BillForm = ({ className = "" }) => {
           </div>
           <div className="flex">
             <strong className="w-[3.4rem]">State -</strong>
-            {/* <SearchableDD
-              onInputChangeDDSearch={(e, value) => {
-                handleChange(e, value, "state");
-              }}
-              ddValue={formValues?.buyerDetails.state}
-            /> */}
             <span>{formValues?.buyerDetails.state}</span>
           </div>
         </Grid>

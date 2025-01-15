@@ -302,6 +302,7 @@ const ItemsSell = ({ getUpdatedItemsSellValue = () => {} }) => {
                 onChange={(e) => {
                   handleChange(e, e?.target?.value, "radioGST", null);
                 }}
+                className="accent-primary"
               />
               <label htmlFor={option.value}>{option.label}</label>
               <input

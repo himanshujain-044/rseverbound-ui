@@ -3,9 +3,9 @@ import CancelOutlinedIcon from "@mui/icons-material/CancelOutlined";
 import { updateInvoice } from "../../store/api";
 import { API_ENDPOINTS } from "../../constants/apiEndPoints";
 const UpdateInvoice = (props) => {
-  const { value } = props;
+  const { value, row } = props;
+  console.log("7", props);
   const dispatch = useDispatch();
-  const { isInvoiceUpdated } = useSelector((state) => state.api);
   const onCancelInvoice = () => {
     dispatch(
       updateInvoice({
@@ -17,9 +17,11 @@ const UpdateInvoice = (props) => {
   };
   return (
     <div className="w-full z-[998]">
-      <strong onClick={onCancelInvoice}>
-        <CancelOutlinedIcon className="text-[22px] fill-error" />
-      </strong>
+      {!row?.isInvoiceCancel && (
+        <strong onClick={onCancelInvoice}>
+          <CancelOutlinedIcon className="text-[22px] fill-error" />
+        </strong>
+      )}
     </div>
   );
 };

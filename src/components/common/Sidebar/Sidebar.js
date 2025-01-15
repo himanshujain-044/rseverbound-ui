@@ -2,8 +2,8 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import Box from "@mui/material/Box";
 import Drawer from "@mui/material/Drawer";
-import Button from "@mui/material/Button";
 import List from "@mui/material/List";
+import logo from "../../../assets/logo/logo.png";
 import ListItem from "@mui/material/ListItem";
 import MenuOutlinedIcon from "@mui/icons-material/MenuOutlined";
 import ListItemButton from "@mui/material/ListItemButton";
@@ -34,7 +34,9 @@ const Sidebar = () => {
   };
   const DrawerList = (
     <Box sx={{ width: 250 }} role="presentation" onClick={toggleDrawer(false)}>
-      <div className="h-[64px] mobile:h-[48px] bg-inputLabel">Logo</div>
+      <div className="h-[64px] mobile:h-[48px border-b brder-solid border-[#ccc] flex items-center justify-center">
+        <img src={logo} className="h-full" />
+      </div>
       <List>
         {menuList.map((menu, index) => (
           <ListItem
