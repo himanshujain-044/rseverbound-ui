@@ -3,7 +3,7 @@ import BillForm from "../../components/feature/bill-form/BillForm";
 
 const Dashboard = () => {
   useEffect(() => {
-    document.title = "Madhuvan Minerals - Dashbaord";
+    document.title = "Madhuvan Minerals - Dashbaord"; 
   }, []);
 
   return (

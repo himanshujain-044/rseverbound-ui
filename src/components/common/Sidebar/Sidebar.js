@@ -1,5 +1,5 @@
-import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useEffect, useState } from "react";
+import { useLocation, useNavigate } from "react-router-dom";
 import Box from "@mui/material/Box";
 import Drawer from "@mui/material/Drawer";
 import List from "@mui/material/List";
@@ -14,11 +14,15 @@ import cx from "classnames";
 
 const Sidebar = () => {
   const navigate = useNavigate();
+  const location = useLocation();
   const [open, setOpen] = useState(false);
   const [menuList, setMenuList] = useState(SIDEBAR_MENU_LIST);
   const toggleDrawer = (newOpen) => () => {
     setOpen(newOpen);
   };
+  useEffect(() => {
+    handleMenuClick({ route: location.pathname });
+  }, []);
   const handleMenuClick = (menu) => {
     const updatedList = menuList.map((menuItem) => {
       if (menuItem.route === menu.route) {
