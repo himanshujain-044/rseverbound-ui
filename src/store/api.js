@@ -344,11 +344,13 @@ const apiReducer = createSlice({
       .addCase(updateInvoice.pending, (state, action) => {
         state.reqCount += 1;
         state.message = "Updating the invoice ...";
+        state.isInvoiceUpdated = "";
       })
       .addCase(updateInvoice.fulfilled, (state, action) => {
         state.isInvoiceUpdated = true;
         state.reqCount -= 1;
         state.success = true;
+        state.sellsReportsData = "";
       })
       .addCase(updateInvoice.rejected, (state, action) => {
         const { code, message } = action.payload?.data;
