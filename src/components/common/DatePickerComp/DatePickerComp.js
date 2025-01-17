@@ -4,10 +4,11 @@ import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import EventOutlinedIcon from "@mui/icons-material/EventOutlined";
+import zIndex from "@mui/material/styles/zIndex";
 
 const DatePickerComp = ({ value = new Date(), onDateChange = () => {} }) => {
   return (
-    <LocalizationProvider dateAdapter={AdapterDayjs}>
+    <LocalizationProvider dateAdapter={AdapterDayjs} sx={{}}>
       <DemoItem>
         <DatePicker
           onChange={onDateChange}
@@ -16,6 +17,7 @@ const DatePickerComp = ({ value = new Date(), onDateChange = () => {} }) => {
           sx={{
             padding: 0,
             margin: 0,
+            zIndex: "10",
             "& input": {
               padding: 0,
               margin: 0,
@@ -32,7 +34,7 @@ const DatePickerComp = ({ value = new Date(), onDateChange = () => {} }) => {
           }}
         />
       </DemoItem>
-      <EventOutlinedIcon className="fill-primary hidden mobile:flex" />
+      <EventOutlinedIcon className="fill-primary hidden mobile:flex relative bottom-[1px] right-[24px]" />
     </LocalizationProvider>
   );
 };
