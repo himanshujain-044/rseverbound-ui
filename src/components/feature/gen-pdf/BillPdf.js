@@ -128,6 +128,7 @@ const BillPdfGen = ({ data = {} }) => {
               paddingTop: "2px",
             }}
           >
+            <Text>Transport Company - {data?.transportCompany}</Text>
             <Text>Vechicle No. - {data?.vehicleNo}</Text>
           </View>
         </View>

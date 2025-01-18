@@ -33,6 +33,7 @@ const formInitValues = {
   destination: "",
   buyerOrderNoText: "Buyer's Order No.",
   buyerOrderNoValue: "",
+  transportCompany: "",
 };
 const BillForm = ({ className = "" }) => {
   const dispatch = useDispatch();
@@ -45,6 +46,8 @@ const BillForm = ({ className = "" }) => {
   const [buyersNameDDOptions, setBuyersNameDDOptions] = useState([]);
   const [vehiclesDDOptions, setVehiclesDDOptions] = useState([]);
   const [destinationsDDOptions, setDestinationsDDOptions] = useState([]);
+  const [transportCompaniesDDOptions, setTransportCompaniesDDOptions] =
+    useState([]);
 
   useEffect(() => {
     if (!invoiceDetails) {
@@ -75,6 +78,7 @@ const BillForm = ({ className = "" }) => {
   useEffect(() => {
     setVehiclesDDOptions(invoiceDetails?.vehicles);
     setDestinationsDDOptions(invoiceDetails?.destinations);
+    setTransportCompaniesDDOptions(invoiceDetails?.transportCompanies);
   }, [invoiceDetails]);
 
   const handleChange = (e, value, type) => {
@@ -305,15 +309,27 @@ const BillForm = ({ className = "" }) => {
           </div>
         </Grid>
         <Grid xs={3} className="form-border no-top-border">
-          <div className="flex pl-1 pb-1 ">
-            <span className="min-w-[5.5rem]">Vechile No -</span>
-            <SearchableDD
-              onInputChangeDDSearch={(e, value) => {
-                handleChange(e, value, "vehicleNo");
-              }}
-              ddValue={formValues.vehicleNo}
-              ddOptions={vehiclesDDOptions}
-            />
+          <div className="flex flex-col pl-1 pb-1">
+            <div className="flex">
+              <span className="min-w-[fit-content]">Transport Company -</span>
+              <SearchableDD
+                onInputChangeDDSearch={(e, value) => {
+                  handleChange(e, value, "transportCompany");
+                }}
+                ddValue={formValues.transportCompany}
+                ddOptions={transportCompaniesDDOptions}
+              />
+            </div>
+            <div className="flex">
+              <span className="min-w-[5.5rem]">Vechile No -</span>
+              <SearchableDD
+                onInputChangeDDSearch={(e, value) => {
+                  handleChange(e, value, "vehicleNo");
+                }}
+                ddValue={formValues.vehicleNo}
+                ddOptions={vehiclesDDOptions}
+              />
+            </div>
           </div>
         </Grid>
         <ItemsSell
