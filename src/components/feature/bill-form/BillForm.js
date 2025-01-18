@@ -242,14 +242,16 @@ const BillForm = ({ className = "" }) => {
         </Grid>
         <Grid xs={6} className="pl-1 pb-1 form-border no-top-border">
           <div className="flex">
-            <span className="min-w-[7.3rem]">Buyer's Name -</span>
-            <SearchableDD
-              onInputChangeDDSearch={(e, value) => {
-                handleChange(e, value, "name");
-              }}
-              ddValue={formValues?.buyerDetails.name}
-              ddOptions={buyersNameDDOptions}
-            />
+            <strong className="min-w-[7.3rem]">Buyer's Name -</strong>
+            <strong>
+              <SearchableDD
+                onInputChangeDDSearch={(e, value) => {
+                  handleChange(e, value, "name");
+                }}
+                ddValue={formValues?.buyerDetails.name}
+                ddOptions={buyersNameDDOptions}
+              />
+            </strong>
           </div>
           <span className="min-w-[7.3rem]">Address -</span>
           <input
@@ -263,14 +265,14 @@ const BillForm = ({ className = "" }) => {
           />
 
           <div className="flex">
-            <h6 className="w-[3rem]">GST -</h6>
+            <strong className="w-[3rem]">GST -</strong>
             <input
               type="text"
               value={formValues?.buyerDetails?.gst}
               onChange={(e) => {
                 handleChange(e, e?.target?.value, "gst");
               }}
-              className="outline-none"
+              className="outline-none font-bold"
             />
           </div>
           <div className="flex">
