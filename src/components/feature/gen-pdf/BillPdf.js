@@ -147,7 +147,7 @@ const BillPdfGen = ({ data = {} }) => {
               textAlign: "center",
             }}
           >
-            <Text>Pkgs Count & Weight (K.G)</Text>
+            <Text>Bag Count & Weight (K.G)</Text>
           </View>
           <View
             style={{
@@ -373,6 +373,7 @@ const BillPdfGen = ({ data = {} }) => {
           <View style={{ width: "60%", paddingLeft: "2px", paddingTop: "2px" }}>
             <Text>Amount in words</Text>
             <Text style={{ fontFamily: "Helvetica-Bold" }}>
+              INDIAN RUPEE:{" "}
               {numberToWords(data?.productsSellDetails?.grandTotal)}
             </Text>
           </View>

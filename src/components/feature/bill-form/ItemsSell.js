@@ -204,8 +204,8 @@ const ItemsSell = ({ getUpdatedItemsSellValue = () => {} }) => {
         </strong>
       </Grid>
       <Grid xs={2} className="left-border">
-        <strong className="flex bottom-border pb-1 justify-center w-full">
-          Pkgs Count & Weight (K.G)
+        <strong className="bottom-border pb-1 text-center max-w-full block text-ellipsis whitespace-nowrap overflow-hidden">
+          Bag Count & Weight (K.G)
         </strong>
       </Grid>
       <Grid xs={3} className="left-border right-border">
@@ -430,7 +430,9 @@ const ItemsSell = ({ getUpdatedItemsSellValue = () => {} }) => {
       <Grid xs={12} className="form-border no-top-border flex justify-between">
         <div className="pl-1 pb-1 flex flex-col">
           <span>Amount in words</span>
-          <strong>{numberToWords(itemsSellForm.grandTotal)}</strong>
+          <strong>
+            INDIAN RUPEE: {numberToWords(itemsSellForm.grandTotal)}
+          </strong>
         </div>
         <span className="pr-1 pb-1">E. & O.E</span>
       </Grid>

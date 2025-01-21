@@ -39,7 +39,7 @@ export const YEARS = [CURRENT_YEAR - 2, CURRENT_YEAR - 1, CURRENT_YEAR];
 
 export const NUMBERS_DIGITS_UNITS = {
   TEENS: [
-    "Zero ",
+    "",
     "One ",
     "Two ",
     "Three ",

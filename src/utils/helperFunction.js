@@ -60,21 +60,21 @@ function numberToWords(number) {
             NUMBERS_DIGITS_UNITS.TEENS[n[5][1]]) +
         ""
       : "";
-  const decArr = decimalPoints?.split("");
-  if (decArr?.length) {
-    const lastDecmal = NUMBERS_DIGITS_UNITS.TEENS[decArr?.[1]]
-      ? NUMBERS_DIGITS_UNITS.TEENS[decArr?.[1]]
-      : "";
-    return (
-      str +
-      "Points " +
-      NUMBERS_DIGITS_UNITS.TEENS[decArr[0]] +
-      lastDecmal +
-      " Only"
-    );
-  } else {
-    return str?.length ? str + " Only" : "";
-  }
+  // const decArr = decimalPoints?.split("");
+  // if (decArr?.length) {
+  //   const lastDecmal = NUMBERS_DIGITS_UNITS.TEENS[decArr?.[1]]
+  //     ? NUMBERS_DIGITS_UNITS.TEENS[decArr?.[1]]
+  //     : "";
+  //   return (
+  //     str +
+  //     "Points " +
+  //     NUMBERS_DIGITS_UNITS.TEENS[decArr[0]] +
+  //     lastDecmal +
+  //     " Only"
+  //   );
+  // } else {
+  return str?.length ? str + " Only" : "";
+  // }
 }
 
 const convertFixedDecimal = (number) => {
