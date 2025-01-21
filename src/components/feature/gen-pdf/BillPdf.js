@@ -9,6 +9,7 @@ import {
 } from "@react-pdf/renderer";
 import { numberToWords } from "../../../utils/helperFunction";
 import cancelled from "../../../assets/images/cancelled.png";
+import signature from "../../../assets/images/signature.png";
 
 const styles = StyleSheet.create({
   section: {
@@ -118,7 +119,6 @@ const BillPdfGen = ({ data = {} }) => {
               paddingTop: "2px",
             }}
           >
-            <Text>ETP No. - {data?.etpNo}</Text>
             <Text>E-way Bill No. - {data?.ewayBillNo}</Text>
           </View>
           <View
@@ -128,7 +128,9 @@ const BillPdfGen = ({ data = {} }) => {
               paddingTop: "2px",
             }}
           >
-            <Text>Transport Company - {data?.transportCompany}</Text>
+            <Text style={{ maxWidth: "24%" }}>
+              Transport Company - {data?.transportCompany}
+            </Text>
             <Text>Vechicle No. - {data?.vehicleNo}</Text>
           </View>
         </View>
@@ -139,7 +141,17 @@ const BillPdfGen = ({ data = {} }) => {
           </View>
           <View
             style={{
-              width: "28%",
+              width: "26%",
+              borderLeft: "1px solid black",
+              paddingTop: "5px",
+              textAlign: "center",
+            }}
+          >
+            <Text>Pkgs Count & Weight (K.G)</Text>
+          </View>
+          <View
+            style={{
+              width: "22%",
               borderLeft: "1px solid black",
               paddingTop: "5px",
               textAlign: "center",
@@ -149,7 +161,7 @@ const BillPdfGen = ({ data = {} }) => {
           </View>
           <View
             style={{
-              width: "16%",
+              width: "12.7%",
               borderLeft: "1px solid black",
               paddingTop: "5px",
               textAlign: "center",
@@ -159,7 +171,7 @@ const BillPdfGen = ({ data = {} }) => {
           </View>
           <View
             style={{
-              width: "12%",
+              width: "16%",
               borderLeft: "1px solid black",
               paddingTop: "5px",
               textAlign: "center",
@@ -179,7 +191,7 @@ const BillPdfGen = ({ data = {} }) => {
           </View>
           <View
             style={{
-              width: "25%",
+              width: "12%",
               borderLeft: "1px solid black",
               paddingTop: "5px",
               textAlign: "center",
@@ -204,7 +216,20 @@ const BillPdfGen = ({ data = {} }) => {
               </View>
               <View
                 style={{
-                  width: "28%",
+                  width: "26%",
+                  borderLeft: "1px solid black",
+                  paddingLeft: "2px",
+                  paddingTop: "5px",
+                  textAlign: "center",
+                }}
+              >
+                <Text>
+                  {productSell?.bagsCount} & {productSell?.bagWeight}
+                </Text>
+              </View>
+              <View
+                style={{
+                  width: "22%",
                   borderLeft: "1px solid black",
                   paddingLeft: "2px",
                   paddingTop: "5px",
@@ -215,7 +240,7 @@ const BillPdfGen = ({ data = {} }) => {
               </View>
               <View
                 style={{
-                  width: "16%",
+                  width: "12.7%",
                   borderLeft: "1px solid black",
                   paddingLeft: "2px",
                   paddingTop: "5px",
@@ -225,7 +250,7 @@ const BillPdfGen = ({ data = {} }) => {
               </View>
               <View
                 style={{
-                  width: "12%",
+                  width: "16%",
                   borderLeft: "1px solid black",
                   paddingLeft: "2px",
                   paddingTop: "5px",
@@ -247,7 +272,7 @@ const BillPdfGen = ({ data = {} }) => {
               </View>
               <View
                 style={{
-                  width: "25%",
+                  width: "12%",
                   borderLeft: "1px solid black",
                   paddingRight: "2px",
                   paddingTop: "5px",
@@ -263,13 +288,17 @@ const BillPdfGen = ({ data = {} }) => {
 
         <View style={styles.section}>
           <View
-            style={{ width: "50%", paddingTop: "2px", paddingBottom: "220px" }}
+            style={{
+              width: "61.9%",
+              paddingTop: "2px",
+              paddingBottom: "220px",
+            }}
           >
             <Text></Text>
           </View>
           <View
             style={{
-              width: "50%",
+              width: "38%",
               borderLeft: "1px solid black",
               paddingRight: "2px",
               paddingTop: "2px",
@@ -293,6 +322,7 @@ const BillPdfGen = ({ data = {} }) => {
                 </>
               )}
               <Text>{data?.productsSellDetails?.otherExpensesText}</Text>
+              <Text>Round Off</Text>
             </View>
 
             <View style={{ fontFamily: "Times-Italic", fontStyle: "italic" }}>
@@ -313,6 +343,11 @@ const BillPdfGen = ({ data = {} }) => {
                 {data?.productsSellDetails?.otherExpenses > 0
                   ? data?.productsSellDetails?.otherExpenses
                   : ""}
+              </Text>
+
+              <Text>
+                {data?.productsSellDetails?.roundOff?.added ? "+" : "-"}
+                {data?.productsSellDetails?.roundOff?.amountInPaise}
               </Text>
             </View>
           </View>
@@ -399,13 +434,15 @@ const BillPdfGen = ({ data = {} }) => {
                 borderTop: "1px solid black",
                 paddingRight: "2px",
                 paddingTop: "2px",
+                justifyContent: "flex-end",
+                alignContent: "flex-end",
+                alignItems: "flex-end",
               }}
             >
-              <Text
-                style={{ fontFamily: "Helvetica-Bold", paddingBottom: "18px" }}
-              >
+              <Text style={{ fontFamily: "Helvetica-Bold" }}>
                 for MADHUVAN MINERALS & INDUSTRIES
               </Text>
+              <Image style={{ width: "60px" }} src={signature} />
               <Text>Authorised Signatory</Text>
             </View>
           </View>

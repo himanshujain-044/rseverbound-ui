@@ -78,7 +78,7 @@ function numberToWords(number) {
 }
 
 const convertFixedDecimal = (number) => {
-  return Math.round((number + Number.EPSILON) * 100) / 100;
+  return (Math.round((number + Number.EPSILON) * 100) / 100).toFixed(2);
 };
 const decryptData = (data = "") => {
   return AES.decrypt(data, process.env.REACT_APP_ENCRYPTED_SECRET).toString(

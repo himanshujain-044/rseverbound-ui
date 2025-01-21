@@ -19,6 +19,7 @@ import {
   getStateNameByGstCode,
 } from "../../../utils/helperFunction";
 import ItemsSell from "./ItemsSell";
+import signature from "../../../assets/images/signature.png";
 import BillPdf from "../gen-pdf/BillPdf";
 import { ROUTES_LIST } from "../../../constants/routes";
 import DatePickerComp from "../../common/DatePickerComp/DatePickerComp";
@@ -125,6 +126,7 @@ const BillForm = ({ className = "" }) => {
         otherExpenses: Number(itemsSell.otherExpenses),
         otherExpensesText: itemsSell.otherExpensesText,
         grandTotal: Number(itemsSell.grandTotal),
+        roundOff: itemsSell.roundOff,
       },
     };
     dispatch(
@@ -286,17 +288,6 @@ const BillForm = ({ className = "" }) => {
         </Grid>
         <Grid xs={3} className="bottom-border">
           <div className="pl-1 pb-1 ">
-            <span className="w-[60px]">ETP No.</span>
-            <input
-              type="text"
-              value={formValues?.etpNo}
-              onChange={(e) => {
-                handleChange(e, e?.target?.value, "etpNo");
-              }}
-              className="outline-none ml-1 w-[calc(100%_-_64px)]"
-            />
-          </div>
-          <div className="pl-1 pb-1 ">
             <span className="w-[102px]">E-way Bill No.</span>
             <input
               type="text"
@@ -363,7 +354,10 @@ const BillForm = ({ className = "" }) => {
           </div>
           <div className="pr-1 pb-1 flex flex-col text-right top-border">
             <strong>for MADHUVAN MINERALS & INDUSTRIES</strong>
-            <span className="mt-[3rem]">Authorised Signatory</span>
+            <div className="flex justify-end">
+              <img src={signature} width="80px" />
+            </div>
+            <span>Authorised Signatory</span>
           </div>
         </Grid>
         <Grid
