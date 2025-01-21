@@ -273,6 +273,7 @@ const apiReducer = createSlice({
       })
       .addCase(saveInvoiceDetails.fulfilled, (state, action) => {
         state.isInvoiceSave = true;
+        state.sellsReportsData = "";
         state.invoiceDetails = "";
         state.allBuyers = "";
         state.reqCount -= 1;

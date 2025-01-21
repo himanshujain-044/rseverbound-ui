@@ -355,7 +355,7 @@ const BillForm = ({ className = "" }) => {
           <div className="pr-1 pb-1 flex flex-col text-right top-border">
             <strong>for MADHUVAN MINERALS & INDUSTRIES</strong>
             <div className="flex justify-end">
-              <img src={signature} width="80px" />
+              <img src={signature} width="100px" />
             </div>
             <span>Authorised Signatory</span>
           </div>

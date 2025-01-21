@@ -443,7 +443,7 @@ const BillPdfGen = ({ data = {} }) => {
               <Text style={{ fontFamily: "Helvetica-Bold" }}>
                 for MADHUVAN MINERALS & INDUSTRIES
               </Text>
-              <Image style={{ width: "60px" }} src={signature} />
+              <Image style={{ width: "80px" }} src={signature} />
               <Text>Authorised Signatory</Text>
             </View>
           </View>
