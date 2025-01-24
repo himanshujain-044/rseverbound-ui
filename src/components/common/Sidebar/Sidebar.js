@@ -11,6 +11,7 @@ import ListItemIcon from "@mui/material/ListItemIcon";
 import ListItemText from "@mui/material/ListItemText";
 import { SIDEBAR_MENU_LIST } from "../../../constants/common";
 import cx from "classnames";
+import { ROUTES_LIST } from "../../../constants/routes";
 
 const Sidebar = () => {
   const navigate = useNavigate();
@@ -21,7 +22,7 @@ const Sidebar = () => {
     setOpen(newOpen);
   };
   useEffect(() => {
-    handleMenuClick({ route: location.pathname });
+    handleMenuClick({ route: location.pathname || ROUTES_LIST.dashboard });
   }, []);
   const handleMenuClick = (menu) => {
     const updatedList = menuList.map((menuItem) => {

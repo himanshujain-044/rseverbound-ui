@@ -106,9 +106,13 @@ const BillPdfGen = ({ data = {} }) => {
 
         <View style={styles.section}>
           <View style={{ width: "45%", paddingLeft: "2px", paddingTop: "2px" }}>
-            <Text>Buyer's Name - {data?.buyerDetails?.name}</Text>
+            <Text style={{ fontFamily: "Helvetica-Bold" }}>
+              Buyer's Name - {data?.buyerDetails?.name}
+            </Text>
             <Text>{data?.buyerDetails?.address}</Text>
-            <Text>GSTIN/UIN: {data?.buyerDetails?.gst}</Text>
+            <Text style={{ fontFamily: "Helvetica-Bold" }}>
+              GSTIN/UIN: {data?.buyerDetails?.gst}
+            </Text>
             <Text>State - {data?.buyerDetails?.state}</Text>
           </View>
           <View
