@@ -339,7 +339,7 @@ const BillForm = ({ className = "" }) => {
             described and that all particulars are true and correct.
           </p>
           <sapn>
-            Company's PAN: <strong>ABAFM0119P</strong>
+            Company's PAN: <strong>23ABAFM01191ZF</strong>
           </sapn>
         </Grid>
         <Grid xs={7} className="form-border no-left-border no-top-border">

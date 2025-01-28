@@ -410,7 +410,7 @@ const BillPdfGen = ({ data = {} }) => {
             </Text>
             <Text>
               Company's PAN:
-              <Text style={{ fontFamily: "Helvetica-Bold" }}>ABAFM0119P</Text>
+              <Text style={{ fontFamily: "Helvetica-Bold" }}>23ABAFM01191ZF</Text>
             </Text>
           </View>
           <View
