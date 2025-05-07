@@ -107,7 +107,9 @@ const Reports = () => {
                   <td className="p-2 text-center border border-solid">
                     {sellReport?.date}
                   </td>
-                  <td className="p-2 text-center border border-solid">276</td>
+                  <td className="p-2 text-center border border-solid">
+                    {sellReport?.invoiceNo}
+                  </td>
                   <td className="p-2 text-center border border-solid">
                     {sellReport?.gst}
                   </td>

@@ -79,6 +79,10 @@ const BillPdfGen = ({ data = {} }) => {
             <Text style={{ paddingLeft: "2px", paddingTop: "2px" }}>
               {data?.buyerOrderNoText} - {data?.buyerOrderNoValue}
             </Text>
+
+            <Text style={{ paddingLeft: "2px", paddingTop: "2px" }}>
+              E-way Bill No. - {data?.ewayBillNo}
+            </Text>
           </View>
 
           <View
@@ -107,7 +111,7 @@ const BillPdfGen = ({ data = {} }) => {
         <View style={styles.section}>
           <View style={{ width: "45%", paddingLeft: "2px", paddingTop: "2px" }}>
             <Text style={{ fontFamily: "Helvetica-Bold" }}>
-              Buyer's Name - {data?.buyerDetails?.name}
+              Bill To - {data?.buyerDetails?.name}
             </Text>
             <Text>{data?.buyerDetails?.address}</Text>
             <Text style={{ fontFamily: "Helvetica-Bold" }}>
@@ -123,7 +127,7 @@ const BillPdfGen = ({ data = {} }) => {
               paddingTop: "2px",
             }}
           >
-            <Text>E-way Bill No. - {data?.ewayBillNo}</Text>
+            <Text>Ship To - {data?.shipTo}</Text>
           </View>
           <View
             style={{
@@ -143,16 +147,19 @@ const BillPdfGen = ({ data = {} }) => {
           <View style={{ width: "6%", paddingTop: "5px", textAlign: "center" }}>
             <Text>S. No</Text>
           </View>
-          <View
-            style={{
-              width: "26%",
-              borderLeft: "1px solid black",
-              paddingTop: "5px",
-              textAlign: "center",
-            }}
-          >
-            <Text>Bag Count & Weight (K.G)</Text>
-          </View>
+          {data?.productsSellDetails?.productsSell[0]?.bagsCount &&
+            data?.productsSellDetails?.productsSell[0]?.bagWeight && (
+              <View
+                style={{
+                  width: "26%",
+                  borderLeft: "1px solid black",
+                  paddingTop: "5px",
+                  textAlign: "center",
+                }}
+              >
+                <Text>Bag Count & Weight (K.G)</Text>
+              </View>
+            )}
           <View
             style={{
               width: "22%",
@@ -218,19 +225,21 @@ const BillPdfGen = ({ data = {} }) => {
               >
                 <Text>{productSell?.sNo}</Text>
               </View>
-              <View
-                style={{
-                  width: "26%",
-                  borderLeft: "1px solid black",
-                  paddingLeft: "2px",
-                  paddingTop: "5px",
-                  textAlign: "center",
-                }}
-              >
-                <Text>
-                  {productSell?.bagsCount} & {productSell?.bagWeight}
-                </Text>
-              </View>
+              {productSell?.bagsCount && productSell?.bagWeight && (
+                <View
+                  style={{
+                    width: "26%",
+                    borderLeft: "1px solid black",
+                    paddingLeft: "2px",
+                    paddingTop: "5px",
+                    textAlign: "center",
+                  }}
+                >
+                  <Text>
+                    {productSell?.bagsCount} & {productSell?.bagWeight}
+                  </Text>
+                </View>
+              )}
               <View
                 style={{
                   width: "22%",
@@ -410,7 +419,9 @@ const BillPdfGen = ({ data = {} }) => {
             </Text>
             <Text>
               Company's PAN:
-              <Text style={{ fontFamily: "Helvetica-Bold" }}>23ABAFM01191ZF</Text>
+              <Text style={{ fontFamily: "Helvetica-Bold" }}>
+                23ABAFM01191ZF
+              </Text>
             </Text>
           </View>
           <View

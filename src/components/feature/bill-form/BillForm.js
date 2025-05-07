@@ -30,6 +30,7 @@ const formInitValues = {
   date: formatDate(new Date()),
   etpNo: "",
   ewayBillNo: "",
+  shipTo: "",
   vehicleNo: "",
   destination: "",
   buyerOrderNoText: "Buyer's Order No.",
@@ -213,6 +214,17 @@ const BillForm = ({ className = "" }) => {
               value={formValues.buyerOrderNoValue}
             />
           </div>
+          <div className="pl-1 pb-1 ">
+            <span className="w-[102px]">E-way Bill No.</span>
+            <input
+              type="text"
+              value={formValues?.ewayBillNo}
+              onChange={(e) => {
+                handleChange(e, e?.target?.value, "ewayBillNo");
+              }}
+              className="outline-none ml-1 w-[calc(100%_-_106px)]"
+            />
+          </div>
           {/* <div className="pl-1 pb-1">Dispatched through</div> */}
         </Grid>
         <Grid xs={3} className="form-border no-top-border">
@@ -248,7 +260,7 @@ const BillForm = ({ className = "" }) => {
         </Grid>
         <Grid xs={6} className="pl-1 pb-1 form-border no-top-border">
           <div className="flex">
-            <strong className="min-w-[7.3rem]">Buyer's Name -</strong>
+            <strong className="min-w-[3.5rem]">Bill To -</strong>
             <strong>
               <SearchableDD
                 onInputChangeDDSearch={(e, value) => {
@@ -288,12 +300,12 @@ const BillForm = ({ className = "" }) => {
         </Grid>
         <Grid xs={3} className="bottom-border">
           <div className="pl-1 pb-1 ">
-            <span className="w-[102px]">E-way Bill No.</span>
+            <span className="w-[102px]">Ship To -</span>
             <input
               type="text"
-              value={formValues?.ewayBillNo}
+              value={formValues?.shipTo}
               onChange={(e) => {
-                handleChange(e, e?.target?.value, "ewayBillNo");
+                handleChange(e, e?.target?.value, "shipTo");
               }}
               className="outline-none ml-1 w-[calc(100%_-_106px)]"
             />
