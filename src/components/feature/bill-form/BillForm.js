@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import Grid from "@mui/material/Grid";
 import cx from "classnames";
-import { Button } from "@mui/material";
+import { Button, Checkbox } from "@mui/material";
 import { saveAs } from "file-saver";
 import { pdf } from "@react-pdf/renderer";
 import SearchableDD from "../../common/SearchableDD/SearchableDD";
@@ -25,12 +25,13 @@ import { ROUTES_LIST } from "../../../constants/routes";
 import DatePickerComp from "../../common/DatePickerComp/DatePickerComp";
 let payload = {};
 const formInitValues = {
-  buyerDetails: { name: "", address: "", gst: "", state: "MP" },
+  buyerDetails: { name: "", address: "", gst: "", state: "" },
   dated: DATED_OPTIONS[1],
   date: formatDate(new Date()),
   etpNo: "",
   ewayBillNo: "",
-  shipTo: "",
+  shipToDetails: { name: "", address: "", gst: "", state: "" },
+  isShiptoBDSame: false,
   vehicleNo: "",
   destination: "",
   buyerOrderNoText: "Buyer's Order No.",
@@ -83,34 +84,63 @@ const BillForm = ({ className = "" }) => {
     setTransportCompaniesDDOptions(invoiceDetails?.transportCompanies);
   }, [invoiceDetails]);
 
-  const handleChange = (e, value, type) => {
+  const handleChange = (e, value, type, isBillTo = true) => {
     const values = { ...formValues };
     if (["name", "address", "gst", "state"].includes(type)) {
       if (type === "name" && value) {
-        const buyerDetails = allBuyers.find((buyer) => buyer.name === value);
-        if (buyerDetails) {
-          values.buyerDetails = buyerDetails;
+        const customerDetails = allBuyers.find((buyer) => buyer.name === value);
+        if (customerDetails) {
+          if (isBillTo) {
+            values.buyerDetails = customerDetails;
+          } else {
+            values.shipToDetails = customerDetails;
+          }
         } else {
-          values.buyerDetails = {
-            name: value?.toUpperCase(),
-            address: "",
-            gst: "",
-            state: "",
-          };
+          if (isBillTo) {
+            values.buyerDetails = {
+              name: value?.toUpperCase(),
+              address: "",
+              gst: "",
+              state: "",
+            };
+          } else {
+            values.shipToDetails = {
+              name: value?.toUpperCase(),
+              address: "",
+              gst: "",
+              state: "",
+            };
+          }
         }
       } else {
-        values.buyerDetails = {
-          ...values.buyerDetails,
-          [type]: value?.toUpperCase(),
-        };
-        if (type === "gst" && value) {
-          values.buyerDetails.state = getStateNameByGstCode(
-            value.substring(0, 2)
-          );
+        if (isBillTo) {
+          values.buyerDetails = {
+            ...values.buyerDetails,
+            [type]: value?.toUpperCase(),
+          };
+          if (type === "gst" && value) {
+            values.buyerDetails.state = getStateNameByGstCode(
+              value.substring(0, 2)
+            );
+          }
+        } else {
+          values.shipToDetails = {
+            ...values.shipToDetails,
+            [type]: value?.toUpperCase(),
+          };
+          if (type === "gst" && value) {
+            values.shipToDetails.state = getStateNameByGstCode(
+              value.substring(0, 2)
+            );
+          }
         }
       }
     }
-    values[type] = value?.toUpperCase();
+    if (type === "isShiptoBDSame") {
+      values[type] = value;
+    } else {
+      values[type] = value?.toUpperCase();
+    }
     setFormValues(values);
   };
   const getUpdatedItemsSellValue = (values) => {
@@ -119,6 +149,9 @@ const BillForm = ({ className = "" }) => {
   const handleGenerateInvoice = () => {
     payload = {
       ...formValues,
+      shipToDetails: formValues?.isShiptoBDSame
+        ? formValues?.buyerDetails
+        : formValues?.shipToDetails,
       invoiceNo: invoiceDetails?.nextInvoiceNo || 1,
       productsSellDetails: {
         productsSell: itemsSell?.rowFields,
@@ -259,9 +292,9 @@ const BillForm = ({ className = "" }) => {
           </div>
         </Grid>
         <Grid xs={6} className="pl-1 pb-1 form-border no-top-border">
-          <div className="flex">
+          <div className="flex items-center">
             <strong className="min-w-[3.5rem]">Bill To -</strong>
-            <strong>
+            <strong className="w-[58%]">
               <SearchableDD
                 onInputChangeDDSearch={(e, value) => {
                   handleChange(e, value, "name");
@@ -270,6 +303,26 @@ const BillForm = ({ className = "" }) => {
                 ddOptions={buyersNameDDOptions}
               />
             </strong>
+            <div className="flex">
+              <span>Keep Ship To as Bill To</span>
+              <Checkbox
+                checked={formValues?.isShiptoBDSame}
+                sx={{
+                  padding: "0",
+                  color: "#5a298b",
+                  "&.Mui-checked": {
+                    color: "#5a298b",
+                  },
+                }}
+                onChange={(e) => {
+                  handleChange(
+                    e,
+                    !formValues?.isShiptoBDSame,
+                    "isShiptoBDSame"
+                  );
+                }}
+              />
+            </div>
           </div>
           <span className="min-w-[7.3rem]">Address -</span>
           <input
@@ -298,17 +351,60 @@ const BillForm = ({ className = "" }) => {
             <span>{formValues?.buyerDetails.state}</span>
           </div>
         </Grid>
-        <Grid xs={3} className="bottom-border">
-          <div className="pl-1 pb-1 ">
-            <span className="w-[102px]">Ship To -</span>
+        <Grid xs={3} className="pl-1 bottom-border">
+          <div className="flex">
+            <strong className="min-w-[3.5rem]">Ship To -</strong>
+            <strong>
+              <SearchableDD
+                onInputChangeDDSearch={(e, value) => {
+                  handleChange(e, value, "name", false);
+                }}
+                ddValue={
+                  formValues?.isShiptoBDSame
+                    ? formValues?.buyerDetails?.name
+                    : formValues?.shipToDetails.name
+                }
+                ddOptions={buyersNameDDOptions}
+              />
+            </strong>
+          </div>
+          <span className="min-w-[7.3rem]">Address -</span>
+          <input
+            type="text"
+            placeholder="Bill Address"
+            value={
+              formValues?.isShiptoBDSame
+                ? formValues?.buyerDetails?.address
+                : formValues?.shipToDetails.address
+            }
+            onChange={(e) => {
+              handleChange(e, e?.target?.value, "address", false);
+            }}
+            className="outline-none pl-2"
+          />
+
+          <div className="flex">
+            <strong className="w-[3rem]">GST -</strong>
             <input
               type="text"
-              value={formValues?.shipTo}
+              value={
+                formValues?.isShiptoBDSame
+                  ? formValues?.buyerDetails?.gst
+                  : formValues?.shipToDetails.gst
+              }
               onChange={(e) => {
-                handleChange(e, e?.target?.value, "shipTo");
+                handleChange(e, e?.target?.value, "gst", false);
               }}
-              className="outline-none ml-1 w-[calc(100%_-_106px)]"
+              className="outline-none font-bold"
             />
+          </div>
+          <div className="flex">
+            <strong className="w-[3.4rem]">State -</strong>
+            <span>
+              {formValues?.isShiptoBDSame
+                ? formValues?.buyerDetails?.state
+                : formValues?.shipToDetails.state}
+            </span>
           </div>
         </Grid>
         <Grid xs={3} className="form-border no-top-border">

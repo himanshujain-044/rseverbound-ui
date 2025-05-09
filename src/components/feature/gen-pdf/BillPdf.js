@@ -113,7 +113,7 @@ const BillPdfGen = ({ data = {} }) => {
             <Text style={{ fontFamily: "Helvetica-Bold" }}>
               Bill To - {data?.buyerDetails?.name}
             </Text>
-            <Text>{data?.buyerDetails?.address}</Text>
+            <Text>Address - {data?.buyerDetails?.address}</Text>
             <Text style={{ fontFamily: "Helvetica-Bold" }}>
               GSTIN/UIN: {data?.buyerDetails?.gst}
             </Text>
@@ -127,7 +127,14 @@ const BillPdfGen = ({ data = {} }) => {
               paddingTop: "2px",
             }}
           >
-            <Text>Ship To - {data?.shipTo}</Text>
+            <Text style={{ fontFamily: "Helvetica-Bold" }}>
+              Ship To - {data?.shipToDetails?.name}
+            </Text>
+            <Text>Address - {data?.shipToDetails?.address}</Text>
+            <Text style={{ fontFamily: "Helvetica-Bold" }}>
+              GSTIN/UIN: {data?.shipToDetails?.gst}
+            </Text>
+            <Text>State - {data?.shipToDetails?.state}</Text>
           </View>
           <View
             style={{
