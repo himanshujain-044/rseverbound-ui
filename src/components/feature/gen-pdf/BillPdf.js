@@ -169,7 +169,11 @@ const BillPdfGen = ({ data = {} }) => {
             )}
           <View
             style={{
-              width: "22%",
+              width:
+                data?.productsSellDetails?.productsSell[0]?.bagsCount &&
+                data?.productsSellDetails?.productsSell[0]?.bagWeight
+                  ? "22%"
+                  : "30%",
               borderLeft: "1px solid black",
               paddingTop: "5px",
               textAlign: "center",
@@ -209,7 +213,11 @@ const BillPdfGen = ({ data = {} }) => {
           </View>
           <View
             style={{
-              width: "12%",
+              width:
+                data?.productsSellDetails?.productsSell[0]?.bagsCount &&
+                data?.productsSellDetails?.productsSell[0]?.bagWeight
+                  ? "12%"
+                  : "30%",
               borderLeft: "1px solid black",
               paddingTop: "5px",
               textAlign: "center",
@@ -249,11 +257,16 @@ const BillPdfGen = ({ data = {} }) => {
               )}
               <View
                 style={{
-                  width: "22%",
+                  width:
+                    data?.productsSellDetails?.productsSell[0]?.bagsCount &&
+                    data?.productsSellDetails?.productsSell[0]?.bagWeight
+                      ? "22%"
+                      : "30%",
                   borderLeft: "1px solid black",
                   paddingLeft: "2px",
                   paddingTop: "5px",
                   fontFamily: "Helvetica-Bold",
+                  textAlign: "center",
                 }}
               >
                 <Text>{productSell?.description}</Text>
@@ -264,6 +277,7 @@ const BillPdfGen = ({ data = {} }) => {
                   borderLeft: "1px solid black",
                   paddingLeft: "2px",
                   paddingTop: "5px",
+                  textAlign: "center",
                 }}
               >
                 <Text>{productSell?.hsnCode}</Text>
@@ -274,8 +288,8 @@ const BillPdfGen = ({ data = {} }) => {
                   borderLeft: "1px solid black",
                   paddingLeft: "2px",
                   paddingTop: "5px",
-
                   fontFamily: "Helvetica-Bold",
+                  textAlign: "center",
                 }}
               >
                 <Text>{productSell?.quantity}</Text>
@@ -286,17 +300,22 @@ const BillPdfGen = ({ data = {} }) => {
                   borderLeft: "1px solid black",
                   paddingLeft: "2px",
                   paddingTop: "5px",
+                  textAlign: "center",
                 }}
               >
                 <Text>{productSell?.ratePMT}</Text>
               </View>
               <View
                 style={{
-                  width: "12%",
+                  width:
+                    data?.productsSellDetails?.productsSell[0]?.bagsCount &&
+                    data?.productsSellDetails?.productsSell[0]?.bagWeight
+                      ? "12%"
+                      : "30%",
                   borderLeft: "1px solid black",
                   paddingRight: "2px",
                   paddingTop: "5px",
-                  textAlign: "right",
+                  textAlign: "center",
                   fontFamily: "Helvetica-Bold",
                 }}
               >
@@ -328,6 +347,12 @@ const BillPdfGen = ({ data = {} }) => {
             }}
           >
             <View style={{ paddingLeft: "2px" }}>
+              <Text style={{ marginTop: "2px" }}>
+                {data?.productsSellDetails?.otherExpensesGSTText}
+              </Text>
+              <Text style={{ fontFamily: "Helvetica-Bold" }}>
+                Total Taxable Amount
+              </Text>
               {data?.productsSellDetails?.igst && (
                 <Text>{`IGST - ${data?.productsSellDetails?.igst} %`}</Text>
               )}
@@ -346,6 +371,16 @@ const BillPdfGen = ({ data = {} }) => {
             </View>
 
             <View style={{ fontFamily: "Times-Italic", fontStyle: "italic" }}>
+              <Text style={{ marginTop: "2px" }}>
+                {data?.productsSellDetails?.otherExpensesGST > 0
+                  ? data?.productsSellDetails?.otherExpensesGST
+                  : ""}
+              </Text>
+              <Text style={{ fontFamily: "Helvetica-Bold" }}>
+                {data?.productsSellDetails?.totalProductAmount +
+                  data?.productsSellDetails?.otherExpensesGST}
+              </Text>
+
               {data?.productsSellDetails?.igst && (
                 <Text>{data?.productsSellDetails?.gstAmount}</Text>
               )}

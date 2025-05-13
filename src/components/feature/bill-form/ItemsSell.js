@@ -45,6 +45,9 @@ const ItemsSell = ({ getUpdatedItemsSellValue = () => {} }) => {
         amount: "",
       },
     ],
+    totalProductAmount: "",
+    otherExpensesGSTText: "",
+    otherExpensesGST: "",
     otherExpensesText: "",
     otherExpenses: "",
     gstType: {
@@ -114,8 +117,18 @@ const ItemsSell = ({ getUpdatedItemsSellValue = () => {} }) => {
           ? e?.target?.value?.toUpperCase()
           : e?.target?.value || value?.toUpperCase();
       if (["quantity", "ratePMT"].includes(type)) {
-        values.rowFields[index].amount =
-          values.rowFields[index].quantity * values.rowFields[index].ratePMT;
+        const oldAmt = values.rowFields[index].amount;
+        values.rowFields[index].amount = Number(
+          values.rowFields[index].quantity * values.rowFields[index].ratePMT
+        ).toFixed(2);
+        values.totalProductAmount =
+          Number(values.totalProductAmount) +
+          Number(
+            Number(
+              values.rowFields[index].quantity * values.rowFields[index].ratePMT
+            ).toFixed(2)
+          ) -
+          Number(oldAmt);
         const [gstType, grandTotal, roundOff] = updateGstType(
           values,
           values?.gstType
@@ -148,7 +161,7 @@ const ItemsSell = ({ getUpdatedItemsSellValue = () => {} }) => {
         values.roundOff = roundOff;
       } else {
         values[type] = value?.toUpperCase();
-        if (type === "otherExpenses") {
+        if (type === "otherExpenses" || type === "otherExpensesGST") {
           const [gstType, grandTotal, roundOff] = updateGstType(
             values,
             values.gstType
@@ -163,19 +176,19 @@ const ItemsSell = ({ getUpdatedItemsSellValue = () => {} }) => {
   };
 
   const updateGstType = (values, gstVal) => {
-    const totalAmount =
-      values.rowFields.reduce(
-        (accumulator, currentValue) => accumulator + currentValue.amount,
-        0
-      ) || 0;
+    const totalAmount = Number(
+      Number(values.totalProductAmount) + Number(values.otherExpensesGST)
+    ).toFixed(2);
     const grandTotalInDec = convertFixedDecimal(
       calculateGstAmount(gstVal.value, totalAmount) +
-        totalAmount +
+        Number(totalAmount) +
         Number(values.otherExpenses) || 0
     );
+
     const roundOff = { added: false, amountInPaise: 0 };
-    let [grandTotalBeforeDec, afterDec] = String(grandTotalInDec)?.split(".");
-    console.log(grandTotalBeforeDec, afterDec);
+    let [grandTotalBeforeDec, afterDec] = String(grandTotalInDec).includes(".")
+      ? String(grandTotalInDec)?.split(".")
+      : grandTotalInDec;
     if (afterDec?.length) {
       if (Number(afterDec) >= 50) {
         grandTotalBeforeDec = Number(grandTotalBeforeDec) + 1;
@@ -191,7 +204,7 @@ const ItemsSell = ({ getUpdatedItemsSellValue = () => {} }) => {
         value: gstVal.value,
         gstAmount: calculateGstAmount(gstVal.value, totalAmount),
       },
-      grandTotalBeforeDec,
+      Number(grandTotalBeforeDec),
       roundOff,
     ];
   };
@@ -243,7 +256,7 @@ const ItemsSell = ({ getUpdatedItemsSellValue = () => {} }) => {
               <div className="flex gap-2 pl-1">
                 <input
                   placeholder="count"
-                  className="outline-none block w-[100%] font-bold"
+                  className="outline-none block w-[100%] font-bold text-center"
                   type="number"
                   min={1}
                   onChange={(e) => {
@@ -253,7 +266,7 @@ const ItemsSell = ({ getUpdatedItemsSellValue = () => {} }) => {
                 <span>&</span>
                 <input
                   placeholder="weight"
-                  className="outline-none block w-[100%] font-bold"
+                  className="outline-none block w-[100%] font-bold text-center"
                   type="number"
                   min={1}
                   onChange={(e) => {
@@ -286,7 +299,7 @@ const ItemsSell = ({ getUpdatedItemsSellValue = () => {} }) => {
               <div className="pl-1">
                 <input
                   placeholder="Enter "
-                  className="outline-none block w-[100%] font-bold"
+                  className="outline-none block w-[100%] font-bold text-center"
                   type="number"
                   min={1}
                   onChange={(e) => {
@@ -299,7 +312,7 @@ const ItemsSell = ({ getUpdatedItemsSellValue = () => {} }) => {
               <div className="pl-1">
                 <input
                   placeholder="Enter "
-                  className="outline-none block w-[100%]"
+                  className="outline-none block w-[100%] text-center"
                   type="number"
                   min={1}
                   onChange={(e) => {
@@ -309,7 +322,7 @@ const ItemsSell = ({ getUpdatedItemsSellValue = () => {} }) => {
               </div>
             </Grid>
             <Grid xs={2} className="left-border right-border">
-              <div className="pr-1 text-right">
+              <div className="pr-1 text-center">
                 <strong>{itemsSellForm.rowFields[index].amount}</strong>
               </div>
             </Grid>
@@ -341,6 +354,46 @@ const ItemsSell = ({ getUpdatedItemsSellValue = () => {} }) => {
         className="pl-1 h-[18rem] form-border no-bottom-border flex flex-col"
       >
         <div>
+          <div className="flex justify-between pr-1">
+            <div className="flex gap-3">
+              <input
+                type="text"
+                className="outline-none max-w-42 font-bold"
+                placeholder="Other Expenses (GST)..."
+                onChange={(e) => {
+                  handleChange(
+                    e,
+                    e?.target?.value,
+                    "otherExpensesGSTText",
+                    null
+                  );
+                }}
+                value={itemsSellForm.otherExpensesGSTText}
+              />
+              -
+              <input
+                type="number"
+                className="outline-none w-28"
+                placeholder="0000"
+                onChange={(e) => {
+                  handleChange(e, e?.target?.value, "otherExpensesGST", null);
+                }}
+              />
+            </div>
+            <i>{itemsSellForm.otherExpensesGST}</i>
+          </div>
+          <div className="flex justify-between pr-1">
+            <strong>Total Taxable Amount</strong>
+            <strong>
+              <i>
+                {(
+                  Number(itemsSellForm.totalProductAmount) +
+                  Number(itemsSellForm.otherExpensesGST)
+                ).toFixed(2)}
+              </i>
+            </strong>
+          </div>
+
           {options.map((option) => (
             <div
               key={option.value}

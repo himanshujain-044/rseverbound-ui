@@ -12,7 +12,7 @@ const formatDate = (date) => {
   return `${day}-${MONTH_NAMES[monthIndex]}-${year}`;
 };
 const calculateGstAmount = (percent, amount) => {
-  return (amount * percent) / 100;
+  return Number((amount * percent) / 100);
 };
 
 function numberToWords(number) {

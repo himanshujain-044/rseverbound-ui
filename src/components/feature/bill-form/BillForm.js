@@ -140,6 +140,28 @@ const BillForm = ({ className = "" }) => {
       values[type] = value;
     } else {
       values[type] = value?.toUpperCase();
+      if (type === "vehicleNo") {
+        let input = value
+          .toUpperCase()
+          .replace(/\s+/g, "")
+          .replace(/[^A-Z0-9]/g, "");
+        let formatted = "";
+        let parts = [];
+
+        // Define the lengths of each part in the vehicle number
+        const partLengths = [2, 2, 2, 4];
+        let i = 0;
+
+        for (let len of partLengths) {
+          if (input.length > i) {
+            parts.push(input.substr(i, len));
+            i += len;
+          }
+        }
+
+        formatted = parts.join(" ");
+        values[type] = formatted;
+      }
     }
     setFormValues(values);
   };
@@ -159,6 +181,9 @@ const BillForm = ({ className = "" }) => {
         gstAmount: Number(itemsSell["gstType"].gstAmount),
         otherExpenses: Number(itemsSell.otherExpenses),
         otherExpensesText: itemsSell.otherExpensesText,
+        otherExpensesGST: Number(itemsSell.otherExpensesGST),
+        otherExpensesGSTText: itemsSell.otherExpensesGSTText,
+        totalProductAmount: itemsSell.totalProductAmount,
         grandTotal: Number(itemsSell.grandTotal),
         roundOff: itemsSell.roundOff,
       },
