@@ -92,6 +92,9 @@ const Reports = () => {
             <th className="p-2 text-center border border-solid">
               Billing Amont
             </th>
+            <th className="p-2 text-center border border-solid">
+              Other GST Expenses
+            </th>
             <th className="p-2 text-center border border-solid">SGST</th>
             <th className="p-2 text-center border border-solid">CGST</th>
             <th className="p-2 text-center border border-solid">IGST</th>
@@ -123,6 +126,9 @@ const Reports = () => {
                     {sellReport?.amount}
                   </td>
                   <td className="p-2 text-center border border-solid">
+                    {sellReport?.otherExpensesGST}
+                  </td>
+                  <td className="p-2 text-center border border-solid">
                     {sellReport?.sgst && sellReport?.gstAmount / 2}
                   </td>
                   <td className="p-2 text-center border border-solid">
@@ -132,7 +138,11 @@ const Reports = () => {
                     {sellReport?.igst && sellReport?.gstAmount}
                   </td>
                   <td className="p-2 text-center border border-solid">
-                    {sellReport?.amount + sellReport?.gstAmount}
+                    {sellReport?.otherExpensesGST
+                      ? sellReport?.amount +
+                        sellReport?.gstAmount +
+                        sellReport?.otherExpensesGST
+                      : sellReport?.amount + sellReport?.gstAmount}
                   </td>
                 </tr>
               );

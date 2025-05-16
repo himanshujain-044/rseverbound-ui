@@ -31,7 +31,7 @@ const formInitValues = {
   etpNo: "",
   ewayBillNo: "",
   shipToDetails: { name: "", address: "", gst: "", state: "" },
-  isShiptoBDSame: false,
+  isShiptoBDSame: true,
   vehicleNo: "",
   destination: "",
   buyerOrderNoText: "Buyer's Order No.",

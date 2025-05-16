@@ -83,8 +83,18 @@ const ItemsSell = ({ getUpdatedItemsSellValue = () => {} }) => {
   };
   const handleRemoveLastRowField = () => {
     setItemsSellForm((preVal) => {
+      const lastRow = preVal.rowFields[preVal?.rowFields?.length - 1];
+      const values = { ...preVal };
+      values.totalProductAmount = values.totalProductAmount - lastRow.amount;
+      const [gstType, grandTotal, roundOff] = updateGstType(
+        values,
+        values.gstType
+      );
+      values.gstType = gstType;
+      values.grandTotal = grandTotal;
+      values.roundOff = roundOff;
       return {
-        ...preVal,
+        ...values,
         rowFields: [...preVal.rowFields.slice(0, preVal.rowFields.length - 1)],
       };
     });

@@ -16,7 +16,7 @@ const ReportPdf = ({ data = [], title }) => {
         <View
           style={{
             flexDirection: "row",
-            fontSize: "11",
+            fontSize: "10",
             textAlign: "center",
             border: "1px solid black",
             fontFamily: "Helvetica-Bold",
@@ -71,7 +71,7 @@ const ReportPdf = ({ data = [], title }) => {
           </Text>
           <Text
             style={{
-              width: "9%",
+              width: "8%",
               borderRight: "1px solid black",
               padding: "6px",
             }}
@@ -83,6 +83,15 @@ const ReportPdf = ({ data = [], title }) => {
               width: "7%",
               borderRight: "1px solid black",
               padding: "6px",
+            }}
+          >
+            Other Expenses (GST)
+          </Text>
+          <Text
+            style={{
+              width: "6%",
+              borderRight: "1px solid black",
+              padding: "6px",
               paddingTop: "12px",
             }}
           >
@@ -90,7 +99,7 @@ const ReportPdf = ({ data = [], title }) => {
           </Text>
           <Text
             style={{
-              width: "7%",
+              width: "6%",
               borderRight: "1px solid black",
               padding: "6px",
               paddingTop: "12px",
@@ -100,7 +109,7 @@ const ReportPdf = ({ data = [], title }) => {
           </Text>
           <Text
             style={{
-              width: "7%",
+              width: "6%",
               borderRight: "1px solid black",
               padding: "6px",
               paddingTop: "12px",
@@ -108,7 +117,7 @@ const ReportPdf = ({ data = [], title }) => {
           >
             IGST
           </Text>
-          <Text style={{ width: "12%", padding: "6px" }}>
+          <Text style={{ width: "10%", padding: "6px" }}>
             Total (Bill + Tax)
           </Text>
         </View>
@@ -117,7 +126,7 @@ const ReportPdf = ({ data = [], title }) => {
             <View
               style={{
                 flexDirection: "row",
-                fontSize: "9",
+                fontSize: "8",
                 textAlign: "center",
                 border: "1px solid black",
                 borderTop: "none",
@@ -174,7 +183,7 @@ const ReportPdf = ({ data = [], title }) => {
               </Text>
               <Text
                 style={{
-                  width: "9%",
+                  width: "8%",
                   borderRight: "1px solid black",
                   padding: "6px",
                   paddingTop: "12px",
@@ -190,11 +199,11 @@ const ReportPdf = ({ data = [], title }) => {
                   paddingTop: "12px",
                 }}
               >
-                {reportItem?.["sgst"] ? reportItem?.gstAmount / 2 : ""}
+                {reportItem?.otherExpensesGST}
               </Text>
               <Text
                 style={{
-                  width: "7%",
+                  width: "6%",
                   borderRight: "1px solid black",
                   padding: "6px",
                   paddingTop: "12px",
@@ -204,7 +213,17 @@ const ReportPdf = ({ data = [], title }) => {
               </Text>
               <Text
                 style={{
-                  width: "7%",
+                  width: "6%",
+                  borderRight: "1px solid black",
+                  padding: "6px",
+                  paddingTop: "12px",
+                }}
+              >
+                {reportItem?.["sgst"] ? reportItem?.gstAmount / 2 : ""}
+              </Text>
+              <Text
+                style={{
+                  width: "6%",
                   borderRight: "1px solid black",
                   padding: "6px",
                   paddingTop: "12px",
@@ -213,9 +232,13 @@ const ReportPdf = ({ data = [], title }) => {
                 {reportItem?.["igst"] ? reportItem?.gstAmount : ""}
               </Text>
               <Text
-                style={{ width: "12%", padding: "6px", paddingTop: "12px" }}
+                style={{ width: "10%", padding: "6px", paddingTop: "12px" }}
               >
-                {reportItem?.amount + reportItem?.gstAmount}
+                {reportItem?.otherExpensesGST
+                  ? reportItem?.amount +
+                    reportItem?.gstAmount +
+                    reportItem?.otherExpensesGST
+                  : reportItem?.amount + reportItem?.gstAmount}
               </Text>
             </View>
           );
