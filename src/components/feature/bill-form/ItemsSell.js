@@ -11,8 +11,35 @@ import {
   numberToWords,
 } from "../../../utils/helperFunction";
 
+const initVal = {
+  rowFields: [
+    {
+      sNo: 1,
+      bagsCount: "",
+      bagWeight: "",
+      description: "",
+      hsnCode: "",
+      quantity: "",
+      ratePMT: "",
+      amount: "",
+    },
+  ],
+  totalProductAmount: "",
+  otherExpensesGSTText: "",
+  otherExpensesGST: "",
+  otherExpensesText: "",
+  otherExpenses: "",
+  gstType: {
+    type: "",
+    value: "",
+    gstAmount: 0,
+  },
+  grandTotal: 0,
+  roundOff: { added: false, amountInPaise: 0 },
+};
+
 const ItemsSell = ({ getUpdatedItemsSellValue = () => {} }) => {
-  const { invoiceDetails } = useSelector((state) => state.api);
+  const { invoiceDetails, isInvoiceSave } = useSelector((state) => state.api);
   const options = [
     {
       value: "igst",
@@ -32,32 +59,7 @@ const ItemsSell = ({ getUpdatedItemsSellValue = () => {} }) => {
   ];
   const [productsDDOptions, setProductsDDOptions] = useState([]);
   const [hsnCodeDDOptions, setHsnCodeDDOptions] = useState([]);
-  const [itemsSellForm, setItemsSellForm] = useState({
-    rowFields: [
-      {
-        sNo: 1,
-        bagsCount: "",
-        bagWeight: "",
-        description: "",
-        hsnCode: "",
-        quantity: "",
-        ratePMT: "",
-        amount: "",
-      },
-    ],
-    totalProductAmount: "",
-    otherExpensesGSTText: "",
-    otherExpensesGST: "",
-    otherExpensesText: "",
-    otherExpenses: "",
-    gstType: {
-      type: "",
-      value: "",
-      gstAmount: 0,
-    },
-    grandTotal: 0,
-    roundOff: { added: false, amountInPaise: 0 },
-  });
+  const [itemsSellForm, setItemsSellForm] = useState(initVal);
 
   const handleAddField = () => {
     setItemsSellForm((preVal) => {
@@ -118,6 +120,12 @@ const ItemsSell = ({ getUpdatedItemsSellValue = () => {} }) => {
   useEffect(() => {
     getUpdatedItemsSellValue(itemsSellForm);
   }, [itemsSellForm]);
+
+  useEffect(() => {
+    if (isInvoiceSave) {
+      setItemsSellForm(initVal);
+    }
+  }, [isInvoiceSave]);
 
   const handleChange = (e, value, type, index) => {
     const values = { ...itemsSellForm };

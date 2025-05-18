@@ -84,6 +84,12 @@ const BillForm = ({ className = "" }) => {
     setTransportCompaniesDDOptions(invoiceDetails?.transportCompanies);
   }, [invoiceDetails]);
 
+  useEffect(() => {
+    if (isInvoiceSave) {
+      setFormValues(formInitValues);
+    }
+  }, [isInvoiceSave]);
+
   const handleChange = (e, value, type, isBillTo = true) => {
     const values = { ...formValues };
     if (["name", "address", "gst", "state"].includes(type)) {
@@ -169,25 +175,27 @@ const BillForm = ({ className = "" }) => {
     setItemsSell(values);
   };
   const handleGenerateInvoice = () => {
-    payload = {
-      ...formValues,
-      shipToDetails: formValues?.isShiptoBDSame
-        ? formValues?.buyerDetails
-        : formValues?.shipToDetails,
-      invoiceNo: invoiceDetails?.nextInvoiceNo || 1,
-      productsSellDetails: {
-        productsSell: itemsSell?.rowFields,
-        [itemsSell?.gstType?.type]: itemsSell["gstType"].value,
-        gstAmount: Number(itemsSell["gstType"].gstAmount),
-        otherExpenses: Number(itemsSell.otherExpenses),
-        otherExpensesText: itemsSell.otherExpensesText,
-        otherExpensesGST: Number(itemsSell.otherExpensesGST),
-        otherExpensesGSTText: itemsSell.otherExpensesGSTText,
-        totalProductAmount: itemsSell.totalProductAmount,
-        grandTotal: Number(itemsSell.grandTotal),
-        roundOff: itemsSell.roundOff,
-      },
-    };
+    payload = JSON.parse(
+      JSON.stringify({
+        ...formValues,
+        shipToDetails: formValues?.isShiptoBDSame
+          ? formValues?.buyerDetails
+          : formValues?.shipToDetails,
+        invoiceNo: invoiceDetails?.nextInvoiceNo || 1,
+        productsSellDetails: {
+          productsSell: itemsSell?.rowFields,
+          [itemsSell?.gstType?.type]: itemsSell["gstType"].value,
+          gstAmount: Number(itemsSell["gstType"].gstAmount),
+          otherExpenses: Number(itemsSell.otherExpenses),
+          otherExpensesText: itemsSell.otherExpensesText,
+          otherExpensesGST: Number(itemsSell.otherExpensesGST),
+          otherExpensesGSTText: itemsSell.otherExpensesGSTText,
+          totalProductAmount: itemsSell.totalProductAmount,
+          grandTotal: Number(itemsSell.grandTotal),
+          roundOff: itemsSell.roundOff,
+        },
+      })
+    );
     dispatch(
       saveInvoiceDetails({
         method: "post",
