@@ -110,6 +110,9 @@ const ItemsSell = ({ getUpdatedItemsSellValue = () => {} }) => {
       invoiceDetails?.hsnCodes?.[invoiceDetails?.hsnCodes?.length - 1];
     values.rowFields[0]["description"] =
       invoiceDetails?.products?.[invoiceDetails?.products?.length - 1];
+    values.rowFields[0]["amount"] = "";
+    values.rowFields[0]["quantity"] = "";
+    values.rowFields[0]["ratePMT"] = "";
     values.gstType = {
       type: options[0].value,
       value: Number(invoiceDetails?.igst),
@@ -320,6 +323,7 @@ const ItemsSell = ({ getUpdatedItemsSellValue = () => {} }) => {
                   className="outline-none block w-[100%] font-bold text-center"
                   type="number"
                   min={1}
+                  value={itemsSellForm.rowFields[index]["quantity"]}
                   onChange={(e) => {
                     handleChange(e, e?.target?.value, "quantity", index);
                   }}
@@ -333,6 +337,7 @@ const ItemsSell = ({ getUpdatedItemsSellValue = () => {} }) => {
                   className="outline-none block w-[100%] text-center"
                   type="number"
                   min={1}
+                  value={itemsSellForm.rowFields[index]["ratePMT"]}
                   onChange={(e) => {
                     handleChange(e, e?.target?.value, "ratePMT", index);
                   }}
