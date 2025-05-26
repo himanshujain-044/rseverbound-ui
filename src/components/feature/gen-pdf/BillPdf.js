@@ -456,7 +456,7 @@ const BillPdfGen = ({ data = {} }) => {
           >
             <Text>Declaration</Text>
             <Text>
-              We declare that this invoices shows the actaul price of the goods
+              We declare that this invoice shows the actual price of the goods
               described and that all particulars are true and correct.
             </Text>
             <Text>
