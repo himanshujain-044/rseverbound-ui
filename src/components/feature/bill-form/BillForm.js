@@ -252,7 +252,7 @@ const BillForm = ({ className = "" }) => {
           <strong>MADHUVAN MINERALS & INDUSTRIES</strong>
           <span>WARD 31, NADI KE PASS, MAIN ROAD,</span>
           <span>SHAHGARH, SAGAR - 470339, MP, INDIA</span>
-          <strong>GSTIN/UIN: 23ABAFM01191ZF</strong>
+          <strong>GSTIN/UIN: 23ABAFM0119P1ZF</strong>
           <span>Contact: 7000042043, 9755421008</span>
         </Grid>
         <Grid xs={3} className="bottom-border">

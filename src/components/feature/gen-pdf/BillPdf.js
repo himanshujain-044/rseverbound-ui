@@ -55,7 +55,7 @@ const BillPdfGen = ({ data = {} }) => {
             <Text>WARD 31,NADI KE PASS,MAIN ROAD,</Text>
             <Text>SHAHGARH, SAGAR - 470339, MP, INDIA</Text>
             <Text style={{ fontFamily: "Helvetica-Bold" }}>
-              GSTIN/UIN: 23ABAFM01191ZF
+              GSTIN/UIN: 23ABAFM0119P1ZF
             </Text>
             <Text>State Name: Madhya Pradesh, Code: 23</Text>
             <Text>Contact - 7000042043, 9755421008</Text>
