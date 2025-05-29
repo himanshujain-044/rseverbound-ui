@@ -53,6 +53,14 @@ const SellHistory = () => {
         data={allSellsHistory?.length ? allSellsHistory : []}
         onCellClick={handleOnCellClick}
         tableProps={{ getRowClassName: getRowClassName }}
+        initialState={{
+          pagination: {
+            paginationModel: { page: 0, pageSize: 10 },
+          },
+          sorting: {
+            sortModel: [{ field: "invoiceNo", sort: "desc" }],
+          },
+        }}
       />
     </div>
   );

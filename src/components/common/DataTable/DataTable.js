@@ -19,6 +19,7 @@ const DataTable = ({
   data = [],
   cols = [],
   tableProps = {},
+  initialState = {},
   onCellClick = () => {},
 }) => {
   return (
@@ -27,11 +28,7 @@ const DataTable = ({
       columns={cols}
       columnVisibilityModel={{ id: false }}
       slots={{ noRowsOverlay: NoRowsOverlay }}
-      initialState={{
-        pagination: {
-          paginationModel: { page: 0, pageSize: 10 },
-        },
-      }}
+      initialState={initialState}
       pageSizeOptions={[5, 10]}
       onCellClick={onCellClick}
       className="data-table min-h-[8rem] mobile:text-[12px] mx-[4rem] mobile:mx-1 bg-[#fff]"
