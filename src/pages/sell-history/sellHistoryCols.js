@@ -12,7 +12,7 @@ export const sellHistoryCols = [
   },
   { field: "address", headerName: "Address", width: 130 },
   { field: "date", headerName: "Date", width: 140 },
-  { field: "invoiceNo", headerName: "Invoice No", width: 100 },
+  { field: "invoiceNo", headerName: "Invoice No", width: 80 },
   { field: "gst", headerName: "GST No", width: 150 },
   { field: "gstAmount", headerName: "GST Amount", width: 130 },
   { field: "otherExpenses", headerName: "Other Expenses Amount", width: 150 },
@@ -22,7 +22,7 @@ export const sellHistoryCols = [
   {
     field: "_id",
     headerName: "Action",
-    width: 50,
+    width: 80,
     renderCell: UpdateInvoice,
   },
 ];

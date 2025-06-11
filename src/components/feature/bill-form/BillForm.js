@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import Grid from "@mui/material/Grid";
@@ -11,6 +11,7 @@ import {
   getAllBuyers,
   getInvoiceDetails,
   saveInvoiceDetails,
+  updateInvoice,
 } from "../../../store/api";
 import { API_ENDPOINTS } from "../../../constants/apiEndPoints";
 import { DATED_OPTIONS } from "../../../constants/common";
@@ -38,19 +39,47 @@ const formInitValues = {
   buyerOrderNoValue: "",
   transportCompany: "",
 };
-const BillForm = ({ className = "" }) => {
+const BillForm = ({ data = null, className = "" }) => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const [formValues, setFormValues] = useState(formInitValues);
   const [itemsSell, setItemsSell] = useState();
-  const { invoiceDetails, allBuyers, isInvoiceSave } = useSelector(
-    (state) => state.api
-  );
+  const { invoiceDetails, allBuyers, isInvoiceSave, isInvoiceUpdated } =
+    useSelector((state) => state.api);
   const [buyersNameDDOptions, setBuyersNameDDOptions] = useState([]);
   const [vehiclesDDOptions, setVehiclesDDOptions] = useState([]);
   const [destinationsDDOptions, setDestinationsDDOptions] = useState([]);
   const [transportCompaniesDDOptions, setTransportCompaniesDDOptions] =
     useState([]);
+
+  useEffect(() => {
+    if (data?.invoiceNo) {
+      setFormValues({
+        buyerDetails: {
+          name: data?.buyerDetails?.name,
+          address: data?.buyerDetails?.address,
+          gst: data?.buyerDetails?.gst,
+          state: data?.buyerDetails?.state,
+        },
+        dated: data?.dated,
+        date: data?.date,
+        etpNo: data?.etpNo,
+        ewayBillNo: data?.ewayBillNo,
+        shipToDetails: {
+          name: data?.shipToDetails?.name,
+          address: data?.shipToDetails?.address,
+          gst: data?.shipToDetails?.gst,
+          state: data?.shipToDetails?.state,
+        },
+        isShiptoBDSame: data?.isShiptoBDSame,
+        vehicleNo: data?.vehicleNo,
+        destination: data?.destination,
+        buyerOrderNoText: "Buyer's Order No.",
+        buyerOrderNoValue: data?.buyerOrderNoValue,
+        transportCompany: data?.transportCompany,
+      });
+    }
+  }, [data]);
 
   useEffect(() => {
     if (!invoiceDetails) {
@@ -205,6 +234,38 @@ const BillForm = ({ className = "" }) => {
     );
   };
 
+  const handleUpdateInvoice = () => {
+    payload = JSON.parse(
+      JSON.stringify({
+        ...formValues,
+        shipToDetails: formValues?.isShiptoBDSame
+          ? formValues?.buyerDetails
+          : formValues?.shipToDetails,
+        invoiceNo: data?.invoiceNo,
+        productsSellDetails: {
+          productsSell: itemsSell?.rowFields,
+          [itemsSell?.gstType?.type]: itemsSell["gstType"].value,
+          gstAmount: Number(itemsSell["gstType"].gstAmount),
+          otherExpenses: Number(itemsSell.otherExpenses),
+          otherExpensesText: itemsSell.otherExpensesText,
+          otherExpensesGST: Number(itemsSell.otherExpensesGST),
+          otherExpensesGSTText: itemsSell.otherExpensesGSTText,
+          totalProductAmount: itemsSell.totalProductAmount,
+          grandTotal: Number(itemsSell.grandTotal),
+          roundOff: itemsSell.roundOff,
+        },
+        isWholeInvoiceUpdate: true,
+      })
+    );
+    dispatch(
+      updateInvoice({
+        method: "patch",
+        endpoint: API_ENDPOINTS.updateInvoice,
+        payload,
+      })
+    );
+  };
+
   const downloadPdf = async () => {
     const fileName = `${payload.buyerDetails.name}_${payload.date}.pdf`;
     const blob = await pdf(<BillPdf data={payload} />).toBlob();
@@ -258,7 +319,11 @@ const BillForm = ({ className = "" }) => {
         <Grid xs={3} className="bottom-border">
           <div className="pl-1 pb-1  bottom-border">
             <p>Invoice No.</p>
-            <strong>{invoiceDetails?.nextInvoiceNo}</strong>
+            <strong>
+              {data?.invoiceNo
+                ? data?.invoiceNo
+                : invoiceDetails?.nextInvoiceNo}
+            </strong>
           </div>
           <div className="pl-1 pb-1">
             <input
@@ -466,7 +531,7 @@ const BillForm = ({ className = "" }) => {
         </Grid>
         <ItemsSell
           getUpdatedItemsSellValue={getUpdatedItemsSellValue}
-          invoiceDetails={invoiceDetails}
+          productsSellDetails={data?.productsSellDetails}
         />
         <Grid
           xs={5}
@@ -518,11 +583,13 @@ const BillForm = ({ className = "" }) => {
             "bg-primary hover:bg-primary"
           )}
           disabled={isDisabled(formValues)}
-          onClick={handleGenerateInvoice}
+          onClick={
+            data?.invoiceNo ? handleUpdateInvoice : handleGenerateInvoice
+          }
         >
-          Generate Invoice
+          {data?.invoiceNo ? "Update Invoice" : "Generate Invoice"}
         </Button>
-        {isInvoiceSave && (
+        {(isInvoiceSave || isInvoiceUpdated) && (
           <>
             <Button
               variant="contained"

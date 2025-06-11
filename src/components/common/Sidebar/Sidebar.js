@@ -24,6 +24,14 @@ const Sidebar = () => {
   useEffect(() => {
     handleMenuClick({ route: location.pathname || ROUTES_LIST.dashboard });
   }, []);
+
+  useEffect(() => {
+    const activeRoute = menuList.find((menu) => menu.active === true);
+    navigate({
+      pathname: activeRoute?.route,
+    });
+  }, [menuList]);
+
   const handleMenuClick = (menu) => {
     const updatedList = menuList.map((menuItem) => {
       if (menuItem.route === menu.route) {
@@ -33,9 +41,6 @@ const Sidebar = () => {
       }
     });
     setMenuList(updatedList);
-    navigate({
-      pathname: menu.route,
-    });
   };
   const DrawerList = (
     <Box sx={{ width: 250 }} role="presentation" onClick={toggleDrawer(false)}>

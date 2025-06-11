@@ -38,7 +38,10 @@ const initVal = {
   roundOff: { added: false, amountInPaise: 0 },
 };
 
-const ItemsSell = ({ getUpdatedItemsSellValue = () => {} }) => {
+const ItemsSell = ({
+  getUpdatedItemsSellValue = () => {},
+  productsSellDetails,
+}) => {
   const { invoiceDetails, isInvoiceSave } = useSelector((state) => state.api);
   const options = [
     {
@@ -129,6 +132,28 @@ const ItemsSell = ({ getUpdatedItemsSellValue = () => {} }) => {
       setItemsSellForm(initVal);
     }
   }, [isInvoiceSave]);
+
+  useEffect(() => {
+    if (productsSellDetails?.productsSell?.length) {
+      setItemsSellForm({
+        rowFields: [...productsSellDetails?.productsSell],
+        totalProductAmount: productsSellDetails?.totalProductAmount,
+        otherExpensesGSTText: productsSellDetails?.otherExpensesGSTText,
+        otherExpensesGST: productsSellDetails?.otherExpensesGST,
+        otherExpensesText: productsSellDetails?.otherExpensesText,
+        otherExpenses: productsSellDetails?.otherExpenses,
+        gstType: {
+          type: productsSellDetails?.igst ? options[0].value : options[1].value,
+          value: productsSellDetails?.igst
+            ? productsSellDetails?.igst
+            : productsSellDetails?.sgst,
+          gstAmount: productsSellDetails?.gstAmount,
+        },
+        grandTotal: productsSellDetails?.grandTotal,
+        roundOff: { ...productsSellDetails?.roundOff },
+      });
+    }
+  }, [productsSellDetails]);
 
   const handleChange = (e, value, type, index) => {
     const values = { ...itemsSellForm };
