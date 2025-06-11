@@ -41,6 +41,7 @@ const initVal = {
 const ItemsSell = ({
   getUpdatedItemsSellValue = () => {},
   productsSellDetails,
+  formValues,
 }) => {
   const { invoiceDetails, isInvoiceSave } = useSelector((state) => state.api);
   const options = [
@@ -106,6 +107,7 @@ const ItemsSell = ({
   };
 
   useEffect(() => {
+    const buyerGst = formValues?.buyerDetails?.gst;
     setHsnCodeDDOptions(invoiceDetails?.hsnCodes);
     setProductsDDOptions(invoiceDetails?.products);
     const values = { ...itemsSellForm };
@@ -117,12 +119,18 @@ const ItemsSell = ({
     values.rowFields[0]["quantity"] = "";
     values.rowFields[0]["ratePMT"] = "";
     values.gstType = {
-      type: options[0].value,
-      value: Number(invoiceDetails?.igst),
+      type:
+        buyerGst && buyerGst?.startsWith("23")
+          ? options[1].value
+          : options[0].value,
+      value:
+        buyerGst && buyerGst?.startsWith("23")
+          ? Number(invoiceDetails?.sgst) + Number(invoiceDetails?.cgst)
+          : Number(invoiceDetails?.igst),
       gstAmount: 0,
     };
     setItemsSellForm(values);
-  }, [invoiceDetails]);
+  }, [invoiceDetails, formValues]);
   useEffect(() => {
     getUpdatedItemsSellValue(itemsSellForm);
   }, [itemsSellForm]);

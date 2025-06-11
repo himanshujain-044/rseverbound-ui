@@ -531,7 +531,8 @@ const BillForm = ({ data = null, className = "" }) => {
         </Grid>
         <ItemsSell
           getUpdatedItemsSellValue={getUpdatedItemsSellValue}
-          productsSellDetails={data?.productsSellDetails}
+          productsSellDetails={data?.productsSellDetails} // update invoice det
+          formValues={formValues}
         />
         <Grid
           xs={5}
