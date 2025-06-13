@@ -18,7 +18,7 @@ const UpdateInvoice = (props) => {
 
   useEffect(() => {
     if (sellData?.invoiceNo && isEditClicked) {
-      navigate(ROUTES_LIST.dashboard, { state: sellData });
+      navigate(ROUTES_LIST.dashboard);
     }
   }, [sellData]);
 

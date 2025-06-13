@@ -107,29 +107,41 @@ const ItemsSell = ({
   };
 
   useEffect(() => {
-    const buyerGst = formValues?.buyerDetails?.gst;
-    setHsnCodeDDOptions(invoiceDetails?.hsnCodes);
-    setProductsDDOptions(invoiceDetails?.products);
-    const values = { ...itemsSellForm };
-    values.rowFields[0]["hsnCode"] =
-      invoiceDetails?.hsnCodes?.[invoiceDetails?.hsnCodes?.length - 1];
-    values.rowFields[0]["description"] =
-      invoiceDetails?.products?.[invoiceDetails?.products?.length - 1];
-    values.rowFields[0]["amount"] = "";
-    values.rowFields[0]["quantity"] = "";
-    values.rowFields[0]["ratePMT"] = "";
-    values.gstType = {
-      type:
-        buyerGst && buyerGst?.startsWith("23")
-          ? options[1].value
-          : options[0].value,
-      value:
-        buyerGst && buyerGst?.startsWith("23")
-          ? Number(invoiceDetails?.sgst) + Number(invoiceDetails?.cgst)
-          : Number(invoiceDetails?.igst),
-      gstAmount: 0,
-    };
-    setItemsSellForm(values);
+    if (invoiceDetails?.nextInvoiceNo) {
+      const buyerGst = formValues?.buyerDetails?.gst;
+      setHsnCodeDDOptions(invoiceDetails?.hsnCodes);
+      setProductsDDOptions(invoiceDetails?.products);
+      const values = { ...itemsSellForm };
+      if (!values.rowFields[0]["hsnCode"]) {
+        values.rowFields[0]["hsnCode"] =
+          invoiceDetails?.hsnCodes?.[invoiceDetails?.hsnCodes?.length - 1];
+      }
+      if (!values.rowFields[0]["description"]) {
+        values.rowFields[0]["description"] =
+          invoiceDetails?.products?.[invoiceDetails?.products?.length - 1];
+      }
+      if (!values.rowFields[0]["amount"]) {
+        values.rowFields[0]["amount"] = "";
+      }
+      if (!values.rowFields[0]["quantity"]) {
+        values.rowFields[0]["quantity"] = "";
+      }
+      if (!values.rowFields[0]["ratePMT"]) {
+        values.rowFields[0]["ratePMT"] = "";
+      }
+      values.gstType = {
+        type:
+          buyerGst && buyerGst?.startsWith("23")
+            ? options[1].value
+            : options[0].value,
+        value:
+          buyerGst && buyerGst?.startsWith("23")
+            ? Number(invoiceDetails?.sgst) + Number(invoiceDetails?.cgst)
+            : Number(invoiceDetails?.igst),
+        gstAmount: values.gstType.gstAmount ? values.gstType.gstAmount : 0,
+      };
+      setItemsSellForm(values);
+    }
   }, [invoiceDetails, formValues]);
   useEffect(() => {
     getUpdatedItemsSellValue(itemsSellForm);
@@ -143,8 +155,22 @@ const ItemsSell = ({
 
   useEffect(() => {
     if (productsSellDetails?.productsSell?.length) {
+      const rowFieldsVal = productsSellDetails?.productsSell.map(
+        (productSellDet) => {
+          return {
+            sNo: productSellDet?.sNo,
+            bagsCount: productSellDet?.bagsCount,
+            bagWeight: productSellDet?.bagWeight,
+            description: productSellDet?.description,
+            hsnCode: productSellDet?.hsnCode,
+            quantity: productSellDet?.quantity,
+            ratePMT: productSellDet?.ratePMT,
+            amount: productSellDet?.amount,
+          };
+        }
+      );
       setItemsSellForm({
-        rowFields: [...productsSellDetails?.productsSell],
+        rowFields: [...rowFieldsVal],
         totalProductAmount: productsSellDetails?.totalProductAmount,
         otherExpensesGSTText: productsSellDetails?.otherExpensesGSTText,
         otherExpensesGST: productsSellDetails?.otherExpensesGST,
@@ -313,6 +339,7 @@ const ItemsSell = ({
                   className="outline-none block w-[100%] font-bold text-center"
                   type="number"
                   min={1}
+                  value={itemsSellForm.rowFields[index]["bagsCount"]}
                   onChange={(e) => {
                     handleChange(e, e?.target?.value, "bagsCount", index);
                   }}
@@ -323,6 +350,7 @@ const ItemsSell = ({
                   className="outline-none block w-[100%] font-bold text-center"
                   type="number"
                   min={1}
+                  value={itemsSellForm.rowFields[index]["bagWeight"]}
                   onChange={(e) => {
                     handleChange(e, e?.target?.value, "bagWeight", index);
                   }}
@@ -431,6 +459,7 @@ const ItemsSell = ({
                 type="number"
                 className="outline-none w-28"
                 placeholder="0000"
+                value={itemsSellForm.otherExpensesGST}
                 onChange={(e) => {
                   handleChange(e, e?.target?.value, "otherExpensesGST", null);
                 }}
@@ -510,6 +539,7 @@ const ItemsSell = ({
                 type="number"
                 className="outline-none w-28"
                 placeholder="0000"
+                value={itemsSellForm.otherExpenses}
                 onChange={(e) => {
                   handleChange(e, e?.target?.value, "otherExpenses", null);
                 }}
