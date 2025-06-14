@@ -21,26 +21,17 @@ const Sidebar = () => {
   const toggleDrawer = (newOpen) => () => {
     setOpen(newOpen);
   };
-  useEffect(() => {
-    handleMenuClick({ route: location.pathname || ROUTES_LIST.dashboard });
-  }, []);
 
   useEffect(() => {
-    const activeRoute = menuList.find((menu) => menu.active === true);
     navigate({
-      pathname: activeRoute?.route,
+      pathname: location.pathname,
     });
-  }, [menuList]);
+  }, [location]);
 
   const handleMenuClick = (menu) => {
-    const updatedList = menuList.map((menuItem) => {
-      if (menuItem.route === menu.route) {
-        return { ...menuItem, active: true };
-      } else {
-        return { ...menuItem, active: false };
-      }
+    navigate({
+      pathname: menu?.route,
     });
-    setMenuList(updatedList);
   };
   const DrawerList = (
     <Box sx={{ width: 250 }} role="presentation" onClick={toggleDrawer(false)}>
@@ -54,8 +45,14 @@ const Sidebar = () => {
             disablePadding
             onClick={() => handleMenuClick(menu)}
           >
-            <ListItemButton className={cx(menu.active && "text-primary")}>
-              <ListItemIcon className={cx(menu.active && "text-primary")}>
+            <ListItemButton
+              className={cx(location.pathname === menu.route && "text-primary")}
+            >
+              <ListItemIcon
+                className={cx(
+                  location.pathname === menu.route && "text-primary"
+                )}
+              >
                 {menu.icon}
               </ListItemIcon>
               <ListItemText primary={menu.text} />

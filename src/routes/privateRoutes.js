@@ -1,5 +1,5 @@
 import { lazy, Suspense } from "react";
-import { Route, Routes } from "react-router-dom";
+import { Navigate, Route, Routes } from "react-router-dom";
 import { ROUTES_LIST } from "../constants/routes";
 import FullPageLoadingSpinner from "../components/common/FullPageLoadingSpinner/FullPageLoadingSpinner";
 const Dashboard = lazy(() => import("../pages/dashboard/Dashboard"));
@@ -18,7 +18,10 @@ const PrivateRoutes = () => {
           <Route path={ROUTES_LIST.pdfViewer} element={<PdfViewer />} />
           <Route path={ROUTES_LIST.sellHistory} element={<SellHistory />} />
           <Route path={ROUTES_LIST.reports} element={<Reports />} />
-          <Route path="/*" element={<Dashboard />} />
+          <Route
+            path="/*"
+            element={<Navigate to={ROUTES_LIST.dashboard} replace />}
+          />
         </Routes>
       </div>
     </Suspense>
