@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { saveAs } from "file-saver";
 import { pdf, PDFViewer } from "@react-pdf/renderer";
 import BillPdf from "../../components/feature/gen-pdf/BillPdf";
@@ -12,7 +12,7 @@ const PdfViewer = () => {
   const location = useLocation();
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const data = location.state;
+  const [data, setData] = useState();
   useEffect(() => {
     dispatch(
       clearSomeStates({
@@ -20,6 +20,11 @@ const PdfViewer = () => {
       })
     );
   }, []);
+  useEffect(() => {
+    if (location.state) {
+      setData(location.state);
+    }
+  }, [location.state]);
   const onClickBackToDashboard = () => {
     navigate({
       pathname: ROUTES_LIST.dashboard,

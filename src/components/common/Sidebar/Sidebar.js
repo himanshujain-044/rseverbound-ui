@@ -26,7 +26,7 @@ const Sidebar = () => {
     navigate({
       pathname: location.pathname,
     });
-  }, [location]);
+  }, [location.pathname]);
 
   const handleMenuClick = (menu) => {
     navigate({

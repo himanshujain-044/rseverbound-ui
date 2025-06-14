@@ -21,8 +21,9 @@ const styles = StyleSheet.create({
 });
 
 const BillPdfGen = ({ data = {} }) => {
+  const pdfTitle = `${data?.buyerDetails?.name}_${data?.date}`;
   return (
-    <Document title={`${data?.buyerDetails?.name}_${data?.date}`}>
+    <Document title={pdfTitle} key={pdfTitle}>
       <Page
         size="A4"
         style={{
@@ -32,6 +33,7 @@ const BillPdfGen = ({ data = {} }) => {
           fontSize: "10px",
           lineHeight: "16px",
         }}
+        key="pdf-page"
       >
         <View style={styles.section}>
           <Text
@@ -461,9 +463,7 @@ const BillPdfGen = ({ data = {} }) => {
             </Text>
             <Text>
               Company's PAN:
-              <Text style={{ fontFamily: "Helvetica-Bold" }}>
-                ABAFM0119P
-              </Text>
+              <Text style={{ fontFamily: "Helvetica-Bold" }}>ABAFM0119P</Text>
             </Text>
           </View>
           <View
