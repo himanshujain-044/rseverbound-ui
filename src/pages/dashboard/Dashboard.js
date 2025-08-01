@@ -1,12 +1,14 @@
 import { useEffect } from "react";
 import BillForm from "../../components/feature/bill-form/BillForm";
-import { useLocation } from "react-router-dom";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import { clearSomeStates } from "../../store/api";
 
 const Dashboard = () => {
   const { sellData } = useSelector((state) => state.api);
+  const dispatch = useDispatch();
   useEffect(() => {
     document.title = "Madhuvan Minerals - Dashbaord";
+    dispatch(clearSomeStates({ stateKeys: ["sellsReportsData"] }));
   }, []);
 
   return (

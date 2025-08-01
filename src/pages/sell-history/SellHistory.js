@@ -1,18 +1,18 @@
-// import { SellHistory } from "@react-pdf/renderer";
-import { useLocation, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { ROUTES_LIST } from "../../constants/routes";
 import { useEffect, useState } from "react";
 import DataTable from "../../components/common/DataTable/DataTable";
 import { sellHistoryCols } from "./sellHistoryCols";
 import { useDispatch, useSelector } from "react-redux";
-import { getSellData, getSellsHistory } from "../../store/api";
+import { clearSomeStates, getSellData, getSellsHistory } from "../../store/api";
 import { API_ENDPOINTS } from "../../constants/apiEndPoints";
 const SellHistory = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const [isRowClicked, setIsRowClicked] = useState(false);
   const { allSellsHistory, isInvoiceSave, sellData, isInvoiceUpdated } =
     useSelector((state) => state.api);
+
+  const [isRowClicked, setIsRowClicked] = useState(false);
   useEffect(() => {
     if (!allSellsHistory || isInvoiceSave || isInvoiceUpdated) {
       dispatch(
@@ -22,6 +22,7 @@ const SellHistory = () => {
         })
       );
     }
+    dispatch(clearSomeStates({ stateKeys: ["sellsReportsData"] }));
   }, [isInvoiceUpdated, isInvoiceSave]);
 
   useEffect(() => {

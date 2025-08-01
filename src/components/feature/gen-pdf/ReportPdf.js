@@ -38,7 +38,7 @@ const ReportPdf = ({ data = [], title }) => {
               padding: "6px",
             }}
           >
-            Bill No.
+            Invoice No.
           </Text>
           <Text
             style={{
