@@ -1,6 +1,7 @@
 import * as React from "react";
 import { DataGrid } from "@mui/x-data-grid";
 import noDataAvailableImg from "../../../assets/images/no-data-available.png";
+import cx from "classnames";
 import "./DataTable.scss";
 
 const NoRowsOverlay = () => {
@@ -21,7 +22,15 @@ const DataTable = ({
   tableProps = {},
   initialState = {},
   onCellClick = () => {},
+  className = "",
 }) => {
+  const getRowId = (row) => {
+    if (row._id) {
+      return row._id;
+    } else {
+      return row.id;
+    }
+  };
   return (
     <DataGrid
       rows={data}
@@ -31,7 +40,11 @@ const DataTable = ({
       initialState={initialState}
       pageSizeOptions={[5, 10]}
       onCellClick={onCellClick}
-      className="data-table min-h-[8rem] mobile:text-[12px] mx-[4rem] mobile:mx-1 bg-[#fff]"
+      getRowId={getRowId}
+      className={cx(
+        "data-table min-h-[8rem] mobile:text-[12px] mx-[4rem] mobile:mx-1 bg-[#fff]",
+        className
+      )}
       {...tableProps}
     />
   );

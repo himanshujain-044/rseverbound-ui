@@ -1,6 +1,7 @@
 import WorkHistoryOutlinedIcon from "@mui/icons-material/WorkHistoryOutlined";
 import DashboardCustomizeOutlinedIcon from "@mui/icons-material/DashboardCustomizeOutlined";
 import AssessmentOutlinedIcon from "@mui/icons-material/AssessmentOutlined";
+import CreditScoreOutlinedIcon from "@mui/icons-material/CreditScoreOutlined";
 import { ROUTES_LIST } from "./routes";
 export const CURRENT_YEAR = new Date().getFullYear();
 
@@ -132,6 +133,12 @@ export const SIDEBAR_MENU_LIST = [
     icon: <AssessmentOutlinedIcon />,
     text: "Reports",
     route: ROUTES_LIST.reports,
+    active: false,
+  },
+  {
+    icon: <CreditScoreOutlinedIcon />,
+    text: "Customer Account",
+    route: ROUTES_LIST.customerAccount,
     active: false,
   },
 ];

@@ -5,7 +5,7 @@ import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import EventOutlinedIcon from "@mui/icons-material/EventOutlined";
 
-const DatePickerComp = ({ value = null, onDateChange = () => {} }) => {
+const DatePickerComp = ({ props, value = null, onDateChange = () => {} }) => {
   return (
     <LocalizationProvider dateAdapter={AdapterDayjs} sx={{}}>
       <DemoItem>
@@ -31,6 +31,7 @@ const DatePickerComp = ({ value = null, onDateChange = () => {} }) => {
             },
           }}
           value={dayjs(dayjs(value).format("YYYY/MM/DD"))}
+          {...props}
         />
       </DemoItem>
       <EventOutlinedIcon className="fill-primary hidden mobile:flex relative bottom-[1px] right-[24px]" />

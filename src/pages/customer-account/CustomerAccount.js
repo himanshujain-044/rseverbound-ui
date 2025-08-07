@@ -1,0 +1,203 @@
+import SearchableDD from "../../components/common/SearchableDD/SearchableDD";
+import { Button, Grid } from "@mui/material";
+import { useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import {
+  getBuyerSellData,
+  clearSomeStates,
+  getAllBuyers,
+  saveBuyerCreditAmount,
+  getBuyerCreditDetails,
+} from "../../store/api";
+import { API_ENDPOINTS } from "../../constants/apiEndPoints";
+import DataTable from "../../components/common/DataTable/DataTable";
+import DatePickerComp from "../../components/common/DatePickerComp/DatePickerComp";
+import { formatDate } from "../../utils/helperFunction";
+import {
+  customerCreditAcCols,
+  customerDebitAcCols,
+} from "./customerAccountCols";
+import cx from "classnames";
+
+const CustomerAccount = () => {
+  const dispatch = useDispatch();
+  const {
+    allBuyers,
+    buyerSellData,
+    buyerCreditDetails,
+    isBuyerCreditAmtDetSave,
+  } = useSelector((state) => state.api);
+  const [buyersNameDDOptions, setBuyersNameDDOptions] = useState([]);
+  const [buyerDetails, setBuyerDetails] = useState("");
+  const [amount, setAmount] = useState("");
+  const [date, setDate] = useState(formatDate(new Date()));
+
+  useEffect(() => {
+    document.title = "Madhuvan Minerals - Dashbaord";
+    dispatch(clearSomeStates({ stateKeys: ["sellsReportsData"] }));
+    dispatch(
+      getAllBuyers({
+        method: "get",
+        endpoint: API_ENDPOINTS.getAllBuyers,
+      })
+    );
+  }, []);
+
+  useEffect(() => {
+    if (allBuyers?.length) {
+      const buyersNames = [];
+      allBuyers.forEach((buyer) => {
+        buyersNames.push(`${buyer?.name},${buyer?.gst}`);
+      });
+      setBuyersNameDDOptions(buyersNames);
+    }
+  }, [allBuyers]);
+
+  useEffect(() => {
+    if (buyerDetails && date) {
+      dispatch(
+        getBuyerSellData({
+          method: "get",
+          endpoint: API_ENDPOINTS.getBuyerSellData,
+          payload: { buyerDetails, date },
+        })
+      );
+
+      dispatch(
+        getBuyerCreditDetails({
+          method: "get",
+          endpoint: API_ENDPOINTS.buyerCreditAmount,
+          payload: { buyerDetails, date },
+        })
+      );
+    }
+  }, [buyerDetails, date]);
+
+  useEffect(() => {
+    if (isBuyerCreditAmtDetSave) {
+      dispatch(
+        getBuyerCreditDetails({
+          method: "get",
+          endpoint: API_ENDPOINTS.buyerCreditAmount,
+          payload: { buyerDetails, date },
+        })
+      );
+    }
+  }, [isBuyerCreditAmtDetSave]);
+
+  const handleOnDateChange = (e) => {
+    setDate(formatDate(new Date(e)));
+  };
+
+  const handleSaveBuyerCrAmt = () => {
+    const [companyName, gst] = buyerDetails?.split(",");
+    dispatch(
+      saveBuyerCreditAmount({
+        method: "post",
+        endpoint: API_ENDPOINTS.buyerCreditAmount,
+        payload: {
+          name: companyName,
+          gst,
+          date,
+          amount,
+        },
+      })
+    );
+  };
+
+  return (
+    <div className="h-[calc(100%_-_1rem)] flex flex-col gap-12 my-2 mx-6 mobile:h-[calc(100%_-_2.5rem)] mobile:mx-0">
+      <Grid container className="flex justify-around">
+        <Grid size={{ lg: 5, md: 5 }} className="mx-2 flex flex-col gap-3">
+          <div className="flex justify-center items-center">
+            <strong className="min-w-max mr-1">Select Buyer -</strong>
+            <SearchableDD
+              ddOptions={buyersNameDDOptions}
+              onInputChangeDDSearch={(e, value) => {
+                setBuyerDetails(value);
+              }}
+              ddValue={buyerDetails}
+            />
+          </div>
+          <DatePickerComp
+            props={{ views: ["month", "year"], format: "MM/YYYY" }}
+            value={date}
+            onDateChange={handleOnDateChange}
+          />
+        </Grid>
+        <Grid
+          size={{ lg: 7, md: 7 }}
+          className={cx(
+            "border-inputLabel border-[1px] rounded-[4px] p-[12px] flex justify-center items-center gap-4",
+            !buyerDetails &&
+              "pointer-events-none cursor-not-allowed bg-[lightgrey]"
+          )}
+        >
+          <div>
+            <strong className="min-w-max flex justify-between items-center gap-3">
+              <span>Select Date </span>
+              <span>
+                <DatePickerComp
+                  value={date}
+                  onDateChange={handleOnDateChange}
+                />
+              </span>
+            </strong>
+            <strong className="flex justify-between items-center gap-3">
+              <span>Amount -</span>
+              <input
+                type="number"
+                className="outline-none w-36"
+                placeholder="0000"
+                value={amount}
+                onChange={(e) => {
+                  setAmount(e?.target?.value);
+                }}
+              />
+            </strong>
+          </div>
+          <Button
+            variant="contained"
+            className="w-[180px] h-[30px] mobile:text-[12px] mobile:h-[30px] bg-primary hover:bg-primary"
+            disabled={!amount}
+            onClick={handleSaveBuyerCrAmt}
+          >
+            Add Pay Record
+          </Button>
+        </Grid>
+      </Grid>
+      <Grid container className="flex gap-2">
+        <Grid className="h-[490px] w-[49%] mobile:w-[100%]">
+          <div>Credit</div>
+          <DataTable
+            cols={customerCreditAcCols}
+            data={buyerCreditDetails}
+            initialState={{
+              pagination: {
+                paginationModel: { page: 0, pageSize: 30 },
+              },
+            }}
+            className="mx-2"
+          />
+        </Grid>
+        <Grid className="h-[490px] w-[49%] mobile:w-[100%]">
+          <div>Debit</div>
+          <DataTable
+            cols={customerDebitAcCols}
+            data={buyerSellData}
+            initialState={{
+              pagination: {
+                paginationModel: { page: 0, pageSize: 30 },
+              },
+              sorting: {
+                sortModel: [{ field: "invoiceNo", sort: "desc" }],
+              },
+            }}
+            className="mx-2"
+          />
+        </Grid>
+      </Grid>
+    </div>
+  );
+};
+export default CustomerAccount;

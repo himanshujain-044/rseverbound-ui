@@ -154,6 +154,57 @@ export const updateInvoice = createAsyncThunk(
   }
 );
 
+export const getBuyerSellData = createAsyncThunk(
+  "buyer-sell-data",
+  async (apiData, { rejectWithValue }) => {
+    try {
+      const { method, endpoint, payload } = apiData;
+      const response = await apiReq({
+        method,
+        endpoint,
+        payload,
+      });
+      return response;
+    } catch (err) {
+      return rejectWithValue(err?.response || err);
+    }
+  }
+);
+
+export const saveBuyerCreditAmount = createAsyncThunk(
+  "buyer-credit-amount",
+  async (apiData, { rejectWithValue }) => {
+    try {
+      const { method, endpoint, payload } = apiData;
+      const response = await apiReq({
+        method,
+        endpoint,
+        payload,
+      });
+      return response;
+    } catch (err) {
+      return rejectWithValue(err?.response || err);
+    }
+  }
+);
+
+export const getBuyerCreditDetails = createAsyncThunk(
+  "get-buyer-credit-details",
+  async (apiData, { rejectWithValue }) => {
+    try {
+      const { method, endpoint, payload } = apiData;
+      const response = await apiReq({
+        method,
+        endpoint,
+        payload,
+      });
+      return response;
+    } catch (err) {
+      return rejectWithValue(err?.response || err);
+    }
+  }
+);
+
 const apiReducer = createSlice({
   name: "data",
   initialState: {
@@ -170,6 +221,9 @@ const apiReducer = createSlice({
     sellData: "",
     sellsReportsData: "",
     isInvoiceUpdated: "",
+    buyerSellData: [],
+    isBuyerCreditAmtDetSave: "",
+    buyerCreditDetails: "",
   },
   reducers: {
     clearAPIState: (state, action) => {
@@ -183,6 +237,9 @@ const apiReducer = createSlice({
       state.sellData = "";
       state.sellsReportsData = "";
       state.isInvoiceUpdated = "";
+      state.buyerSellData = "";
+      state.isBuyerCreditAmtDetSave = "";
+      state.buyerCreditDetails = "";
     },
     clearSomeStates: (state, action) => {
       action.payload.stateKeys.map((key) => {
@@ -356,6 +413,62 @@ const apiReducer = createSlice({
       .addCase(updateInvoice.rejected, (state, action) => {
         const { code, message } = action.payload?.data;
         state.isInvoiceUpdated = "";
+        state.statusCode = code;
+        state.message = message;
+        state.reqCount -= 1;
+        state.success = false;
+      })
+      .addCase(getBuyerSellData.pending, (state, action) => {
+        state.reqCount += 1;
+        state.message = "Fetching buyer's sell data ...";
+        state.buyerSellData = "";
+      })
+      .addCase(getBuyerSellData.fulfilled, (state, action) => {
+        const { data } = action.payload?.data;
+        state.reqCount -= 1;
+        state.success = true;
+        state.buyerSellData = data;
+      })
+      .addCase(getBuyerSellData.rejected, (state, action) => {
+        const { code, message } = action.payload?.data;
+        state.buyerSellData = "";
+        state.statusCode = code;
+        state.message = message;
+        state.reqCount -= 1;
+        state.success = false;
+      })
+      .addCase(saveBuyerCreditAmount.pending, (state, action) => {
+        state.reqCount += 1;
+        state.message = "Saving the buyer credit amount details ...";
+        state.isBuyerCreditAmtDetSave = "";
+      })
+      .addCase(saveBuyerCreditAmount.fulfilled, (state, action) => {
+        state.reqCount -= 1;
+        state.success = true;
+        state.isBuyerCreditAmtDetSave = true;
+      })
+      .addCase(saveBuyerCreditAmount.rejected, (state, action) => {
+        const { code, message } = action.payload?.data;
+        state.isBuyerCreditAmtDetSave = "";
+        state.statusCode = code;
+        state.message = message;
+        state.reqCount -= 1;
+        state.success = false;
+      })
+      .addCase(getBuyerCreditDetails.pending, (state, action) => {
+        state.reqCount += 1;
+        state.message = "Fetching the buyer credit details";
+        state.buyerCreditDetails = "";
+      })
+      .addCase(getBuyerCreditDetails.fulfilled, (state, action) => {
+        const { data } = action.payload?.data;
+        state.reqCount -= 1;
+        state.success = true;
+        state.buyerCreditDetails = data;
+      })
+      .addCase(getBuyerCreditDetails.rejected, (state, action) => {
+        const { code, message } = action.payload?.data;
+        state.buyerCreditDetails = "";
         state.statusCode = code;
         state.message = message;
         state.reqCount -= 1;

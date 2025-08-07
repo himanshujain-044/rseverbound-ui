@@ -4,4 +4,5 @@ export const ROUTES_LIST = {
   pdfViewer: "/pdf-viewer",
   sellHistory: "/sell-history",
   reports: "/reports",
+  customerAccount:"/customer-account"
 };

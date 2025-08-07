@@ -7,6 +7,9 @@ const Header = lazy(() => import("../layouts/header/Header"));
 const PdfViewer = lazy(() => import("../pages/pdf-viewer/PdfViewer"));
 const SellHistory = lazy(() => import("../pages/sell-history/SellHistory"));
 const Reports = lazy(() => import("../pages/reports/Reports"));
+const CustomerAccount = lazy(() =>
+  import("../pages/customer-account/CustomerAccount")
+);
 
 const PrivateRoutes = () => {
   return (
@@ -18,6 +21,10 @@ const PrivateRoutes = () => {
           <Route path={ROUTES_LIST.pdfViewer} element={<PdfViewer />} />
           <Route path={ROUTES_LIST.sellHistory} element={<SellHistory />} />
           <Route path={ROUTES_LIST.reports} element={<Reports />} />
+          <Route
+            path={ROUTES_LIST.customerAccount}
+            element={<CustomerAccount />}
+          />
           <Route
             path="/*"
             element={<Navigate to={ROUTES_LIST.dashboard} replace />}

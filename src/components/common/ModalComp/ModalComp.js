@@ -42,10 +42,6 @@ const ModalComp = ({
         {content}
       </Box>
     </Modal>
-    // <div>
-    // {/* <Button onClick={handleOpen}>Open modal</Button> */}
-
-    // </div>
   );
 };
 export default ModalComp;

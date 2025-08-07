@@ -17,4 +17,6 @@ export const API_ENDPOINTS = {
   getSellData: `${sellsBaseUrl}/sell-data`,
   getSellsReportsData: `${sellsBaseUrl}/sells-reports`,
   updateInvoice: `${sellsBaseUrl}/update-invoice`,
+  getBuyerSellData: `${sellsBaseUrl}/buyer-sell-data`,
+  buyerCreditAmount: `${buyersBaseUrl}/buyer-credit-amount`,
 };
