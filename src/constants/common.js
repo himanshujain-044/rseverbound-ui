@@ -116,6 +116,16 @@ export const STATES_GST_CODE = [
   { state: "Puducherry", state_code: "PY", gst_code: "34" },
 ];
 
+export const FINANCIAL_YEARS = [
+  "2025-2026",
+  "2026-2027",
+  "2027-2028",
+  "2028-2029",
+  "2029-2030",
+  "2030-2031",
+  "2031-2032",
+];
+
 export const SIDEBAR_MENU_LIST = [
   {
     icon: <DashboardCustomizeOutlinedIcon />,

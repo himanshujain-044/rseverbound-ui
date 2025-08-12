@@ -2,6 +2,7 @@ import SearchableDD from "../../components/common/SearchableDD/SearchableDD";
 import { Button, Grid } from "@mui/material";
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
+import dayjs from "dayjs";
 import {
   getBuyerSellData,
   clearSomeStates,
@@ -18,6 +19,7 @@ import {
   customerDebitAcCols,
 } from "./customerAccountCols";
 import cx from "classnames";
+import { FINANCIAL_YEARS } from "../../constants/common";
 
 const CustomerAccount = () => {
   const dispatch = useDispatch();
@@ -30,6 +32,10 @@ const CustomerAccount = () => {
   const [buyersNameDDOptions, setBuyersNameDDOptions] = useState([]);
   const [buyerDetails, setBuyerDetails] = useState("");
   const [amount, setAmount] = useState("");
+  const [description, setDescription] = useState("");
+  const [financialYear, setFinancialYear] = useState(
+    `${new Date().getFullYear()}-${new Date().getFullYear() + 1}`
+  );
   const [date, setDate] = useState(formatDate(new Date()));
 
   useEffect(() => {
@@ -59,19 +65,18 @@ const CustomerAccount = () => {
         getBuyerSellData({
           method: "get",
           endpoint: API_ENDPOINTS.getBuyerSellData,
-          payload: { buyerDetails, date },
+          payload: { buyerDetails, financialYear },
         })
       );
-
       dispatch(
         getBuyerCreditDetails({
           method: "get",
           endpoint: API_ENDPOINTS.buyerCreditAmount,
-          payload: { buyerDetails, date },
+          payload: { buyerDetails, financialYear },
         })
       );
     }
-  }, [buyerDetails, date]);
+  }, [buyerDetails, financialYear]);
 
   useEffect(() => {
     if (isBuyerCreditAmtDetSave) {
@@ -79,11 +84,15 @@ const CustomerAccount = () => {
         getBuyerCreditDetails({
           method: "get",
           endpoint: API_ENDPOINTS.buyerCreditAmount,
-          payload: { buyerDetails, date },
+          payload: { buyerDetails, financialYear },
         })
       );
     }
   }, [isBuyerCreditAmtDetSave]);
+
+  useEffect(() => {
+    setDate(formatDate(new Date(`01-Apr-${financialYear?.split("-")[0]}`)));
+  }, [financialYear]);
 
   const handleOnDateChange = (e) => {
     setDate(formatDate(new Date(e)));
@@ -100,6 +109,7 @@ const CustomerAccount = () => {
           gst,
           date,
           amount,
+          description,
         },
       })
     );
@@ -119,11 +129,17 @@ const CustomerAccount = () => {
               ddValue={buyerDetails}
             />
           </div>
-          <DatePickerComp
-            props={{ views: ["month", "year"], format: "MM/YYYY" }}
-            value={date}
-            onDateChange={handleOnDateChange}
-          />
+
+          <div className="flex justify-center items-center">
+            <strong className="min-w-max mr-1">Financial Year -</strong>
+            <SearchableDD
+              ddOptions={FINANCIAL_YEARS}
+              onInputChangeDDSearch={(e, value) => {
+                setFinancialYear(value);
+              }}
+              ddValue={financialYear}
+            />
+          </div>
         </Grid>
         <Grid
           size={{ lg: 7, md: 7 }}
@@ -134,12 +150,16 @@ const CustomerAccount = () => {
           )}
         >
           <div>
-            <strong className="min-w-max flex justify-between items-center gap-3">
+            <strong className="min-w-max flex justify-between items-center gap-3 my-1">
               <span>Select Date </span>
               <span>
                 <DatePickerComp
                   value={date}
                   onDateChange={handleOnDateChange}
+                  props={{
+                    minDate: dayjs(`${financialYear?.split("-")[0]}-04-01`),
+                    maxDate: dayjs(`${financialYear?.split("-")[1]}-03-31`),
+                  }}
                 />
               </span>
             </strong>
@@ -155,6 +175,18 @@ const CustomerAccount = () => {
                 }}
               />
             </strong>
+            <strong className="flex justify-between items-center gap-3 my-1">
+              <span>Description -</span>
+              <textarea
+                className="outline-none w-36"
+                placeholder="Enter text ..."
+                value={description}
+                onChange={(e) => {
+                  setDescription(e?.target?.value);
+                }}
+                rows={2}
+              />
+            </strong>
           </div>
           <Button
             variant="contained"
@@ -166,12 +198,48 @@ const CustomerAccount = () => {
           </Button>
         </Grid>
       </Grid>
+      <Grid container className="flex items-center justify-center gap-4">
+        <strong>
+          Total Credit -
+          <span className="text-[green] ml-[2px]">
+            {buyerCreditDetails?.totalFinanceYearCredAtm
+              ? buyerCreditDetails?.totalFinanceYearCredAtm
+              : 0}
+          </span>
+        </strong>
+        <strong>
+          Total Debit -
+          <span className="text-[red] ml-[2px]">
+            {buyerSellData?.totalFinanceYearDebitAtm
+              ? buyerSellData?.totalFinanceYearDebitAtm
+              : 0}
+          </span>
+        </strong>
+        <strong>
+          Total Due -
+          <span
+            className={
+              buyerSellData?.totalFinanceYearDebitAtm -
+                buyerCreditDetails?.totalFinanceYearCredAtm >=
+              0
+                ? "text-[red] ml-[2px]"
+                : "text-[green] ml-[2px]"
+            }
+          >
+            {buyerSellData?.totalFinanceYearDebitAtm &&
+            buyerCreditDetails?.totalFinanceYearCredAtm
+              ? buyerSellData?.totalFinanceYearDebitAtm -
+                buyerCreditDetails?.totalFinanceYearCredAtm
+              : 0}
+          </span>
+        </strong>
+      </Grid>
       <Grid container className="flex gap-2">
         <Grid className="h-[490px] w-[49%] mobile:w-[100%]">
-          <div>Credit</div>
+          <strong className="block text-center">Credit</strong>
           <DataTable
             cols={customerCreditAcCols}
-            data={buyerCreditDetails}
+            data={buyerCreditDetails?.data}
             initialState={{
               pagination: {
                 paginationModel: { page: 0, pageSize: 30 },
@@ -181,10 +249,10 @@ const CustomerAccount = () => {
           />
         </Grid>
         <Grid className="h-[490px] w-[49%] mobile:w-[100%]">
-          <div>Debit</div>
+          <strong className="block text-center">Debit</strong>
           <DataTable
             cols={customerDebitAcCols}
-            data={buyerSellData}
+            data={buyerSellData?.data}
             initialState={{
               pagination: {
                 paginationModel: { page: 0, pageSize: 30 },

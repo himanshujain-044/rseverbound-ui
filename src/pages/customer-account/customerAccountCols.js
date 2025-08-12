@@ -17,5 +17,5 @@ export const customerCreditAcCols = [
     width: 170,
   },
   { field: "amount", headerName: "Amount", width: 150 },
-  ,
+  { field: "description", headerName: "Description", width: 150 },
 ];
