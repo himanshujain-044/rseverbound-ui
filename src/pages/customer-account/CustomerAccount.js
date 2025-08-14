@@ -118,7 +118,10 @@ const CustomerAccount = () => {
   return (
     <div className="h-[calc(100%_-_1rem)] flex flex-col gap-12 my-2 mx-6 mobile:h-[calc(100%_-_2.5rem)] mobile:mx-0">
       <Grid container className="flex justify-around">
-        <Grid size={{ lg: 5, md: 5 }} className="mx-2 flex flex-col gap-3">
+        <Grid
+          size={{ lg: 5, md: 5 }}
+          className="m-2 flex flex-col gap-3 p-2 border-[1px] border-solid border-[grey] rounderd-[2px]"
+        >
           <div className="flex justify-center items-center">
             <strong className="min-w-max mr-1">Select Buyer -</strong>
             <SearchableDD
@@ -144,15 +147,15 @@ const CustomerAccount = () => {
         <Grid
           size={{ lg: 7, md: 7 }}
           className={cx(
-            "border-inputLabel border-[1px] rounded-[4px] p-[12px] flex justify-center items-center gap-4",
+            "m-2 border-inputLabel border-[1px] rounded-[4px] flex justify-center items-center gap-4 mobile:flex-col p-[8px] mobile:w-full",
             !buyerDetails &&
               "pointer-events-none cursor-not-allowed bg-[lightgrey]"
           )}
         >
           <div>
             <strong className="min-w-max flex justify-between items-center gap-3 my-1">
-              <span>Select Date </span>
-              <span>
+              <span className="mobile:text-[14px]">Select Date </span>
+              <span className="flex justify-center">
                 <DatePickerComp
                   value={date}
                   onDateChange={handleOnDateChange}
@@ -164,7 +167,7 @@ const CustomerAccount = () => {
               </span>
             </strong>
             <strong className="flex justify-between items-center gap-3">
-              <span>Amount -</span>
+              <span className="mobile:text-[14px]">Amount -</span>
               <input
                 type="number"
                 className="outline-none w-36"
@@ -176,7 +179,7 @@ const CustomerAccount = () => {
               />
             </strong>
             <strong className="flex justify-between items-center gap-3 my-1">
-              <span>Description -</span>
+              <span className="mobile:text-[14px]">Description -</span>
               <textarea
                 className="outline-none w-36"
                 placeholder="Enter text ..."
@@ -234,7 +237,7 @@ const CustomerAccount = () => {
           </span>
         </strong>
       </Grid>
-      <Grid container className="flex gap-2">
+      <Grid container className="flex gap-2 mobile:gap-6">
         <Grid className="h-[490px] w-[49%] mobile:w-[100%]">
           <strong className="block text-center">Credit</strong>
           <DataTable
@@ -248,7 +251,7 @@ const CustomerAccount = () => {
             className="mx-2"
           />
         </Grid>
-        <Grid className="h-[490px] w-[49%] mobile:w-[100%]">
+        <Grid className="h-[490px] w-[49%] mobile:w-[100%] ">
           <strong className="block text-center">Debit</strong>
           <DataTable
             cols={customerDebitAcCols}
