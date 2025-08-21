@@ -5,6 +5,8 @@ const buyersBaseUrl = baseUrl + "/buyers";
 const vehiclesBaseUrl = baseUrl + "/vehicles";
 const productsBaseUrl = baseUrl + "/products";
 const sellsBaseUrl = baseUrl + "/sells";
+const industry = baseUrl + "/industry";
+
 export const API_ENDPOINTS = {
   login: `${userBaseUrl}/login`,
   logout: `${userBaseUrl}/logout`,
@@ -19,4 +21,5 @@ export const API_ENDPOINTS = {
   updateInvoice: `${sellsBaseUrl}/update-invoice`,
   getBuyerSellData: `${sellsBaseUrl}/buyer-sell-data`,
   buyerCreditAmount: `${buyersBaseUrl}/buyer-credit-amount`,
+  getIndustryPerfReportData: `${industry}/industry-perf-report`,
 };

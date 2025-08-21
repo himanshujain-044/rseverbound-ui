@@ -151,4 +151,10 @@ export const SIDEBAR_MENU_LIST = [
     route: ROUTES_LIST.customerAccount,
     active: false,
   },
+  {
+    icon: <CreditScoreOutlinedIcon />,
+    text: "Industry Report",
+    route: ROUTES_LIST.industryReport,
+    active: false,
+  },
 ];

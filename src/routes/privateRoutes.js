@@ -10,6 +10,9 @@ const Reports = lazy(() => import("../pages/reports/Reports"));
 const CustomerAccount = lazy(() =>
   import("../pages/customer-account/CustomerAccount")
 );
+const IndustryReport = lazy(() =>
+  import("../pages/industry-report/IndustryReport")
+);
 
 const PrivateRoutes = () => {
   return (
@@ -24,6 +27,10 @@ const PrivateRoutes = () => {
           <Route
             path={ROUTES_LIST.customerAccount}
             element={<CustomerAccount />}
+          />
+          <Route
+            path={ROUTES_LIST.industryReport}
+            element={<IndustryReport />}
           />
           <Route
             path="/*"

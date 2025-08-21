@@ -205,6 +205,23 @@ export const getBuyerCreditDetails = createAsyncThunk(
   }
 );
 
+export const getIndustryPerfReport = createAsyncThunk(
+  "get-industry-perf-report",
+  async (apiData, { rejectWithValue }) => {
+    try {
+      const { method, endpoint, payload } = apiData;
+      const response = await apiReq({
+        method,
+        endpoint,
+        payload,
+      });
+      return response;
+    } catch (err) {
+      return rejectWithValue(err?.response || err);
+    }
+  }
+);
+
 const apiReducer = createSlice({
   name: "data",
   initialState: {
@@ -224,6 +241,7 @@ const apiReducer = createSlice({
     buyerSellData: [],
     isBuyerCreditAmtDetSave: "",
     buyerCreditDetails: "",
+    industryPerfReportData: "",
   },
   reducers: {
     clearAPIState: (state, action) => {
@@ -240,6 +258,7 @@ const apiReducer = createSlice({
       state.buyerSellData = "";
       state.isBuyerCreditAmtDetSave = "";
       state.buyerCreditDetails = "";
+      state.industryPerfReportData = "";
     },
     clearSomeStates: (state, action) => {
       action.payload.stateKeys.map((key) => {
@@ -469,6 +488,25 @@ const apiReducer = createSlice({
       .addCase(getBuyerCreditDetails.rejected, (state, action) => {
         const { code, message } = action.payload?.data;
         state.buyerCreditDetails = "";
+        state.statusCode = code;
+        state.message = message;
+        state.reqCount -= 1;
+        state.success = false;
+      })
+      .addCase(getIndustryPerfReport.pending, (state, action) => {
+        state.reqCount += 1;
+        state.message = "Fetching the industry perf report data";
+        state.industryPerfReportData = "";
+      })
+      .addCase(getIndustryPerfReport.fulfilled, (state, action) => {
+        const { data } = action.payload?.data;
+        state.reqCount -= 1;
+        state.success = true;
+        state.industryPerfReportData = data;
+      })
+      .addCase(getIndustryPerfReport.rejected, (state, action) => {
+        const { code, message } = action.payload?.data;
+        state.industryPerfReportData = "";
         state.statusCode = code;
         state.message = message;
         state.reqCount -= 1;
