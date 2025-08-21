@@ -22,4 +22,5 @@ export const API_ENDPOINTS = {
   getBuyerSellData: `${sellsBaseUrl}/buyer-sell-data`,
   buyerCreditAmount: `${buyersBaseUrl}/buyer-credit-amount`,
   getIndustryPerfReportData: `${industry}/industry-perf-report`,
+  getAllBuyersCredit: `${buyersBaseUrl}/all-buyer-credit`,
 };

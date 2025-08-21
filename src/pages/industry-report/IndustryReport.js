@@ -5,29 +5,34 @@ import { useState } from "react";
 import SearchableDD from "../../components/common/SearchableDD/SearchableDD";
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { getIndustryPerfReport } from "../../store/api";
+import { getAllBuyersCredit, getIndustryPerfReport } from "../../store/api";
 import { API_ENDPOINTS } from "../../constants/apiEndPoints";
-const data = [
-  { name: "Group A", value: 400 },
-  { name: "Group B", value: 300 },
-  { name: "Group C", value: 300 },
-  { name: "Group D", value: 200 },
-];
 
 const IndustryReport = () => {
   const dispatch = useDispatch();
-  const { industryPerfReportData } = useSelector((state) => state.api);
+  const { industryPerfReportData, allBuyersCredit } = useSelector(
+    (state) => state.api
+  );
   const [financialYear, setFinancialYear] = useState(
     `${new Date().getFullYear()}-${new Date().getFullYear() + 1}`
   );
   const [productSellData, setProductSellData] = useState();
   const [productSellAmtData, setProductSellAmtData] = useState();
+  const [sumGrandTotal, setSumGrandTotal] = useState(0);
+  const [totalBuyerCreditAmt, setTotalBuyerCreditAmt] = useState(0);
 
   useEffect(() => {
     dispatch(
       getIndustryPerfReport({
         method: "get",
         endpoint: API_ENDPOINTS.getIndustryPerfReportData,
+        payload: { financialYear },
+      })
+    );
+    dispatch(
+      getAllBuyersCredit({
+        method: "get",
+        endpoint: API_ENDPOINTS.getAllBuyersCredit,
         payload: { financialYear },
       })
     );
@@ -52,11 +57,21 @@ const IndustryReport = () => {
           value: sumGrandTotal - sumSellAmt,
         },
       ]);
+      setSumGrandTotal(sumGrandTotal);
     } else {
       setProductSellData([]);
       setProductSellAmtData([]);
     }
   }, [industryPerfReportData]);
+
+  useEffect(() => {
+    if (allBuyersCredit?.length) {
+      const totalBuyersCreditAmt = allBuyersCredit.reduce((acc, currVal) => {
+        return acc + currVal?.amount;
+      }, 0);
+      setTotalBuyerCreditAmt(totalBuyersCreditAmt);
+    }
+  }, [allBuyersCredit]);
   return (
     <Grid container className="pt-2 pl-2 flex flex-col">
       <div className="flex justify-center items-center w-[18rem]">
@@ -69,18 +84,23 @@ const IndustryReport = () => {
           ddValue={financialYear}
         />
       </div>
-      <Grid className="flex gap-3 justify-between items-center mobile:flex-col">
-        <div className="h-[350px] w-[350px] flex flex-col items-center">
-          <div className="m-2 p-2">Category Product Sell </div>
+      <Grid className="flex gap-3 justify-around items-center mobile:flex-col">
+        <div className="h-[400px] w-[400px] flex flex-col items-center">
+          <div className="m-2 p-2">Product Sell (M.T)</div>
           <PieChartComp data={productSellData} />
         </div>
-        <div className="h-[350px] w-[350px] flex flex-col items-center">
-          <div className="m-2 p-2">Category Product Sell Amount </div>
+        <div className="h-[400px] w-[400px] flex flex-col items-center">
+          <div className="m-2 p-2">Product Sell Amount</div>
           <PieChartComp data={productSellAmtData} />
         </div>
-        <div className="h-[350px] w-[350px] flex flex-col items-center">
-          <div className="m-2 p-2">Credit/Debit Amount </div>
-          <PieChartComp data={data} />
+        <div className="h-[400px] w-[400px] flex flex-col items-center">
+          <div className="m-2 p-2">Credit/Debit Amount</div>
+          <PieChartComp
+            data={[
+              { name: "Credit", value: totalBuyerCreditAmt },
+              { name: "Debit", value: sumGrandTotal },
+            ]}
+          />
         </div>
       </Grid>
     </Grid>

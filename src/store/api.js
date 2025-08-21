@@ -222,6 +222,23 @@ export const getIndustryPerfReport = createAsyncThunk(
   }
 );
 
+export const getAllBuyersCredit = createAsyncThunk(
+  "get-all-buyers-credit",
+  async (apiData, { rejectWithValue }) => {
+    try {
+      const { method, endpoint, payload } = apiData;
+      const response = await apiReq({
+        method,
+        endpoint,
+        payload,
+      });
+      return response;
+    } catch (err) {
+      return rejectWithValue(err?.response || err);
+    }
+  }
+);
+
 const apiReducer = createSlice({
   name: "data",
   initialState: {
@@ -242,6 +259,7 @@ const apiReducer = createSlice({
     isBuyerCreditAmtDetSave: "",
     buyerCreditDetails: "",
     industryPerfReportData: "",
+    allBuyersCredit: "",
   },
   reducers: {
     clearAPIState: (state, action) => {
@@ -259,6 +277,7 @@ const apiReducer = createSlice({
       state.isBuyerCreditAmtDetSave = "";
       state.buyerCreditDetails = "";
       state.industryPerfReportData = "";
+      state.allBuyersCredit = "";
     },
     clearSomeStates: (state, action) => {
       action.payload.stateKeys.map((key) => {
@@ -507,6 +526,25 @@ const apiReducer = createSlice({
       .addCase(getIndustryPerfReport.rejected, (state, action) => {
         const { code, message } = action.payload?.data;
         state.industryPerfReportData = "";
+        state.statusCode = code;
+        state.message = message;
+        state.reqCount -= 1;
+        state.success = false;
+      })
+      .addCase(getAllBuyersCredit.pending, (state, action) => {
+        state.reqCount += 1;
+        state.message = "Fetching all buyers credit !";
+        state.allBuyersCredit = "";
+      })
+      .addCase(getAllBuyersCredit.fulfilled, (state, action) => {
+        const { data } = action.payload?.data;
+        state.reqCount -= 1;
+        state.success = true;
+        state.allBuyersCredit = data;
+      })
+      .addCase(getAllBuyersCredit.rejected, (state, action) => {
+        const { code, message } = action.payload?.data;
+        state.allBuyersCredit = "";
         state.statusCode = code;
         state.message = message;
         state.reqCount -= 1;
