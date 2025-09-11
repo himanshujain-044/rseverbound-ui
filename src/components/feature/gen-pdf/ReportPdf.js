@@ -16,7 +16,7 @@ const ReportPdf = ({ data = [], title }) => {
         <View
           style={{
             flexDirection: "row",
-            fontSize: "10",
+            fontSize: "8",
             textAlign: "center",
             border: "1px solid black",
             fontFamily: "Helvetica-Bold",
@@ -33,7 +33,7 @@ const ReportPdf = ({ data = [], title }) => {
           </Text>
           <Text
             style={{
-              width: "8%",
+              width: "7%",
               borderRight: "1px solid black",
               padding: "6px",
             }}
@@ -42,7 +42,7 @@ const ReportPdf = ({ data = [], title }) => {
           </Text>
           <Text
             style={{
-              width: "16%",
+              width: "14%",
               borderRight: "1px solid black",
               padding: "6px",
               paddingTop: "12px",
@@ -62,7 +62,7 @@ const ReportPdf = ({ data = [], title }) => {
           </Text>
           <Text
             style={{
-              width: "8%",
+              width: "6%",
               borderRight: "1px solid black",
               padding: "6px",
             }}
@@ -71,7 +71,7 @@ const ReportPdf = ({ data = [], title }) => {
           </Text>
           <Text
             style={{
-              width: "8%",
+              width: "6%",
               borderRight: "1px solid black",
               padding: "6px",
             }}
@@ -86,6 +86,15 @@ const ReportPdf = ({ data = [], title }) => {
             }}
           >
             Other Expenses (GST)
+          </Text>
+          <Text
+            style={{
+              width: "7%",
+              borderRight: "1px solid black",
+              padding: "6px",
+            }}
+          >
+            Total Taxable Amount
           </Text>
           <Text
             style={{
@@ -144,7 +153,7 @@ const ReportPdf = ({ data = [], title }) => {
               </Text>
               <Text
                 style={{
-                  width: "8%",
+                  width: "7%",
                   borderRight: "1px solid black",
                   padding: "6px",
                   paddingTop: "12px",
@@ -154,7 +163,7 @@ const ReportPdf = ({ data = [], title }) => {
               </Text>
               <Text
                 style={{
-                  width: "16%",
+                  width: "14%",
                   borderRight: "1px solid black",
                   padding: "6px",
                   paddingTop: "12px",
@@ -173,7 +182,7 @@ const ReportPdf = ({ data = [], title }) => {
               </Text>
               <Text
                 style={{
-                  width: "8%",
+                  width: "6%",
                   borderRight: "1px solid black",
                   padding: "6px",
                   paddingTop: "12px",
@@ -183,7 +192,7 @@ const ReportPdf = ({ data = [], title }) => {
               </Text>
               <Text
                 style={{
-                  width: "8%",
+                  width: "6%",
                   borderRight: "1px solid black",
                   padding: "6px",
                   paddingTop: "12px",
@@ -200,6 +209,16 @@ const ReportPdf = ({ data = [], title }) => {
                 }}
               >
                 {reportItem?.otherExpensesGST}
+              </Text>
+              <Text
+                style={{
+                  width: "7%",
+                  borderRight: "1px solid black",
+                  padding: "6px",
+                  paddingTop: "12px",
+                }}
+              >
+                {reportItem?.totalTaxableAmt}
               </Text>
               <Text
                 style={{

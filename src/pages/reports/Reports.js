@@ -39,6 +39,7 @@ const Reports = () => {
           totalAmount: data?.otherExpensesGST
             ? data?.amount + data?.gstAmount + data?.otherExpensesGST
             : data?.amount + data?.gstAmount,
+          totalTaxableAmt: data?.amount + data?.otherExpensesGST,
         };
       });
       setReportsData(updatedReports);
