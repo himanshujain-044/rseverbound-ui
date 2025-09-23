@@ -154,7 +154,7 @@ const CustomerAccount = () => {
         >
           <div>
             <strong className="min-w-max flex justify-between items-center gap-3 my-1">
-              <span className="mobile:text-[14px]">Select Date </span>
+              <span className="mobile:text-[14px]">Select Date -</span>
               <span className="flex justify-center">
                 <DatePickerComp
                   value={date}
@@ -229,7 +229,7 @@ const CustomerAccount = () => {
                 : "text-[green] ml-[2px]"
             }
           >
-            {buyerSellData?.totalFinanceYearDebitAtm &&
+            {buyerSellData?.totalFinanceYearDebitAtm ||
             buyerCreditDetails?.totalFinanceYearCredAtm
               ? buyerSellData?.totalFinanceYearDebitAtm -
                 buyerCreditDetails?.totalFinanceYearCredAtm

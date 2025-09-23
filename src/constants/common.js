@@ -2,6 +2,7 @@ import WorkHistoryOutlinedIcon from "@mui/icons-material/WorkHistoryOutlined";
 import DashboardCustomizeOutlinedIcon from "@mui/icons-material/DashboardCustomizeOutlined";
 import AssessmentOutlinedIcon from "@mui/icons-material/AssessmentOutlined";
 import CreditScoreOutlinedIcon from "@mui/icons-material/CreditScoreOutlined";
+import SpeedOutlinedIcon from "@mui/icons-material/SpeedOutlined";
 import { ROUTES_LIST } from "./routes";
 export const CURRENT_YEAR = new Date().getFullYear();
 
@@ -152,7 +153,7 @@ export const SIDEBAR_MENU_LIST = [
     active: false,
   },
   {
-    icon: <CreditScoreOutlinedIcon />,
+    icon: <SpeedOutlinedIcon />,
     text: "Industry Report",
     route: ROUTES_LIST.industryReport,
     active: false,
