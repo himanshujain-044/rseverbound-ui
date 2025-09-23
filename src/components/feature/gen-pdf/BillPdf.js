@@ -345,7 +345,6 @@ const BillPdfGen = ({ data = {} }) => {
               paddingTop: "2px",
               flexDirection: "row",
               justifyContent: "space-between",
-              paddingBottom: "220px",
             }}
           >
             <View style={{ paddingLeft: "2px" }}>
