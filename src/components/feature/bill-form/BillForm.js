@@ -35,7 +35,7 @@ const formInitValues = {
   isShiptoBDSame: true,
   vehicleNo: "",
   destination: "",
-  buyerOrderNoText: "Buyer's Order No.",
+  buyerOrderNoText: "ETP NO.",
   buyerOrderNoValue: "",
   transportCompany: "",
 };
