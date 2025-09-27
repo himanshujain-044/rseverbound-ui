@@ -74,7 +74,7 @@ const BillForm = ({ data = null, className = "" }) => {
         isShiptoBDSame: data?.isShiptoBDSame,
         vehicleNo: data?.vehicleNo,
         destination: data?.destination,
-        buyerOrderNoText: "Buyer's Order No.",
+        buyerOrderNoText: "ETP NO.",
         buyerOrderNoValue: data?.buyerOrderNoValue,
         transportCompany: data?.transportCompany,
       });
@@ -328,8 +328,8 @@ const BillForm = ({ data = null, className = "" }) => {
           <div className="pl-1 pb-1">
             <input
               type="text"
-              className="outline-none max-w-32"
-              placeholder="Buyer's Order No."
+              className="outline-none max-w-24"
+              placeholder="ETP NO."
               onChange={(e) => {
                 handleChange(e, e?.target?.value, "buyerOrderNoText");
               }}
