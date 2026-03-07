@@ -51,7 +51,7 @@ const BillPdfGen = ({ data = {} }) => {
 
         <View style={styles.section}>
           <View style={{ width: "45%", paddingLeft: "2px", paddingTop: "2px" }}>
-            <Text style={{ fontFamily: "Helvetica-Bold" }}>
+            <Text style={{ fontFamily: "Times-Bold", fontSize: "13px" }}>
               MADHUVAN MINERALS & INDUSTRIES
             </Text>
             <Text>WARD 31,NADI KE PASS,MAIN ROAD,</Text>

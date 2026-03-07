@@ -310,7 +310,9 @@ const BillForm = ({ data = null, className = "" }) => {
           xs={6}
           className="pl-1 pb-1 form-border no-top-border flex flex-col"
         >
-          <strong>MADHUVAN MINERALS & INDUSTRIES</strong>
+          <strong className="text-[26px] font-serif font-extrabold">
+            MADHUVAN MINERALS & INDUSTRIES
+          </strong>
           <span>WARD 31, NADI KE PASS, MAIN ROAD,</span>
           <span>SHAHGARH, SAGAR - 470339, MP, INDIA</span>
           <strong>GSTIN/UIN: 23ABAFM0119P1ZF</strong>
