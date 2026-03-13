@@ -75,8 +75,7 @@ const ItemsSell = ({
             sNo: preVal?.rowFields?.length + 1,
             bagsCount: "",
             bagWeight: "",
-            description:
-              invoiceDetails?.products[invoiceDetails?.products?.length - 1],
+            description: "",
             hsnCode:
               invoiceDetails?.hsnCodes[invoiceDetails?.hsnCodes?.length - 1],
             quantity: "",
@@ -94,7 +93,7 @@ const ItemsSell = ({
       values.totalProductAmount = values.totalProductAmount - lastRow.amount;
       const [gstType, grandTotal, roundOff] = updateGstType(
         values,
-        values.gstType
+        values.gstType,
       );
       values.gstType = gstType;
       values.grandTotal = grandTotal;
@@ -117,8 +116,7 @@ const ItemsSell = ({
           invoiceDetails?.hsnCodes?.[invoiceDetails?.hsnCodes?.length - 1];
       }
       if (!values.rowFields[0]["description"]) {
-        values.rowFields[0]["description"] =
-          invoiceDetails?.products?.[invoiceDetails?.products?.length - 1];
+        values.rowFields[0]["description"] = "";
       }
       if (!values.rowFields[0]["amount"]) {
         values.rowFields[0]["amount"] = "";
@@ -167,7 +165,7 @@ const ItemsSell = ({
             ratePMT: productSellDet?.ratePMT,
             amount: productSellDet?.amount,
           };
-        }
+        },
       );
       setItemsSellForm({
         rowFields: [...rowFieldsVal],
@@ -199,19 +197,20 @@ const ItemsSell = ({
       if (["quantity", "ratePMT"].includes(type)) {
         const oldAmt = values.rowFields[index].amount;
         values.rowFields[index].amount = Number(
-          values.rowFields[index].quantity * values.rowFields[index].ratePMT
+          values.rowFields[index].quantity * values.rowFields[index].ratePMT,
         ).toFixed(2);
         values.totalProductAmount =
           Number(values.totalProductAmount) +
           Number(
             Number(
-              values.rowFields[index].quantity * values.rowFields[index].ratePMT
-            ).toFixed(2)
+              values.rowFields[index].quantity *
+                values.rowFields[index].ratePMT,
+            ).toFixed(2),
           ) -
           Number(oldAmt);
         const [gstType, grandTotal, roundOff] = updateGstType(
           values,
-          values?.gstType
+          values?.gstType,
         );
         values.gstType = gstType;
         values.grandTotal = grandTotal;
@@ -244,7 +243,7 @@ const ItemsSell = ({
         if (type === "otherExpenses" || type === "otherExpensesGST") {
           const [gstType, grandTotal, roundOff] = updateGstType(
             values,
-            values.gstType
+            values.gstType,
           );
           values.gstType = gstType;
           values.grandTotal = grandTotal;
@@ -257,12 +256,12 @@ const ItemsSell = ({
 
   const updateGstType = (values, gstVal) => {
     const totalAmount = Number(
-      Number(values.totalProductAmount) + Number(values.otherExpensesGST)
+      Number(values.totalProductAmount) + Number(values.otherExpensesGST),
     ).toFixed(2);
     const grandTotalInDec = convertFixedDecimal(
       calculateGstAmount(gstVal.value, totalAmount) +
         Number(totalAmount) +
-        Number(values.otherExpenses) || 0
+        Number(values.otherExpenses) || 0,
     );
 
     const roundOff = { added: false, amountInPaise: 0 };
@@ -449,7 +448,7 @@ const ItemsSell = ({
                     e,
                     e?.target?.value,
                     "otherExpensesGSTText",
-                    null
+                    null,
                   );
                 }}
                 value={itemsSellForm.otherExpensesGSTText}
@@ -485,7 +484,7 @@ const ItemsSell = ({
               className={cx(
                 "flex justify-between pr-1",
                 itemsSellForm?.gstType.type !== option.value &&
-                  "cursor-not-allowed opacity-50"
+                  "cursor-not-allowed opacity-50",
               )}
             >
               <div className="flex gap-3 items-baseline">

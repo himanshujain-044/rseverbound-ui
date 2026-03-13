@@ -87,7 +87,7 @@ const BillForm = ({ data = null, className = "" }) => {
         getInvoiceDetails({
           method: "get",
           endpoint: API_ENDPOINTS.getBillNumber,
-        })
+        }),
       );
     }
     if (!allBuyers?.length) {
@@ -95,7 +95,7 @@ const BillForm = ({ data = null, className = "" }) => {
         getAllBuyers({
           method: "get",
           endpoint: API_ENDPOINTS.getAllBuyers,
-        })
+        }),
       );
     }
 
@@ -155,7 +155,7 @@ const BillForm = ({ data = null, className = "" }) => {
           };
           if (type === "gst" && value) {
             values.buyerDetails.state = getStateNameByGstCode(
-              value.substring(0, 2)
+              value.substring(0, 2),
             );
           }
         } else {
@@ -165,7 +165,7 @@ const BillForm = ({ data = null, className = "" }) => {
           };
           if (type === "gst" && value) {
             values.shipToDetails.state = getStateNameByGstCode(
-              value.substring(0, 2)
+              value.substring(0, 2),
             );
           }
         }
@@ -223,14 +223,14 @@ const BillForm = ({ data = null, className = "" }) => {
           grandTotal: Number(itemsSell.grandTotal),
           roundOff: itemsSell.roundOff,
         },
-      })
+      }),
     );
     dispatch(
       saveInvoiceDetails({
         method: "post",
         endpoint: API_ENDPOINTS.saveInvoiceDetails,
         payload,
-      })
+      }),
     );
   };
 
@@ -255,14 +255,14 @@ const BillForm = ({ data = null, className = "" }) => {
           roundOff: itemsSell.roundOff,
         },
         isWholeInvoiceUpdate: true,
-      })
+      }),
     );
     dispatch(
       updateInvoice({
         method: "patch",
         endpoint: API_ENDPOINTS.updateInvoice,
         payload,
-      })
+      }),
     );
   };
 
@@ -283,7 +283,8 @@ const BillForm = ({ data = null, className = "" }) => {
 
   const isDisabled = (values) => {
     const checkItemsQuantity = itemsSell?.rowFields.every(
-      (item) => item.quantity && item.ratePMT
+      (item) =>
+        item.quantity && item.ratePMT && item.description && item.hsnCode,
     );
     return !(
       values?.buyerDetails?.name &&
@@ -297,7 +298,7 @@ const BillForm = ({ data = null, className = "" }) => {
     <div
       className={cx(
         "w-full flex gap-8 min-w-[80rem] overflow-auto mobile:pr-4",
-        className
+        className,
       )}
     >
       <Grid container className="bg-[#fff]">
@@ -418,7 +419,7 @@ const BillForm = ({ data = null, className = "" }) => {
                   handleChange(
                     e,
                     !formValues?.isShiptoBDSame,
-                    "isShiptoBDSame"
+                    "isShiptoBDSame",
                   );
                 }}
               />
@@ -583,7 +584,7 @@ const BillForm = ({ data = null, className = "" }) => {
           className={cx(
             "w-[220px] mobile:text-[12px] mobile:h-[30px]",
             //   componentLoader && "bg-none",
-            "bg-primary hover:bg-primary"
+            "bg-primary hover:bg-primary",
           )}
           disabled={isDisabled(formValues)}
           onClick={
@@ -598,7 +599,7 @@ const BillForm = ({ data = null, className = "" }) => {
               variant="contained"
               className={cx(
                 "w-[220px] mobile:text-[12px] mobile:h-[30px]",
-                "bg-primary hover:bg-primary"
+                "bg-primary hover:bg-primary",
               )}
               onClick={downloadPdf}
             >
@@ -609,7 +610,7 @@ const BillForm = ({ data = null, className = "" }) => {
               className={cx(
                 "w-[220px] mobile:text-[12px] mobile:h-[30px]",
                 //   componentLoader && "bg-none",
-                "bg-primary hover:bg-primary"
+                "bg-primary hover:bg-primary",
               )}
               // disabled={!validator.isEmail(email) || componentLoader}
               onClick={onClickPdfView}
