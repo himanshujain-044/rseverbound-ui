@@ -7,7 +7,7 @@ const Dashboard = () => {
   const { sellData } = useSelector((state) => state.api);
   const dispatch = useDispatch();
   useEffect(() => {
-    document.title = "Madhuvan Minerals - Dashbaord";
+    document.title = "RS Ever Bound - Dashbaord";
     dispatch(clearSomeStates({ stateKeys: ["sellsReportsData"] }));
   }, []);
 

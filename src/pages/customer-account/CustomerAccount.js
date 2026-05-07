@@ -39,7 +39,7 @@ const CustomerAccount = () => {
   const [date, setDate] = useState(formatDate(new Date()));
 
   useEffect(() => {
-    document.title = "Madhuvan Minerals - Dashbaord";
+    document.title = "RS Ever Bound - Dashbaord";
     dispatch(clearSomeStates({ stateKeys: ["sellsReportsData"] }));
     dispatch(
       getAllBuyers({

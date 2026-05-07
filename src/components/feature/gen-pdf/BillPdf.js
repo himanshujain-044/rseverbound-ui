@@ -52,7 +52,7 @@ const BillPdfGen = ({ data = {} }) => {
         <View style={styles.section}>
           <View style={{ width: "45%", paddingLeft: "2px", paddingTop: "2px" }}>
             <Text style={{ fontFamily: "Times-Bold", fontSize: "13px" }}>
-              MADHUVAN MINERALS & INDUSTRIES
+              RS Ever Bound
             </Text>
             <Text>WARD 31,NADI KE PASS,MAIN ROAD,</Text>
             <Text>SHAHGARH, SAGAR - 470339, MP, INDIA</Text>
@@ -363,7 +363,7 @@ const BillPdfGen = ({ data = {} }) => {
                     Number(data?.productsSellDetails?.sgst) / 2
                   }  %`}</Text>
                   <Text>{`CGST - ${Number(
-                    data?.productsSellDetails?.sgst / 2
+                    data?.productsSellDetails?.sgst / 2,
                   )} %`}</Text>
                 </>
               )}
@@ -476,7 +476,7 @@ const BillPdfGen = ({ data = {} }) => {
           >
             <View style={{ paddingLeft: "2px", fontFamily: "Helvetica-Bold" }}>
               <Text>Company's Bank Details</Text>
-              <Text>A/c Holder's Name: MADHUVAN MINERALS & INDUSTRIES</Text>
+              <Text>A/c Holder's Name: RS Ever Bound</Text>
               <Text>Bank Name: Central Bank of India</Text>
               <Text>A/c No.: 3734793516</Text>
               <Text>
@@ -497,7 +497,7 @@ const BillPdfGen = ({ data = {} }) => {
               }}
             >
               <Text style={{ fontFamily: "Helvetica-Bold" }}>
-                for MADHUVAN MINERALS & INDUSTRIES
+                for RS Ever Bound
               </Text>
               <Image style={{ width: "80px" }} src={signature} />
               <Text>Authorised Signatory</Text>

@@ -312,7 +312,7 @@ const BillForm = ({ data = null, className = "" }) => {
           className="pl-1 pb-1 form-border no-top-border flex flex-col"
         >
           <strong className="text-[26px] font-serif font-extrabold">
-            MADHUVAN MINERALS & INDUSTRIES
+        RS Ever Bound
           </strong>
           <span>WARD 31, NADI KE PASS, MAIN ROAD,</span>
           <span>SHAHGARH, SAGAR - 470339, MP, INDIA</span>
@@ -555,7 +555,7 @@ const BillForm = ({ data = null, className = "" }) => {
         <Grid xs={7} className="form-border no-left-border no-top-border">
           <div className="pl-1 pb-1 flex flex-col">
             <span>Company's Bank Details</span>
-            <strong>A/c Holder's Name: MADHUVAN MINERALS & INDUSTRIES</strong>
+            <strong>A/c Holder's Name: RS Ever Bound</strong>
             <strong>Bank Name: Central Bank of India</strong>
             <strong>A/c No.: 3734793516</strong>
             <strong>
@@ -563,7 +563,7 @@ const BillForm = ({ data = null, className = "" }) => {
             </strong>
           </div>
           <div className="pr-1 pb-1 flex flex-col text-right top-border">
-            <strong>for MADHUVAN MINERALS & INDUSTRIES</strong>
+            <strong>for RS Ever Bound</strong>
             <div className="flex justify-end">
               <img src={signature} width="100px" />
             </div>
