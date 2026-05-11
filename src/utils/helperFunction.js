@@ -82,7 +82,7 @@ const convertFixedDecimal = (number) => {
 };
 const decryptData = (data = "") => {
   return AES.decrypt(data, process.env.REACT_APP_ENCRYPTED_SECRET).toString(
-    enc.Utf8
+    enc.Utf8,
   );
 };
 
@@ -111,7 +111,7 @@ const clearLocalStorage = (key = "") => {
 
 const getStateNameByGstCode = (gstCode) => {
   const gstRecord = STATES_GST_CODE.find(
-    (record) => record.gst_code === gstCode
+    (record) => record.gst_code === gstCode,
   );
   if (gstRecord) {
     return gstRecord.state;

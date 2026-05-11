@@ -312,7 +312,7 @@ const BillForm = ({ data = null, className = "" }) => {
           className="pl-1 pb-1 form-border no-top-border flex flex-col"
         >
           <strong className="text-[26px] font-serif font-extrabold">
-        RS Ever Bound
+            RS Ever Bound
           </strong>
           <span>WARD 31, NADI KE PASS, MAIN ROAD,</span>
           <span>SHAHGARH, SAGAR - 470339, MP, INDIA</span>
@@ -363,7 +363,7 @@ const BillForm = ({ data = null, className = "" }) => {
         </Grid>
         <Grid xs={3} className="form-border no-top-border">
           <div className="pb-[0.4rem] bottom-border">
-            <p className="pl-1">Date</p>
+            <p className="pl-1">Invoice Date</p>
             <div className="mx-1 flex">
               <DatePickerComp
                 value={formValues.date}
@@ -371,7 +371,7 @@ const BillForm = ({ data = null, className = "" }) => {
               />
             </div>
           </div>
-          <div className="pb-1 bottom-border flex">
+          {/* <div className="pb-1 bottom-border flex">
             <span className="pl-1 min-w-[3.7rem]">Dated -</span>
             <SearchableDD
               onInputChangeDDSearch={(e, value) => {
@@ -380,7 +380,7 @@ const BillForm = ({ data = null, className = "" }) => {
               ddValue={formValues.dated}
               ddOptions={DATED_OPTIONS}
             />
-          </div>
+          </div> */}
           <div className="pb-1 flex pl-1">
             <span className="min-w-[5.9rem]">Destination -</span>
             <SearchableDD
@@ -538,21 +538,34 @@ const BillForm = ({ data = null, className = "" }) => {
           formValues={formValues}
         />
         <Grid
-          xs={5}
+          xs={7}
           className="pl-1 pb-1 form-border no-top-border flex flex-col justify-end"
         >
           <span>
-            <u>Declaration</u>
+            {/* <u>Declaration</u> */}
+            <u>Terms and Condition</u>
           </span>
           <p>
-            We declare that this invoice shows the actual price of the goods
-            described and that all particulars are true and correct.
+            a) This Bill is payable by Electronic transfer/ DD/ Cheque in favor
+            of Deloitte Touche Tohmatsu India LLP. Please make payment within 15
+            days of receipt of this invoice.
+          </p>
+          <p>
+            b) Bank Details: RBL BANK LTD, Tower 2, 3rd Floor, One Indiabulls
+            Centre, Senapati Bapat Marg, Lower Parel, Mumbai - 400 013. Account
+            Number: 40900032439, RTGS IFSC Code: RATN0000088
+          </p>
+          <p>
+            c) For payment made by electronic fund transfer, please send details
+            to receipt@deloitte.com (Invoice number, Invoice amount, Deloitte
+            Bank name and Account number, Payment date, Amount paid, TDS).
+            Queries can be sent to us at receipt@deloitte.com.
           </p>
           <sapn>
             Company's PAN: <strong>ABAFM0119P</strong>
           </sapn>
         </Grid>
-        <Grid xs={7} className="form-border no-left-border no-top-border">
+        <Grid xs={5} className="form-border no-left-border no-top-border">
           <div className="pl-1 pb-1 flex flex-col">
             <span>Company's Bank Details</span>
             <strong>A/c Holder's Name: RS Ever Bound</strong>
@@ -570,13 +583,13 @@ const BillForm = ({ data = null, className = "" }) => {
             <span>Authorised Signatory</span>
           </div>
         </Grid>
-        <Grid
+        {/* <Grid
           xs={12}
           className="mt-2 mb-1 flex flex-col justify-center items-center"
         >
           <span>SUBJECT TO SAGAR JURISDICTION</span>
           <span>This is a computer generated invoice</span>
-        </Grid>
+        </Grid> */}
       </Grid>
       <div className="mt-2 flex flex-col gap-4">
         <Button

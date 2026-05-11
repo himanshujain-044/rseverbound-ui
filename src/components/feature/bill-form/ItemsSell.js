@@ -10,13 +10,15 @@ import {
   convertFixedDecimal,
   numberToWords,
 } from "../../../utils/helperFunction";
+import { Checkbox } from "@mui/material";
 
 const initVal = {
   rowFields: [
     {
       sNo: 1,
       bagsCount: "",
-      bagWeight: "",
+      // bagWeight: "",
+      unit: "",
       description: "",
       hsnCode: "",
       quantity: "",
@@ -44,6 +46,7 @@ const ItemsSell = ({
   formValues,
 }) => {
   const { invoiceDetails, isInvoiceSave } = useSelector((state) => state.api);
+  console.log("invoice det", invoiceDetails);
   const options = [
     {
       value: "igst",
@@ -62,7 +65,9 @@ const ItemsSell = ({
     },
   ];
   const [productsDDOptions, setProductsDDOptions] = useState([]);
+  const [units, setUnitsDDOptions] = useState([]);
   const [hsnCodeDDOptions, setHsnCodeDDOptions] = useState([]);
+  const [gstDDOptions, setGstDDOptions] = useState([]);
   const [itemsSellForm, setItemsSellForm] = useState(initVal);
 
   const handleAddField = () => {
@@ -74,7 +79,8 @@ const ItemsSell = ({
           {
             sNo: preVal?.rowFields?.length + 1,
             bagsCount: "",
-            bagWeight: "",
+            // bagWeight: "",
+            unit: "",
             description: "",
             hsnCode:
               invoiceDetails?.hsnCodes[invoiceDetails?.hsnCodes?.length - 1],
@@ -110,6 +116,8 @@ const ItemsSell = ({
       const buyerGst = formValues?.buyerDetails?.gst;
       setHsnCodeDDOptions(invoiceDetails?.hsnCodes);
       setProductsDDOptions(invoiceDetails?.products);
+      setUnitsDDOptions(invoiceDetails?.units);
+      setGstDDOptions(invoiceDetails?.gsts);
       const values = { ...itemsSellForm };
       if (!values.rowFields[0]["hsnCode"]) {
         values.rowFields[0]["hsnCode"] =
@@ -158,7 +166,8 @@ const ItemsSell = ({
           return {
             sNo: productSellDet?.sNo,
             bagsCount: productSellDet?.bagsCount,
-            bagWeight: productSellDet?.bagWeight,
+            // bagWeight: productSellDet?.bagWeight,
+            unit: productSellDet?.unit,
             description: productSellDet?.description,
             hsnCode: productSellDet?.hsnCode,
             quantity: productSellDet?.quantity,
@@ -297,7 +306,8 @@ const ItemsSell = ({
       </Grid>
       <Grid xs={2} className="left-border">
         <strong className="bottom-border pb-1 text-center max-w-full block text-ellipsis whitespace-nowrap overflow-hidden">
-          Bag Count & Weight (K.G)
+          {/* Bag Count & Weight (K.G) */}
+          Bag Count & Unit
         </strong>
       </Grid>
       <Grid xs={3} className="left-border right-border">
@@ -312,12 +322,14 @@ const ItemsSell = ({
       </Grid>
       <Grid xs={2} className="left-border">
         <strong className="flex bottom-border pb-1 justify-center w-full">
-          Quantity (MT)
+          Quantity
+          {/* (MT) */}
         </strong>
       </Grid>
       <Grid xs={1} className="left-border">
         <strong className="flex bottom-border pb-1 justify-center w-full">
-          Rate PMT
+          Rate
+          {/* PMT */}
         </strong>
       </Grid>
       <Grid xs={2} className="left-border right-border">
@@ -344,7 +356,14 @@ const ItemsSell = ({
                   }}
                 />
                 <span>&</span>
-                <input
+                <SearchableDD
+                  ddValue={itemsSellForm.rowFields[index]["units"]}
+                  onInputChangeDDSearch={(event, value) => {
+                    handleChange(event, value, "units", index);
+                  }}
+                  ddOptions={units}
+                />
+                {/* <input
                   placeholder="weight"
                   className="outline-none block w-[100%] font-bold text-center"
                   type="number"
@@ -353,7 +372,7 @@ const ItemsSell = ({
                   onChange={(e) => {
                     handleChange(e, e?.target?.value, "bagWeight", index);
                   }}
-                />
+                /> */}
               </div>
             </Grid>
             <Grid xs={3} className="left-border right-border font-bold">
@@ -414,23 +433,41 @@ const ItemsSell = ({
       })}
       <Grid
         xs={7}
-        className="pl-1 pt-[2rem] form-border no-bottom-border no-right-border flex items-start gap-2"
+        className="pl-1 pt-[2rem] form-border no-bottom-border no-right-border flex justify-between items-start gap-2"
       >
-        <button onClick={handleAddField}>
-          <AddCircleOutlinedIcon className="fill-primary" />
-        </button>
-        <button
-          onClick={handleRemoveLastRowField}
-          disabled={itemsSellForm.rowFields?.length <= 1}
-        >
-          <RemoveCircleOutlinedIcon
-            className={
-              itemsSellForm.rowFields?.length <= 1
-                ? "fill-[lightgrey] cursor-not-allowed"
-                : "fill-primary"
-            }
+        <div>
+          <button onClick={handleAddField}>
+            <AddCircleOutlinedIcon className="fill-primary" />
+          </button>
+          <button
+            onClick={handleRemoveLastRowField}
+            disabled={itemsSellForm.rowFields?.length <= 1}
+          >
+            <RemoveCircleOutlinedIcon
+              className={
+                itemsSellForm.rowFields?.length <= 1
+                  ? "fill-[lightgrey] cursor-not-allowed"
+                  : "fill-primary"
+              }
+            />
+          </button>
+        </div>
+        <div className="mt-[16px] mr-[16px]">
+          <span className="relative float-right">Special Case for GST</span>
+          <Checkbox
+            checked={formValues?.isShiptoBDSame}
+            sx={{
+              padding: "0",
+              color: "#5a298b",
+              "&.Mui-checked": {
+                color: "#5a298b",
+              },
+            }}
+            onChange={(e) => {
+              // handleChange(e, !formValues?.isShiptoBDSame, "isShiptoBDSame");
+            }}
           />
-        </button>
+        </div>
       </Grid>
       <Grid
         xs={5}
@@ -500,14 +537,23 @@ const ItemsSell = ({
                   className="accent-primary"
                 />
                 <label htmlFor={option.value}>{option.label}</label>
-                <input
+                {/* <input
                   type="number"
                   value={itemsSellForm?.gstType.value || option.inputValue}
                   className="outline-none w-12"
                   onChange={(e, value) => {
                     handleChange(e, e?.target?.value, option.value, null);
                   }}
-                />
+                /> */}
+                <div>
+                  <SearchableDD
+                    ddValue={gstDDOptions[0]}
+                    onInputChangeDDSearch={(event, value) => {
+                      // handleChange(event, value, "hsnCode", index);
+                    }}
+                    ddOptions={gstDDOptions}
+                  />
+                </div>
               </div>
               {itemsSellForm?.gstType.type === option.value &&
                 itemsSellForm?.gstType.type === "igst" && (
