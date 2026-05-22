@@ -82,19 +82,22 @@ const BillForm = ({ data = null, className = "" }) => {
   }, [data]);
 
   useEffect(() => {
-    if (!invoiceDetails) {
-      dispatch(
-        getInvoiceDetails({
-          method: "get",
-          endpoint: API_ENDPOINTS.getBillNumber,
-        }),
-      );
-    }
     if (!allBuyers?.length) {
       dispatch(
         getAllBuyers({
           method: "get",
           endpoint: API_ENDPOINTS.getAllBuyers,
+        }),
+      );
+    }
+  }, []);
+
+  useEffect(() => {
+    if (!invoiceDetails) {
+      dispatch(
+        getInvoiceDetails({
+          method: "get",
+          endpoint: API_ENDPOINTS.getBillNumber,
         }),
       );
     }
@@ -312,12 +315,12 @@ const BillForm = ({ data = null, className = "" }) => {
           className="pl-1 pb-1 form-border no-top-border flex flex-col"
         >
           <strong className="text-[26px] font-serif font-extrabold">
-            RS Ever Bound
+            Rocksunn Private Limited
           </strong>
-          <span>WARD 31, NADI KE PASS, MAIN ROAD,</span>
-          <span>SHAHGARH, SAGAR - 470339, MP, INDIA</span>
-          <strong>GSTIN/UIN: 23ABAFM0119P1ZF</strong>
-          <span>Contact: 7000042043, 9755421008</span>
+          <span>NEAR VIVEKANAND COLLEGE,</span>
+          <span>AMAMRMOU, BANDA, SAGAR - 470339, MP, INDIA</span>
+          <strong>GSTIN/UIN: 23AAPCR7561K1ZT</strong>
+          <span>Contact: 8349112391</span>
         </Grid>
         <Grid xs={3} className="bottom-border">
           <div className="pl-1 pb-1  bottom-border">
@@ -547,36 +550,36 @@ const BillForm = ({ data = null, className = "" }) => {
           </span>
           <p>
             a) This Bill is payable by Electronic transfer/ DD/ Cheque in favor
-            of Deloitte Touche Tohmatsu India LLP. Please make payment within 15
+            of Rocksunn Touche Tohmatsu India LLP. Please make payment within 15
             days of receipt of this invoice.
           </p>
           <p>
-            b) Bank Details: RBL BANK LTD, Tower 2, 3rd Floor, One Indiabulls
-            Centre, Senapati Bapat Marg, Lower Parel, Mumbai - 400 013. Account
-            Number: 40900032439, RTGS IFSC Code: RATN0000088
+            b) Bank Details: Central Bank Of India, Bus Stand, Shahgarh, Sagar,
+            Madhya Pradesh - 470339. Account Number: 5986045772, IFSC Code:
+            CBIN0282030
           </p>
           <p>
             c) For payment made by electronic fund transfer, please send details
-            to receipt@deloitte.com (Invoice number, Invoice amount, Deloitte
+            to receipt@Rocksunn.com (Invoice number, Invoice amount, Rocksunn
             Bank name and Account number, Payment date, Amount paid, TDS).
-            Queries can be sent to us at receipt@deloitte.com.
+            Queries can be sent to us at receipt@Rocksunn.com.
           </p>
           <sapn>
-            Company's PAN: <strong>ABAFM0119P</strong>
+            Company's PAN: <strong>AAPCR7561K</strong>
           </sapn>
         </Grid>
         <Grid xs={5} className="form-border no-left-border no-top-border">
           <div className="pl-1 pb-1 flex flex-col">
             <span>Company's Bank Details</span>
-            <strong>A/c Holder's Name: RS Ever Bound</strong>
+            <strong>A/c Holder's Name: Rock Sunn</strong>
             <strong>Bank Name: Central Bank of India</strong>
-            <strong>A/c No.: 3734793516</strong>
+            <strong>A/c No.: 5986045772</strong>
             <strong>
               Branch & IFSC Code: SHAHGARH, SAGAR (M.P.) & CBIN0282030
             </strong>
           </div>
           <div className="pr-1 pb-1 flex flex-col text-right top-border">
-            <strong>for RS Ever Bound</strong>
+            <strong>for Rock Sunn</strong>
             <div className="flex justify-end">
               <img src={signature} width="100px" />
             </div>

@@ -16,12 +16,13 @@ const initVal = {
   rowFields: [
     {
       sNo: 1,
-      bagsCount: "",
+      // bagsCount: "",
       // bagWeight: "",
-      unit: "",
+
       description: "",
       hsnCode: "",
       quantity: "",
+      unit: "",
       ratePMT: "",
       amount: "",
     },
@@ -78,13 +79,14 @@ const ItemsSell = ({
           ...preVal?.rowFields,
           {
             sNo: preVal?.rowFields?.length + 1,
-            bagsCount: "",
+            // bagsCount: "",
             // bagWeight: "",
-            unit: "",
+
             description: "",
             hsnCode:
               invoiceDetails?.hsnCodes[invoiceDetails?.hsnCodes?.length - 1],
             quantity: "",
+            unit: "",
             ratePMT: "",
             amount: "",
           },
@@ -165,12 +167,13 @@ const ItemsSell = ({
         (productSellDet) => {
           return {
             sNo: productSellDet?.sNo,
-            bagsCount: productSellDet?.bagsCount,
+            // bagsCount: productSellDet?.bagsCount,
             // bagWeight: productSellDet?.bagWeight,
-            unit: productSellDet?.unit,
+
             description: productSellDet?.description,
             hsnCode: productSellDet?.hsnCode,
             quantity: productSellDet?.quantity,
+            unit: productSellDet?.unit,
             ratePMT: productSellDet?.ratePMT,
             amount: productSellDet?.amount,
           };
@@ -198,6 +201,7 @@ const ItemsSell = ({
 
   const handleChange = (e, value, type, index) => {
     const values = { ...itemsSellForm };
+    console.log("201", itemsSellForm, type, value);
     if (index || index === 0) {
       values.rowFields[index][type] =
         typeof e?.target?.value === "string"
@@ -304,12 +308,12 @@ const ItemsSell = ({
           S. No.
         </strong>
       </Grid>
-      <Grid xs={2} className="left-border">
+      {/* <Grid xs={2} className="left-border">
         <strong className="bottom-border pb-1 text-center max-w-full block text-ellipsis whitespace-nowrap overflow-hidden">
-          {/* Bag Count & Weight (K.G) */}
+          Bag Count & Weight (K.G)
           Bag Count & Unit
         </strong>
-      </Grid>
+      </Grid> */}
       <Grid xs={3} className="left-border right-border">
         <strong className="flex bottom-border pb-1 justify-center w-full">
           Description of Goods
@@ -324,6 +328,11 @@ const ItemsSell = ({
         <strong className="flex bottom-border pb-1 justify-center w-full">
           Quantity
           {/* (MT) */}
+        </strong>
+      </Grid>
+      <Grid xs={2} className="left-border">
+        <strong className="flex bottom-border pb-1 justify-center w-full">
+          UNIT
         </strong>
       </Grid>
       <Grid xs={1} className="left-border">
@@ -343,38 +352,7 @@ const ItemsSell = ({
             <Grid xs={1} className="left-border flex justify-center">
               <div className="pl-1">{row.sNo}</div>
             </Grid>
-            <Grid xs={2} className="left-border">
-              <div className="flex gap-2 pl-1">
-                <input
-                  placeholder="count"
-                  className="outline-none block w-[100%] font-bold text-center"
-                  type="number"
-                  min={1}
-                  value={itemsSellForm.rowFields[index]["bagsCount"]}
-                  onChange={(e) => {
-                    handleChange(e, e?.target?.value, "bagsCount", index);
-                  }}
-                />
-                <span>&</span>
-                <SearchableDD
-                  ddValue={itemsSellForm.rowFields[index]["units"]}
-                  onInputChangeDDSearch={(event, value) => {
-                    handleChange(event, value, "units", index);
-                  }}
-                  ddOptions={units}
-                />
-                {/* <input
-                  placeholder="weight"
-                  className="outline-none block w-[100%] font-bold text-center"
-                  type="number"
-                  min={1}
-                  value={itemsSellForm.rowFields[index]["bagWeight"]}
-                  onChange={(e) => {
-                    handleChange(e, e?.target?.value, "bagWeight", index);
-                  }}
-                /> */}
-              </div>
-            </Grid>
+
             <Grid xs={3} className="left-border right-border font-bold">
               <SearchableDD
                 ddValue={itemsSellForm.rowFields[index]["description"]}
@@ -407,6 +385,38 @@ const ItemsSell = ({
                     handleChange(e, e?.target?.value, "quantity", index);
                   }}
                 />
+              </div>
+            </Grid>
+            <Grid xs={2} className="left-border">
+              <div className="flex gap-2 pl-1">
+                {/* <input
+                  placeholder="count"
+                  className="outline-none block w-[100%] font-bold text-center"
+                  type="number"
+                  min={1}
+                  value={itemsSellForm.rowFields[index]["bagsCount"]}
+                  onChange={(e) => {
+                    handleChange(e, e?.target?.value, "bagsCount", index);
+                  }}
+                /> */}
+                {/* <span>&</span> */}
+                <SearchableDD
+                  ddValue={itemsSellForm.rowFields[index]["unit"]}
+                  onInputChangeDDSearch={(event, value) => {
+                    handleChange(event, value, "unit", index);
+                  }}
+                  ddOptions={units}
+                />
+                {/* <input
+                  placeholder="weight"
+                  className="outline-none block w-[100%] font-bold text-center"
+                  type="number"
+                  min={1}
+                  value={itemsSellForm.rowFields[index]["bagWeight"]}
+                  onChange={(e) => {
+                    handleChange(e, e?.target?.value, "bagWeight", index);
+                  }}
+                /> */}
               </div>
             </Grid>
             <Grid xs={1} className="left-border">
@@ -547,9 +557,9 @@ const ItemsSell = ({
                 /> */}
                 <div>
                   <SearchableDD
-                    ddValue={gstDDOptions[0]}
+                    ddValue={itemsSellForm?.gstType.value || option.inputValue}
                     onInputChangeDDSearch={(event, value) => {
-                      // handleChange(event, value, "hsnCode", index);
+                      handleChange(event, value, option.value, null);
                     }}
                     ddOptions={gstDDOptions}
                   />

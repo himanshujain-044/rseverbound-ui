@@ -52,15 +52,15 @@ const BillPdfGen = ({ data = {} }) => {
         <View style={styles.section}>
           <View style={{ width: "45%", paddingLeft: "2px", paddingTop: "2px" }}>
             <Text style={{ fontFamily: "Times-Bold", fontSize: "13px" }}>
-              RS Ever Bound
+              Rocksunn Private Limited
             </Text>
-            <Text>WARD 31,NADI KE PASS,MAIN ROAD,</Text>
-            <Text>SHAHGARH, SAGAR - 470339, MP, INDIA</Text>
+            <Text>NEAR VIVEKANAND COLLEGE,</Text>
+            <Text>AMAMRMOU, BANDA, SAGAR - 470339, MP, INDIA</Text>
             <Text style={{ fontFamily: "Helvetica-Bold" }}>
-              GSTIN/UIN: 23ABAFM0119P1ZF
+              GSTIN/UIN: 23AAPCR7561K1ZT
             </Text>
             <Text>State Name: Madhya Pradesh, Code: 23</Text>
-            <Text>Contact - 7000042043, 9755421008</Text>
+            <Text>Contact - 8349112391</Text>
           </View>
           <View
             style={{
@@ -95,14 +95,14 @@ const BillPdfGen = ({ data = {} }) => {
             }}
           >
             <View style={{ paddingLeft: "2px" }}>
-              <Text>Dated</Text>
+              <Text>Invoice Date</Text>
               <Text style={{ fontFamily: "Helvetica-Bold" }}>{data?.date}</Text>
             </View>
             <View style={{ borderBottom: "1px solid black" }}></View>
 
-            <Text style={{ paddingLeft: "2px", paddingTop: "2px" }}>
+            {/* <Text style={{ paddingLeft: "2px", paddingTop: "2px" }}>
               Dated - {data?.dated}
-            </Text>
+            </Text> */}
             <View style={{ borderBottom: "1px solid black" }}></View>
             <Text style={{ paddingLeft: "2px", paddingTop: "2px" }}>
               Destination - {data?.destination}
@@ -156,7 +156,7 @@ const BillPdfGen = ({ data = {} }) => {
           <View style={{ width: "6%", paddingTop: "5px", textAlign: "center" }}>
             <Text>S. No</Text>
           </View>
-          {data?.productsSellDetails?.productsSell[0]?.bagsCount &&
+          {/* {data?.productsSellDetails?.productsSell[0]?.bagsCount &&
             data?.productsSellDetails?.productsSell[0]?.bagWeight && (
               <View
                 style={{
@@ -168,14 +168,14 @@ const BillPdfGen = ({ data = {} }) => {
               >
                 <Text>Bag Count & Weight (K.G)</Text>
               </View>
-            )}
+            )} */}
           <View
             style={{
-              width:
-                data?.productsSellDetails?.productsSell[0]?.bagsCount &&
-                data?.productsSellDetails?.productsSell[0]?.bagWeight
-                  ? "22%"
-                  : "30%",
+              width: "30%",
+              // data?.productsSellDetails?.productsSell[0]?.bagsCount &&
+              // data?.productsSellDetails?.productsSell[0]?.bagWeight
+              //   ? "22%"
+              //   : "30%",
               borderLeft: "1px solid black",
               paddingTop: "5px",
               textAlign: "center",
@@ -185,7 +185,7 @@ const BillPdfGen = ({ data = {} }) => {
           </View>
           <View
             style={{
-              width: "12.7%",
+              width: "13%",
               borderLeft: "1px solid black",
               paddingTop: "5px",
               textAlign: "center",
@@ -201,7 +201,17 @@ const BillPdfGen = ({ data = {} }) => {
               textAlign: "center",
             }}
           >
-            <Text>Quantity (MT)</Text>
+            <Text>Quantity</Text>
+          </View>
+          <View
+            style={{
+              width: "26%",
+              borderLeft: "1px solid black",
+              paddingTop: "5px",
+              textAlign: "center",
+            }}
+          >
+            <Text>Unit</Text>
           </View>
           <View
             style={{
@@ -211,15 +221,15 @@ const BillPdfGen = ({ data = {} }) => {
               textAlign: "center",
             }}
           >
-            <Text>Rate PMT</Text>
+            <Text>Rate</Text>
           </View>
           <View
             style={{
-              width:
-                data?.productsSellDetails?.productsSell[0]?.bagsCount &&
-                data?.productsSellDetails?.productsSell[0]?.bagWeight
-                  ? "12%"
-                  : "30%",
+              width: "30%",
+              // data?.productsSellDetails?.productsSell[0]?.bagsCount &&
+              // data?.productsSellDetails?.productsSell[0]?.bagWeight
+              //   ? "12%"
+              //   : "30%",
               borderLeft: "1px solid black",
               paddingTop: "5px",
               textAlign: "center",
@@ -242,7 +252,7 @@ const BillPdfGen = ({ data = {} }) => {
               >
                 <Text>{productSell?.sNo}</Text>
               </View>
-              {productSell?.bagsCount && productSell?.bagWeight && (
+              {/* {productSell?.bagsCount && productSell?.bagWeight && (
                 <View
                   style={{
                     width: "26%",
@@ -256,14 +266,14 @@ const BillPdfGen = ({ data = {} }) => {
                     {productSell?.bagsCount} & {productSell?.bagWeight}
                   </Text>
                 </View>
-              )}
+              )} */}
               <View
                 style={{
-                  width:
-                    data?.productsSellDetails?.productsSell[0]?.bagsCount &&
-                    data?.productsSellDetails?.productsSell[0]?.bagWeight
-                      ? "22%"
-                      : "30%",
+                  width: "30%",
+                  // data?.productsSellDetails?.productsSell[0]?.bagsCount &&
+                  // data?.productsSellDetails?.productsSell[0]?.bagWeight
+                  //   ? "22%"
+                  //   : "30%",
                   borderLeft: "1px solid black",
                   paddingLeft: "2px",
                   paddingTop: "5px",
@@ -275,7 +285,7 @@ const BillPdfGen = ({ data = {} }) => {
               </View>
               <View
                 style={{
-                  width: "12.7%",
+                  width: "13%",
                   borderLeft: "1px solid black",
                   paddingLeft: "2px",
                   paddingTop: "5px",
@@ -298,6 +308,18 @@ const BillPdfGen = ({ data = {} }) => {
               </View>
               <View
                 style={{
+                  width: "26%",
+                  borderLeft: "1px solid black",
+                  paddingLeft: "2px",
+                  paddingTop: "5px",
+                  fontFamily: "Helvetica-Bold",
+                  textAlign: "center",
+                }}
+              >
+                <Text>{productSell?.unit}</Text>
+              </View>
+              <View
+                style={{
                   width: "13%",
                   borderLeft: "1px solid black",
                   paddingLeft: "2px",
@@ -309,11 +331,11 @@ const BillPdfGen = ({ data = {} }) => {
               </View>
               <View
                 style={{
-                  width:
-                    data?.productsSellDetails?.productsSell[0]?.bagsCount &&
-                    data?.productsSellDetails?.productsSell[0]?.bagWeight
-                      ? "12%"
-                      : "30%",
+                  width: "30%",
+                  // data?.productsSellDetails?.productsSell[0]?.bagsCount &&
+                  // data?.productsSellDetails?.productsSell[0]?.bagWeight
+                  //   ? "12%"
+                  //   : "30%",
                   borderLeft: "1px solid black",
                   paddingRight: "2px",
                   paddingTop: "5px",
@@ -448,26 +470,38 @@ const BillPdfGen = ({ data = {} }) => {
         <View style={styles.section}>
           <View
             style={{
-              width: "40%",
-              marginTop: "48px",
+              width: "60%",
+              // marginTop: "48px",
               justifyContent: "flex-end",
               paddingLeft: "2px",
               paddingTop: "2px",
             }}
           >
-            <Text>Declaration</Text>
+            <Text>Terms and Condition</Text>
             <Text>
-              We declare that this invoice shows the actual price of the goods
-              described and that all particulars are true and correct.
+              a) This Bill is payable by Electronic transfer/ DD/ Cheque in
+              favor of Rocksunn Touche Tohmatsu India LLP. Please make payment
+              within 15 days of receipt of this invoice.
+            </Text>
+            <Text>
+              b) Bank Details: Central Bank Of India, Bus Stand, Shahgarh,
+              Sagar, Madhya Pradesh - 470339. Account Number: 5986045772, IFSC
+              Code: CBIN0282030
+            </Text>
+            <Text>
+              c) For payment made by electronic fund transfer, please send
+              details to receipt@Rocksunn.com (Invoice number, Invoice amount,
+              Rocksunn Bank name and Account number, Payment date, Amount paid,
+              TDS). Queries can be sent to us at receipt@Rocksunn.com.
             </Text>
             <Text>
               Company's PAN:
-              <Text style={{ fontFamily: "Helvetica-Bold" }}>ABAFM0119P</Text>
+              <Text style={{ fontFamily: "Helvetica-Bold" }}>AAPCR7561K</Text>
             </Text>
           </View>
           <View
             style={{
-              width: "60%",
+              width: "40%",
               marginLeft: "20px",
               borderLeft: "1px solid black",
 
@@ -476,9 +510,9 @@ const BillPdfGen = ({ data = {} }) => {
           >
             <View style={{ paddingLeft: "2px", fontFamily: "Helvetica-Bold" }}>
               <Text>Company's Bank Details</Text>
-              <Text>A/c Holder's Name: RS Ever Bound</Text>
+              <Text>A/c Holder's Name: Rock Sunn</Text>
               <Text>Bank Name: Central Bank of India</Text>
-              <Text>A/c No.: 3734793516</Text>
+              <Text>A/c No.: 5986045772</Text>
               <Text>
                 Branch & IFSC Code: SHAHGARH, SAGAR (M.P.) & CBIN0282030
               </Text>
@@ -497,7 +531,7 @@ const BillPdfGen = ({ data = {} }) => {
               }}
             >
               <Text style={{ fontFamily: "Helvetica-Bold" }}>
-                for RS Ever Bound
+                for Rock Sunn
               </Text>
               <Image style={{ width: "80px" }} src={signature} />
               <Text>Authorised Signatory</Text>
@@ -507,7 +541,7 @@ const BillPdfGen = ({ data = {} }) => {
         <View
           style={{ borderBottomWidth: 1, borderBottomColor: "black" }}
         ></View>
-        <View
+        {/* <View
           style={{
             width: "100%",
             marginTop: "8px",
@@ -517,7 +551,7 @@ const BillPdfGen = ({ data = {} }) => {
         >
           <Text>SUBJECT TO SAGAR JURISDICTION</Text>
           <Text>This is a computer generated invoice</Text>
-        </View>
+        </View> */}
 
         {data?.isInvoiceCancel && (
           <Image
