@@ -20,7 +20,7 @@ import {
   getStateNameByGstCode,
 } from "../../../utils/helperFunction";
 import ItemsSell from "./ItemsSell";
-import signature from "../../../assets/images/signature.png";
+import signature from "../../../assets/images/signature.jpeg";
 import BillPdf from "../gen-pdf/BillPdf";
 import { ROUTES_LIST } from "../../../constants/routes";
 import DatePickerComp from "../../common/DatePickerComp/DatePickerComp";

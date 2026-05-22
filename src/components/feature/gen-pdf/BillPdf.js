@@ -9,7 +9,7 @@ import {
 } from "@react-pdf/renderer";
 import { numberToWords } from "../../../utils/helperFunction";
 import cancelled from "../../../assets/images/cancelled.png";
-import signature from "../../../assets/images/signature.png";
+import signature from "../../../assets/images/signature.jpeg";
 
 const styles = StyleSheet.create({
   section: {
