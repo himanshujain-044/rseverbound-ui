@@ -11,7 +11,7 @@ export const sellHistoryCols = [
     width: 170,
   },
   { field: "address", headerName: "Address", width: 130 },
-  { field: "date", headerName: "Date", width: 140 },
+  { field: "invoiceDate", headerName: "Invoice Date", width: 140 },
   { field: "invoiceNo", headerName: "Invoice No", width: 80 },
   { field: "gst", headerName: "GST No", width: 150 },
   { field: "gstAmount", headerName: "GST Amount", width: 130 },

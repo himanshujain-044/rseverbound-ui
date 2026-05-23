@@ -5,7 +5,7 @@ export const reportsCols = [
     hideable: true,
   },
   {
-    field: "date",
+    field: "invoiceDate",
     headerName: "Billing Date",
     width: 170,
   },
@@ -15,7 +15,7 @@ export const reportsCols = [
   { field: "weight", headerName: "Weight (MT)", width: 150 },
   { field: "amount", headerName: "Billing Amont", width: 130 },
   { field: "otherExpensesGST", headerName: "Other Expenses (GST)", width: 150 },
-  { field: "totalTaxableAmt", headerName: "Total Taxable Amount", width: 150 },
+  { field: "totalTaxableAmt", headerName: "Taxable Value", width: 150 },
   { field: "sgst", headerName: "SGST", width: 150 },
   { field: "cgst", headerName: "CGST", width: 130 },
   { field: "igst", headerName: "IGST", width: 90 },

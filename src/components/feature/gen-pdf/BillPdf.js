@@ -21,7 +21,7 @@ const styles = StyleSheet.create({
 });
 
 const BillPdfGen = ({ data = {} }) => {
-  const pdfTitle = `${data?.buyerDetails?.name}_${data?.date}`;
+  const pdfTitle = `${data?.buyerDetails?.name}_${data?.invoiceDate}`;
   return (
     <Document title={pdfTitle} key={pdfTitle}>
       <Page
@@ -55,7 +55,7 @@ const BillPdfGen = ({ data = {} }) => {
               Rocksunn Private Limited
             </Text>
             <Text>NEAR VIVEKANAND COLLEGE,</Text>
-            <Text>AMAMRMOU, BANDA, SAGAR - 470339, MP, INDIA</Text>
+            <Text>AMAMRMOU, SHAHGARH, SAGAR - 470339, MP, INDIA</Text>
             <Text style={{ fontFamily: "Helvetica-Bold" }}>
               GSTIN/UIN: 23AAPCR7561K1ZT
             </Text>
@@ -83,7 +83,7 @@ const BillPdfGen = ({ data = {} }) => {
             </Text>
 
             <Text style={{ paddingLeft: "2px", paddingTop: "2px" }}>
-              E-way Bill No. - {data?.ewayBillNo}
+              Date - {data?.date}
             </Text>
           </View>
 
@@ -96,14 +96,19 @@ const BillPdfGen = ({ data = {} }) => {
           >
             <View style={{ paddingLeft: "2px" }}>
               <Text>Invoice Date</Text>
-              <Text style={{ fontFamily: "Helvetica-Bold" }}>{data?.date}</Text>
+              <Text style={{ fontFamily: "Helvetica-Bold" }}>
+                {data?.invoiceDate}
+              </Text>
             </View>
             <View style={{ borderBottom: "1px solid black" }}></View>
 
             {/* <Text style={{ paddingLeft: "2px", paddingTop: "2px" }}>
               Dated - {data?.dated}
             </Text> */}
-            <View style={{ borderBottom: "1px solid black" }}></View>
+            {/* <View style={{ borderBottom: "1px solid black" }}></View> */}
+            <Text style={{ paddingLeft: "2px", paddingTop: "2px" }}>
+              Dispatch Through - {data?.dispatchThrough}
+            </Text>
             <Text style={{ paddingLeft: "2px", paddingTop: "2px" }}>
               Destination - {data?.destination}
             </Text>
@@ -113,13 +118,14 @@ const BillPdfGen = ({ data = {} }) => {
         <View style={styles.section}>
           <View style={{ width: "45%", paddingLeft: "2px", paddingTop: "2px" }}>
             <Text style={{ fontFamily: "Helvetica-Bold" }}>
-              Bill To - {data?.buyerDetails?.name}
+              Buyer (Bill To) - {data?.buyerDetails?.name}
             </Text>
             <Text>Address - {data?.buyerDetails?.address}</Text>
             <Text style={{ fontFamily: "Helvetica-Bold" }}>
               GSTIN/UIN: {data?.buyerDetails?.gst}
             </Text>
             <Text>State - {data?.buyerDetails?.state}</Text>
+            <Text>Place Of Supply - {data?.buyerDetails?.placeOfSupply}</Text>
           </View>
           <View
             style={{
@@ -130,7 +136,7 @@ const BillPdfGen = ({ data = {} }) => {
             }}
           >
             <Text style={{ fontFamily: "Helvetica-Bold" }}>
-              Ship To - {data?.shipToDetails?.name}
+              Consignee (Ship To) - {data?.shipToDetails?.name}
             </Text>
             <Text>Address - {data?.shipToDetails?.address}</Text>
             <Text style={{ fontFamily: "Helvetica-Bold" }}>
@@ -138,7 +144,7 @@ const BillPdfGen = ({ data = {} }) => {
             </Text>
             <Text>State - {data?.shipToDetails?.state}</Text>
           </View>
-          <View
+          {/* <View
             style={{
               borderLeft: "1px solid black",
               paddingLeft: "2px",
@@ -149,7 +155,7 @@ const BillPdfGen = ({ data = {} }) => {
               Transport Company - {data?.transportCompany}
             </Text>
             <Text>Vechicle No. - {data?.vehicleNo}</Text>
-          </View>
+          </View> */}
         </View>
 
         <View style={{ ...styles.section, fontFamily: "Helvetica-Bold" }}>
@@ -374,7 +380,7 @@ const BillPdfGen = ({ data = {} }) => {
                 {data?.productsSellDetails?.otherExpensesGSTText}
               </Text>
               <Text style={{ fontFamily: "Helvetica-Bold" }}>
-                Total Taxable Amount
+                Taxable Value
               </Text>
               {data?.productsSellDetails?.igst && (
                 <Text>{`IGST - ${data?.productsSellDetails?.igst} %`}</Text>
@@ -432,12 +438,21 @@ const BillPdfGen = ({ data = {} }) => {
         </View>
 
         <View style={{ ...styles.section, fontFamily: "Helvetica-Bold" }}>
-          <View style={{ width: "60%", paddingLeft: "2px", paddingTop: "5px" }}>
+          <View
+            style={{
+              width: "61.9%",
+              paddingRight: "2px",
+              paddingTop: "5px",
+              justifyContent: "flex-end",
+              textAlign: "right",
+            }}
+          >
             <Text>Grand Total</Text>
           </View>
           <View
             style={{
-              width: "40%",
+              width: "38%",
+              borderLeft: "1px solid black",
               textAlign: "right",
               paddingRight: "2px",
               paddingTop: "5px",
@@ -448,7 +463,7 @@ const BillPdfGen = ({ data = {} }) => {
         </View>
 
         <View style={styles.section}>
-          <View style={{ width: "60%", paddingLeft: "2px", paddingTop: "2px" }}>
+          <View style={{ width: "70%", paddingLeft: "2px", paddingTop: "2px" }}>
             <Text>Amount in words</Text>
             <Text style={{ fontFamily: "Helvetica-Bold" }}>
               INDIAN RUPEE:{" "}
@@ -457,7 +472,7 @@ const BillPdfGen = ({ data = {} }) => {
           </View>
           <View
             style={{
-              width: "40%",
+              width: "30%",
               textAlign: "right",
               paddingRight: "2px",
               paddingTop: "2px",
@@ -490,13 +505,10 @@ const BillPdfGen = ({ data = {} }) => {
             </Text>
             <Text>
               c) For payment made by electronic fund transfer, please send
-              details to receipt@Rocksunn.com (Invoice number, Invoice amount,
-              Rocksunn Bank name and Account number, Payment date, Amount paid,
-              TDS). Queries can be sent to us at receipt@Rocksunn.com.
-            </Text>
-            <Text>
-              Company's PAN:
-              <Text style={{ fontFamily: "Helvetica-Bold" }}>AAPCR7561K</Text>
+              details to receipt@rseverbound.com (Invoice number, Invoice
+              amount, Rocksunn Bank name and Account number, Payment date,
+              Amount paid, TDS). Queries can be sent to us at
+              receipt@rseverbound.com.
             </Text>
           </View>
           <View

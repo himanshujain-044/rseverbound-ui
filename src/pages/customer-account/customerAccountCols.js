@@ -1,6 +1,6 @@
 export const customerDebitAcCols = [
   {
-    field: "date",
+    field: "invoiceDate",
     headerName: "Billing Date",
     width: 170,
   },

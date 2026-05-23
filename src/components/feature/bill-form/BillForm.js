@@ -21,13 +21,25 @@ import {
 } from "../../../utils/helperFunction";
 import ItemsSell from "./ItemsSell";
 import signature from "../../../assets/images/signature.jpeg";
+import Radio from "@mui/material/Radio";
+import RadioGroup from "@mui/material/RadioGroup";
+import FormControlLabel from "@mui/material/FormControlLabel";
+import FormControl from "@mui/material/FormControl";
+import FormLabel from "@mui/material/FormLabel";
 import BillPdf from "../gen-pdf/BillPdf";
 import { ROUTES_LIST } from "../../../constants/routes";
 import DatePickerComp from "../../common/DatePickerComp/DatePickerComp";
 let payload = {};
 const formInitValues = {
-  buyerDetails: { name: "", address: "", gst: "", state: "" },
+  buyerDetails: {
+    name: "",
+    address: "",
+    gst: "",
+    state: "",
+    placeOfSupply: "",
+  },
   dated: DATED_OPTIONS[1],
+  invoiceDate: formatDate(new Date()),
   date: formatDate(new Date()),
   etpNo: "",
   ewayBillNo: "",
@@ -35,7 +47,8 @@ const formInitValues = {
   isShiptoBDSame: true,
   vehicleNo: "",
   destination: "",
-  buyerOrderNoText: "ETP NO.",
+  dispatchThrough: "",
+  buyerOrderNoText: "Buyer Order No.",
   buyerOrderNoValue: "",
   transportCompany: "",
 };
@@ -60,8 +73,10 @@ const BillForm = ({ data = null, className = "" }) => {
           address: data?.buyerDetails?.address,
           gst: data?.buyerDetails?.gst,
           state: data?.buyerDetails?.state,
+          placeOfSupply: data?.buyerDetails?.placeOfSupply,
         },
         dated: data?.dated,
+        invoiceDate: data?.invoiceDate,
         date: data?.date,
         etpNo: data?.etpNo,
         ewayBillNo: data?.ewayBillNo,
@@ -73,8 +88,9 @@ const BillForm = ({ data = null, className = "" }) => {
         },
         isShiptoBDSame: data?.isShiptoBDSame,
         vehicleNo: data?.vehicleNo,
+        dispatchThrough: data?.dispatchThrough,
         destination: data?.destination,
-        buyerOrderNoText: "ETP NO.",
+        buyerOrderNoText: "Buyer Order No.",
         buyerOrderNoValue: data?.buyerOrderNoValue,
         transportCompany: data?.transportCompany,
       });
@@ -91,7 +107,7 @@ const BillForm = ({ data = null, className = "" }) => {
       );
     }
   }, []);
-
+  console.log("101 form values", formValues);
   useEffect(() => {
     if (!invoiceDetails) {
       dispatch(
@@ -140,6 +156,7 @@ const BillForm = ({ data = null, className = "" }) => {
               address: "",
               gst: "",
               state: "",
+              placeOfSupply: "",
             };
           } else {
             values.shipToDetails = {
@@ -157,9 +174,9 @@ const BillForm = ({ data = null, className = "" }) => {
             [type]: value?.toUpperCase(),
           };
           if (type === "gst" && value) {
-            values.buyerDetails.state = getStateNameByGstCode(
-              value.substring(0, 2),
-            );
+            const state = getStateNameByGstCode(value?.trim()?.substring(0, 2));
+            values.buyerDetails.state = state;
+            values.buyerDetails.placeOfSupply = state;
           }
         } else {
           values.shipToDetails = {
@@ -167,9 +184,8 @@ const BillForm = ({ data = null, className = "" }) => {
             [type]: value?.toUpperCase(),
           };
           if (type === "gst" && value) {
-            values.shipToDetails.state = getStateNameByGstCode(
-              value.substring(0, 2),
-            );
+            const state = getStateNameByGstCode(value?.trim()?.substring(0, 2));
+            values.shipToDetails.state = state;
           }
         }
       }
@@ -270,7 +286,7 @@ const BillForm = ({ data = null, className = "" }) => {
   };
 
   const downloadPdf = async () => {
-    const fileName = `${payload.buyerDetails.name}_${payload.date}.pdf`;
+    const fileName = `${payload.buyerDetails.name}_${payload.invoiceDate}.pdf`;
     const blob = await pdf(<BillPdf data={payload} />).toBlob();
     saveAs(blob, fileName);
   };
@@ -278,6 +294,12 @@ const BillForm = ({ data = null, className = "" }) => {
   const onClickPdfView = () => {
     navigate(ROUTES_LIST.pdfViewer, { state: payload });
   };
+  const handleOnInvoiceDateChange = (e) => {
+    const values = { ...formValues };
+    values.invoiceDate = formatDate(new Date(e));
+    setFormValues(values);
+  };
+
   const handleOnDateChange = (e) => {
     const values = { ...formValues };
     values.date = formatDate(new Date(e));
@@ -291,7 +313,7 @@ const BillForm = ({ data = null, className = "" }) => {
     );
     return !(
       values?.buyerDetails?.name &&
-      values?.vehicleNo &&
+      // values?.vehicleNo &&
       values?.destination &&
       checkItemsQuantity
     );
@@ -318,7 +340,7 @@ const BillForm = ({ data = null, className = "" }) => {
             Rocksunn Private Limited
           </strong>
           <span>NEAR VIVEKANAND COLLEGE,</span>
-          <span>AMAMRMOU, BANDA, SAGAR - 470339, MP, INDIA</span>
+          <span>AMAMRMOU, SHAHGARH, SAGAR - 470339, MP, INDIA</span>
           <strong>GSTIN/UIN: 23AAPCR7561K1ZT</strong>
           <span>Contact: 8349112391</span>
         </Grid>
@@ -334,8 +356,8 @@ const BillForm = ({ data = null, className = "" }) => {
           <div className="pl-1 pb-1">
             <input
               type="text"
-              className="outline-none max-w-24"
-              placeholder="ETP NO."
+              className="outline-none max-w-[7.5rem]"
+              placeholder="Buyer Order No."
               onChange={(e) => {
                 handleChange(e, e?.target?.value, "buyerOrderNoText");
               }}
@@ -344,7 +366,7 @@ const BillForm = ({ data = null, className = "" }) => {
             -
             <input
               type="text"
-              className="outline-none w-28 pl-1"
+              className="outline-none w-[7rem] pl-1"
               onChange={(e) => {
                 handleChange(e, e?.target?.value, "buyerOrderNoValue");
               }}
@@ -352,15 +374,15 @@ const BillForm = ({ data = null, className = "" }) => {
             />
           </div>
           <div className="pl-1 pb-1 ">
-            <span className="w-[102px]">E-way Bill No.</span>
-            <input
-              type="text"
-              value={formValues?.ewayBillNo}
-              onChange={(e) => {
-                handleChange(e, e?.target?.value, "ewayBillNo");
-              }}
-              className="outline-none ml-1 w-[calc(100%_-_106px)]"
-            />
+            {/* <div className="pb-[0.4rem] bottom-border"> */}
+            <p>Date</p>
+            <div className="flex">
+              <DatePickerComp
+                value={formValues.date}
+                onDateChange={handleOnDateChange}
+              />
+            </div>
+            {/* </div> */}
           </div>
           {/* <div className="pl-1 pb-1">Dispatched through</div> */}
         </Grid>
@@ -369,8 +391,8 @@ const BillForm = ({ data = null, className = "" }) => {
             <p className="pl-1">Invoice Date</p>
             <div className="mx-1 flex">
               <DatePickerComp
-                value={formValues.date}
-                onDateChange={handleOnDateChange}
+                value={formValues.invoiceDate}
+                onDateChange={handleOnInvoiceDateChange}
               />
             </div>
           </div>
@@ -384,6 +406,17 @@ const BillForm = ({ data = null, className = "" }) => {
               ddOptions={DATED_OPTIONS}
             />
           </div> */}
+          <div className="pb-1 flex">
+            <span className="pl-1 min-w-[9rem]">Dispatch Through -</span>
+            <input
+              type="text"
+              value={formValues?.dispatchThrough}
+              onChange={(e) => {
+                handleChange(e, e?.target?.value, "dispatchThrough");
+              }}
+              className="outline-none ml-1 w-[calc(100%_-_106px)]"
+            />
+          </div>
           <div className="pb-1 flex pl-1">
             <span className="min-w-[5.9rem]">Destination -</span>
             <SearchableDD
@@ -397,7 +430,7 @@ const BillForm = ({ data = null, className = "" }) => {
         </Grid>
         <Grid xs={6} className="pl-1 pb-1 form-border no-top-border">
           <div className="flex items-center">
-            <strong className="min-w-[3.5rem]">Bill To -</strong>
+            <strong className="min-w-[7rem]">Buyer (Bill To) -</strong>
             <strong className="w-[58%]">
               <SearchableDD
                 onInputChangeDDSearch={(e, value) => {
@@ -454,10 +487,15 @@ const BillForm = ({ data = null, className = "" }) => {
             <strong className="w-[3.4rem]">State -</strong>
             <span>{formValues?.buyerDetails.state}</span>
           </div>
-        </Grid>
-        <Grid xs={3} className="pl-1 bottom-border">
+
           <div className="flex">
-            <strong className="min-w-[3.5rem]">Ship To -</strong>
+            <strong className="w-[7.8rem]">Place Of Supply - </strong>
+            <span>{formValues?.buyerDetails.placeOfSupply}</span>
+          </div>
+        </Grid>
+        <Grid xs={6} className="pl-1  bottom-border right-border">
+          <div className="flex">
+            <strong className="min-w-[3.5rem]">Consignee (Ship To) -</strong>
             <strong>
               <SearchableDD
                 onInputChangeDDSearch={(e, value) => {
@@ -511,7 +549,7 @@ const BillForm = ({ data = null, className = "" }) => {
             </span>
           </div>
         </Grid>
-        <Grid xs={3} className="form-border no-top-border">
+        {/* <Grid xs={3} className="form-border no-top-border">
           <div className="flex flex-col pl-1 pb-1">
             <div className="flex">
               <span className="min-w-[fit-content]">Transport Company -</span>
@@ -534,7 +572,7 @@ const BillForm = ({ data = null, className = "" }) => {
               />
             </div>
           </div>
-        </Grid>
+        </Grid> */}
         <ItemsSell
           getUpdatedItemsSellValue={getUpdatedItemsSellValue}
           productsSellDetails={data?.productsSellDetails} // update invoice det
@@ -560,13 +598,10 @@ const BillForm = ({ data = null, className = "" }) => {
           </p>
           <p>
             c) For payment made by electronic fund transfer, please send details
-            to receipt@Rocksunn.com (Invoice number, Invoice amount, Rocksunn
+            to receipt@rseverbound.com (Invoice number, Invoice amount, Rocksunn
             Bank name and Account number, Payment date, Amount paid, TDS).
-            Queries can be sent to us at receipt@Rocksunn.com.
+            Queries can be sent to us at receipt@rseverbound.com.
           </p>
-          <sapn>
-            Company's PAN: <strong>AAPCR7561K</strong>
-          </sapn>
         </Grid>
         <Grid xs={5} className="form-border no-left-border no-top-border">
           <div className="pl-1 pb-1 flex flex-col">
@@ -595,6 +630,19 @@ const BillForm = ({ data = null, className = "" }) => {
         </Grid> */}
       </Grid>
       <div className="mt-2 flex flex-col gap-4">
+        <FormLabel id={`-label`}>Gender</FormLabel>
+        <RadioGroup defaultValue="invoice" name="radio-buttons-group">
+          <FormControlLabel
+            value="invoice"
+            control={<Radio />}
+            label="Invoice"
+          />
+          <FormControlLabel
+            value="deliveryChallan"
+            control={<Radio />}
+            label="Delivery Challan"
+          />
+        </RadioGroup>
         <Button
           variant="contained"
           className={cx(

@@ -462,22 +462,6 @@ const ItemsSell = ({
             />
           </button>
         </div>
-        <div className="mt-[16px] mr-[16px]">
-          <span className="relative float-right">Special Case for GST</span>
-          <Checkbox
-            checked={formValues?.isShiptoBDSame}
-            sx={{
-              padding: "0",
-              color: "#5a298b",
-              "&.Mui-checked": {
-                color: "#5a298b",
-              },
-            }}
-            onChange={(e) => {
-              // handleChange(e, !formValues?.isShiptoBDSame, "isShiptoBDSame");
-            }}
-          />
-        </div>
       </Grid>
       <Grid
         xs={5}
@@ -514,7 +498,7 @@ const ItemsSell = ({
             <i>{itemsSellForm.otherExpensesGST}</i>
           </div>
           <div className="flex justify-between pr-1">
-            <strong>Total Taxable Amount</strong>
+            <strong>Taxable Value</strong>
             <strong>
               <i>
                 {(
@@ -612,13 +596,13 @@ const ItemsSell = ({
         </div>
       </Grid>
 
-      <Grid xs={6} className="pr-1 pb-1 form-border flex justify-end">
+      <Grid
+        xs={7}
+        className="pr-1 pb-1 form-border no-right-border flex justify-end"
+      >
         <strong>Grand Total</strong>
       </Grid>
-      <Grid
-        xs={6}
-        className="pr-1 pb-1 form-border no-left-border flex justify-end"
-      >
+      <Grid xs={5} className="pr-1 pb-1 form-border  flex justify-end">
         <strong>{itemsSellForm.grandTotal}</strong>
       </Grid>
       <Grid xs={12} className="form-border no-top-border flex justify-between">

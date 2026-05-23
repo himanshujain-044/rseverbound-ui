@@ -18,7 +18,7 @@ const PdfViewer = () => {
     dispatch(
       clearSomeStates({
         stateKeys: ["allSellsHistory", "isInvoiceSave", "sellData"],
-      })
+      }),
     );
   }, []);
   useEffect(() => {
@@ -27,7 +27,7 @@ const PdfViewer = () => {
     }
   }, [location.state]);
   const downloadPdf = async () => {
-    const fileName = `${data.buyerDetails.name}_${data.date}.pdf`;
+    const fileName = `${data.buyerDetails.name}_${data.invoiceDate}.pdf`;
     const blob = await pdf(<BillPdf data={data} />).toBlob();
     saveAs(blob, fileName);
   };
@@ -36,7 +36,7 @@ const PdfViewer = () => {
       <div>
         <PDFDownloadLink
           document={<BillPdf data={data} />}
-          fileName={`${data?.buyerDetails?.name}_${data?.date}.pdf`}
+          fileName={`${data?.buyerDetails?.name}_${data?.invoiceDate}.pdf`}
         >
           {({ blob, url, loading, error }) =>
             loading ? (

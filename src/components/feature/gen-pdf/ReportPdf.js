@@ -94,7 +94,7 @@ const ReportPdf = ({ data = [], title }) => {
               padding: "6px",
             }}
           >
-            Total Taxable Amount
+            Taxable Value
           </Text>
           <Text
             style={{
@@ -149,7 +149,7 @@ const ReportPdf = ({ data = [], title }) => {
                   paddingTop: "12px",
                 }}
               >
-                {reportItem?.date}
+                {reportItem?.invoiceDate}
               </Text>
               <Text
                 style={{
