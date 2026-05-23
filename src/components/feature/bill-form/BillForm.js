@@ -57,6 +57,7 @@ const BillForm = ({ data = null, className = "" }) => {
   const navigate = useNavigate();
   const [formValues, setFormValues] = useState(formInitValues);
   const [itemsSell, setItemsSell] = useState();
+  const [billType, setBillType] = useState("invoice");
   const { invoiceDetails, allBuyers, isInvoiceSave, isInvoiceUpdated } =
     useSelector((state) => state.api);
   const [buyersNameDDOptions, setBuyersNameDDOptions] = useState([]);
@@ -225,6 +226,7 @@ const BillForm = ({ data = null, className = "" }) => {
   const handleGenerateInvoice = () => {
     payload = JSON.parse(
       JSON.stringify({
+        billType,
         ...formValues,
         shipToDetails: formValues?.isShiptoBDSame
           ? formValues?.buyerDetails
@@ -317,6 +319,11 @@ const BillForm = ({ data = null, className = "" }) => {
       values?.destination &&
       checkItemsQuantity
     );
+  };
+
+  const onTypeChange = (e) => {
+    console.log("323", e?.target?.value);
+    setBillType(e?.target?.value);
   };
 
   return (
@@ -577,50 +584,66 @@ const BillForm = ({ data = null, className = "" }) => {
           getUpdatedItemsSellValue={getUpdatedItemsSellValue}
           productsSellDetails={data?.productsSellDetails} // update invoice det
           formValues={formValues}
+          billType={billType}
         />
-        <Grid
-          xs={7}
-          className="pl-1 pb-1 form-border no-top-border flex flex-col justify-end"
-        >
-          <span>
-            {/* <u>Declaration</u> */}
-            <u>Terms and Condition</u>
-          </span>
-          <p>
-            a) This Bill is payable by Electronic transfer/ DD/ Cheque in favor
-            of Rocksunn Touche Tohmatsu India LLP. Please make payment within 15
-            days of receipt of this invoice.
-          </p>
-          <p>
-            b) Bank Details: Central Bank Of India, Bus Stand, Shahgarh, Sagar,
-            Madhya Pradesh - 470339. Account Number: 5986045772, IFSC Code:
-            CBIN0282030
-          </p>
-          <p>
-            c) For payment made by electronic fund transfer, please send details
-            to receipt@rseverbound.com (Invoice number, Invoice amount, Rocksunn
-            Bank name and Account number, Payment date, Amount paid, TDS).
-            Queries can be sent to us at receipt@rseverbound.com.
-          </p>
-        </Grid>
-        <Grid xs={5} className="form-border no-left-border no-top-border">
-          <div className="pl-1 pb-1 flex flex-col">
-            <span>Company's Bank Details</span>
-            <strong>A/c Holder's Name: Rock Sunn</strong>
-            <strong>Bank Name: Central Bank of India</strong>
-            <strong>A/c No.: 5986045772</strong>
-            <strong>
-              Branch & IFSC Code: SHAHGARH, SAGAR (M.P.) & CBIN0282030
-            </strong>
-          </div>
-          <div className="pr-1 pb-1 flex flex-col text-right top-border">
-            <strong>for Rock Sunn</strong>
-            <div className="flex justify-end">
-              <img src={signature} width="100px" />
+        {billType === "invoice" ? (
+          <>
+            <Grid
+              xs={7}
+              className="pl-1 pb-1 form-border no-top-border flex flex-col justify-end"
+            >
+              <span>
+                {/* <u>Declaration</u> */}
+                <u>Terms and Condition</u>
+              </span>
+              <p>
+                a) This Bill is payable by Electronic transfer/ DD/ Cheque in
+                favor of Rocksunn Touche Tohmatsu India LLP. Please make payment
+                within 15 days of receipt of this invoice.
+              </p>
+              <p>
+                b) Bank Details: Central Bank Of India, Bus Stand, Shahgarh,
+                Sagar, Madhya Pradesh - 470339. Account Number: 5986045772, IFSC
+                Code: CBIN0282030
+              </p>
+              <p>
+                c) For payment made by electronic fund transfer, please send
+                details to receipt@rseverbound.com (Invoice number, Invoice
+                amount, Rocksunn Bank name and Account number, Payment date,
+                Amount paid, TDS). Queries can be sent to us at
+                receipt@rseverbound.com.
+              </p>
+            </Grid>
+            <Grid xs={5} className="form-border no-left-border no-top-border">
+              <div className="pl-1 pb-1 flex flex-col">
+                <span>Company's Bank Details</span>
+                <strong>A/c Holder's Name: Rock Sunn</strong>
+                <strong>Bank Name: Central Bank of India</strong>
+                <strong>A/c No.: 5986045772</strong>
+                <strong>
+                  Branch & IFSC Code: SHAHGARH, SAGAR (M.P.) & CBIN0282030
+                </strong>
+              </div>
+              <div className="pr-1 pb-1 flex flex-col text-right top-border">
+                <strong>for Rock Sunn</strong>
+                <div className="flex justify-end">
+                  <img src={signature} width="100px" />
+                </div>
+                <span>Authorised Signatory</span>
+              </div>
+            </Grid>
+          </>
+        ) : (
+          <Grid xs={12} className="form-border no-top-border">
+            <div className="pr-1 pb-1 flex flex-col text-right">
+              <strong>for Rock Sunn</strong>
+              <div className="flex justify-end">
+                <img src={signature} width="100px" />
+              </div>
+              <span>Authorised Signatory</span>
             </div>
-            <span>Authorised Signatory</span>
-          </div>
-        </Grid>
+          </Grid>
+        )}
         {/* <Grid
           xs={12}
           className="mt-2 mb-1 flex flex-col justify-center items-center"
@@ -630,17 +653,23 @@ const BillForm = ({ data = null, className = "" }) => {
         </Grid> */}
       </Grid>
       <div className="mt-2 flex flex-col gap-4">
-        <FormLabel id={`-label`}>Gender</FormLabel>
-        <RadioGroup defaultValue="invoice" name="radio-buttons-group">
+        <FormLabel>Type</FormLabel>
+        <RadioGroup
+          defaultValue="invoice"
+          value={billType}
+          name="radio-buttons-group"
+        >
           <FormControlLabel
             value="invoice"
             control={<Radio />}
             label="Invoice"
+            onChange={onTypeChange}
           />
           <FormControlLabel
             value="deliveryChallan"
             control={<Radio />}
             label="Delivery Challan"
+            onChange={onTypeChange}
           />
         </RadioGroup>
         <Button

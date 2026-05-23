@@ -365,76 +365,98 @@ const BillPdfGen = ({ data = {} }) => {
           >
             <Text></Text>
           </View>
-          <View
-            style={{
-              width: "38%",
-              borderLeft: "1px solid black",
-              paddingRight: "2px",
-              paddingTop: "2px",
-              flexDirection: "row",
-              justifyContent: "space-between",
-            }}
-          >
-            <View style={{ paddingLeft: "2px" }}>
-              <Text style={{ marginTop: "2px" }}>
-                {data?.productsSellDetails?.otherExpensesGSTText}
-              </Text>
-              <Text style={{ fontFamily: "Helvetica-Bold" }}>
-                Taxable Value
-              </Text>
-              {data?.productsSellDetails?.igst && (
-                <Text>{`IGST - ${data?.productsSellDetails?.igst} %`}</Text>
-              )}
-              {data?.productsSellDetails?.sgst && (
-                <>
-                  <Text>{`SGST - ${
-                    Number(data?.productsSellDetails?.sgst) / 2
-                  }  %`}</Text>
-                  <Text>{`CGST - ${Number(
-                    data?.productsSellDetails?.sgst / 2,
-                  )} %`}</Text>
-                </>
-              )}
-              <Text>{data?.productsSellDetails?.otherExpensesText}</Text>
-              <Text>Round Off</Text>
+          {data?.billType === "invoice" ? (
+            <View
+              style={{
+                width: "38%",
+                borderLeft: "1px solid black",
+                paddingRight: "2px",
+                paddingTop: "2px",
+                flexDirection: "row",
+                justifyContent: "space-between",
+              }}
+            >
+              <View style={{ paddingLeft: "2px" }}>
+                <Text style={{ marginTop: "2px" }}>
+                  {data?.productsSellDetails?.otherExpensesGSTText}
+                </Text>
+                <Text style={{ fontFamily: "Helvetica-Bold" }}>
+                  Taxable Value
+                </Text>
+                {data?.productsSellDetails?.igst && (
+                  <Text>{`IGST - ${data?.productsSellDetails?.igst} %`}</Text>
+                )}
+                {data?.productsSellDetails?.sgst && (
+                  <>
+                    <Text>{`SGST - ${
+                      Number(data?.productsSellDetails?.sgst) / 2
+                    }  %`}</Text>
+                    <Text>{`CGST - ${Number(
+                      data?.productsSellDetails?.sgst / 2,
+                    )} %`}</Text>
+                  </>
+                )}
+                <Text>{data?.productsSellDetails?.otherExpensesText}</Text>
+                <Text>Round Off</Text>
+              </View>
+
+              <View style={{ fontFamily: "Times-Italic", fontStyle: "italic" }}>
+                <Text style={{ marginTop: "2px" }}>
+                  {data?.productsSellDetails?.otherExpensesGST > 0
+                    ? data?.productsSellDetails?.otherExpensesGST
+                    : ""}
+                </Text>
+                <Text style={{ fontFamily: "Helvetica-Bold" }}>
+                  {data?.productsSellDetails?.totalProductAmount +
+                    data?.productsSellDetails?.otherExpensesGST}
+                </Text>
+
+                {data?.productsSellDetails?.igst && (
+                  <Text>{data?.productsSellDetails?.gstAmount}</Text>
+                )}
+                {data?.productsSellDetails?.sgst && (
+                  <>
+                    <Text>
+                      {Number(data?.productsSellDetails?.gstAmount) / 2}
+                    </Text>
+                    <Text>
+                      {Number(data?.productsSellDetails?.gstAmount) / 2}
+                    </Text>
+                  </>
+                )}
+                <Text>
+                  {data?.productsSellDetails?.otherExpenses > 0
+                    ? data?.productsSellDetails?.otherExpenses
+                    : ""}
+                </Text>
+
+                <Text>
+                  {data?.productsSellDetails?.roundOff?.added ? "+" : "-"}
+                  {data?.productsSellDetails?.roundOff?.amountInPaise}
+                </Text>
+              </View>
             </View>
-
-            <View style={{ fontFamily: "Times-Italic", fontStyle: "italic" }}>
-              <Text style={{ marginTop: "2px" }}>
-                {data?.productsSellDetails?.otherExpensesGST > 0
-                  ? data?.productsSellDetails?.otherExpensesGST
-                  : ""}
-              </Text>
-              <Text style={{ fontFamily: "Helvetica-Bold" }}>
-                {data?.productsSellDetails?.totalProductAmount +
-                  data?.productsSellDetails?.otherExpensesGST}
-              </Text>
-
-              {data?.productsSellDetails?.igst && (
-                <Text>{data?.productsSellDetails?.gstAmount}</Text>
-              )}
-              {data?.productsSellDetails?.sgst && (
-                <>
-                  <Text>
-                    {Number(data?.productsSellDetails?.gstAmount) / 2}
-                  </Text>
-                  <Text>
-                    {Number(data?.productsSellDetails?.gstAmount) / 2}
-                  </Text>
-                </>
-              )}
-              <Text>
-                {data?.productsSellDetails?.otherExpenses > 0
-                  ? data?.productsSellDetails?.otherExpenses
-                  : ""}
-              </Text>
-
-              <Text>
-                {data?.productsSellDetails?.roundOff?.added ? "+" : "-"}
-                {data?.productsSellDetails?.roundOff?.amountInPaise}
-              </Text>
+          ) : (
+            <View
+              style={{
+                width: "38%",
+                borderLeft: "1px solid black",
+                paddingRight: "2px",
+                paddingTop: "2px",
+                flexDirection: "row",
+                justifyContent: "space-between",
+              }}
+            >
+              <View style={{ paddingLeft: "2px" }}>
+                <Text style={{ marginTop: "2px" }}>
+                  {data?.productsSellDetails?.otherExpensesGSTText}
+                </Text>
+                <Text style={{ fontFamily: "Helvetica-Bold" }}>
+                  Total Value
+                </Text>
+              </View>
             </View>
-          </View>
+          )}
         </View>
 
         <View style={{ ...styles.section, fontFamily: "Helvetica-Bold" }}>
@@ -482,35 +504,78 @@ const BillPdfGen = ({ data = {} }) => {
           </View>
         </View>
 
-        <View style={styles.section}>
-          <View
-            style={{
-              width: "60%",
-              // marginTop: "48px",
-              justifyContent: "flex-end",
-              paddingLeft: "2px",
-              paddingTop: "2px",
-            }}
-          >
-            <Text>Terms and Condition</Text>
-            <Text>
-              a) This Bill is payable by Electronic transfer/ DD/ Cheque in
-              favor of Rocksunn Touche Tohmatsu India LLP. Please make payment
-              within 15 days of receipt of this invoice.
-            </Text>
-            <Text>
-              b) Bank Details: Central Bank Of India, Bus Stand, Shahgarh,
-              Sagar, Madhya Pradesh - 470339. Account Number: 5986045772, IFSC
-              Code: CBIN0282030
-            </Text>
-            <Text>
-              c) For payment made by electronic fund transfer, please send
-              details to receipt@rseverbound.com (Invoice number, Invoice
-              amount, Rocksunn Bank name and Account number, Payment date,
-              Amount paid, TDS). Queries can be sent to us at
-              receipt@rseverbound.com.
-            </Text>
+        {data?.billType === "invoice" ? (
+          <View style={styles.section}>
+            <View
+              style={{
+                width: "60%",
+                // marginTop: "48px",
+                justifyContent: "flex-end",
+                paddingLeft: "2px",
+                paddingTop: "2px",
+              }}
+            >
+              <Text>Terms and Condition</Text>
+              <Text>
+                a) This Bill is payable by Electronic transfer/ DD/ Cheque in
+                favor of Rocksunn Touche Tohmatsu India LLP. Please make payment
+                within 15 days of receipt of this invoice.
+              </Text>
+              <Text>
+                b) Bank Details: Central Bank Of India, Bus Stand, Shahgarh,
+                Sagar, Madhya Pradesh - 470339. Account Number: 5986045772, IFSC
+                Code: CBIN0282030
+              </Text>
+              <Text>
+                c) For payment made by electronic fund transfer, please send
+                details to receipt@rseverbound.com (Invoice number, Invoice
+                amount, Rocksunn Bank name and Account number, Payment date,
+                Amount paid, TDS). Queries can be sent to us at
+                receipt@rseverbound.com.
+              </Text>
+            </View>
+            <View
+              style={{
+                width: "40%",
+                marginLeft: "20px",
+                borderLeft: "1px solid black",
+
+                paddingTop: "2px",
+              }}
+            >
+              <View
+                style={{ paddingLeft: "2px", fontFamily: "Helvetica-Bold" }}
+              >
+                <Text>Company's Bank Details</Text>
+                <Text>A/c Holder's Name: Rock Sunn</Text>
+                <Text>Bank Name: Central Bank of India</Text>
+                <Text>A/c No.: 5986045772</Text>
+                <Text>
+                  Branch & IFSC Code: SHAHGARH, SAGAR (M.P.) & CBIN0282030
+                </Text>
+              </View>
+
+              <View
+                style={{
+                  width: "100%",
+                  textAlign: "right",
+                  borderTop: "1px solid black",
+                  paddingRight: "2px",
+                  paddingTop: "2px",
+                  justifyContent: "flex-end",
+                  alignContent: "flex-end",
+                  alignItems: "flex-end",
+                }}
+              >
+                <Text style={{ fontFamily: "Helvetica-Bold" }}>
+                  for Rock Sunn
+                </Text>
+                <Image style={{ width: "80px" }} src={signature} />
+                <Text>Authorised Signatory</Text>
+              </View>
+            </View>
           </View>
+        ) : (
           <View
             style={{
               width: "40%",
@@ -520,16 +585,6 @@ const BillPdfGen = ({ data = {} }) => {
               paddingTop: "2px",
             }}
           >
-            <View style={{ paddingLeft: "2px", fontFamily: "Helvetica-Bold" }}>
-              <Text>Company's Bank Details</Text>
-              <Text>A/c Holder's Name: Rock Sunn</Text>
-              <Text>Bank Name: Central Bank of India</Text>
-              <Text>A/c No.: 5986045772</Text>
-              <Text>
-                Branch & IFSC Code: SHAHGARH, SAGAR (M.P.) & CBIN0282030
-              </Text>
-            </View>
-
             <View
               style={{
                 width: "100%",
@@ -549,7 +604,7 @@ const BillPdfGen = ({ data = {} }) => {
               <Text>Authorised Signatory</Text>
             </View>
           </View>
-        </View>
+        )}
         <View
           style={{ borderBottomWidth: 1, borderBottomColor: "black" }}
         ></View>
