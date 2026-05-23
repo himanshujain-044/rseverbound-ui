@@ -588,7 +588,7 @@ const BillForm = ({ data = null, className = "" }) => {
           </span>
           <p>
             a) This Bill is payable by Electronic transfer/ DD/ Cheque in favor
-            of Rocksunn Touche Tohmatsu India LLP. Please make payment within 15
+            of Rocksunn Private Limited. Please make payment within 15
             days of receipt of this invoice.
           </p>
           <p>

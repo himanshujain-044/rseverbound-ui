@@ -495,8 +495,8 @@ const BillPdfGen = ({ data = {} }) => {
             <Text>Terms and Condition</Text>
             <Text>
               a) This Bill is payable by Electronic transfer/ DD/ Cheque in
-              favor of Rocksunn Touche Tohmatsu India LLP. Please make payment
-              within 15 days of receipt of this invoice.
+              favor of Rocksunn Private Limited. Please make payment within 15
+              days of receipt of this invoice.
             </Text>
             <Text>
               b) Bank Details: Central Bank Of India, Bus Stand, Shahgarh,
