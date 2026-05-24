@@ -45,6 +45,7 @@ const ItemsSell = ({
   getUpdatedItemsSellValue = () => {},
   productsSellDetails,
   formValues,
+  billType,
 }) => {
   const { invoiceDetails, isInvoiceSave } = useSelector((state) => state.api);
   console.log("invoice det", invoiceDetails);
@@ -349,11 +350,17 @@ const ItemsSell = ({
       {itemsSellForm.rowFields.map((row, index) => {
         return (
           <>
-            <Grid xs={1} className="left-border flex justify-center">
+            <Grid
+              xs={1}
+              className="left-border bottom-border flex justify-center"
+            >
               <div className="pl-1">{row.sNo}</div>
             </Grid>
 
-            <Grid xs={3} className="left-border right-border font-bold">
+            <Grid
+              xs={3}
+              className="left-border right-border bottom-border font-bold"
+            >
               <SearchableDD
                 ddValue={itemsSellForm.rowFields[index]["description"]}
                 onInputChangeDDSearch={(event, value) => {
@@ -362,7 +369,7 @@ const ItemsSell = ({
                 ddOptions={productsDDOptions}
               />
             </Grid>
-            <Grid xs={1}>
+            <Grid xs={1} className="bottom-border">
               <div className="pl-1">
                 <SearchableDD
                   ddValue={itemsSellForm.rowFields[index]["hsnCode"]}
@@ -373,7 +380,7 @@ const ItemsSell = ({
                 />
               </div>
             </Grid>
-            <Grid xs={2} className="left-border">
+            <Grid xs={2} className="left-border bottom-border">
               <div className="pl-1">
                 <input
                   placeholder="Enter "
@@ -387,7 +394,7 @@ const ItemsSell = ({
                 />
               </div>
             </Grid>
-            <Grid xs={2} className="left-border">
+            <Grid xs={2} className="left-border bottom-border">
               <div className="flex gap-2 pl-1">
                 {/* <input
                   placeholder="count"
@@ -419,7 +426,7 @@ const ItemsSell = ({
                 /> */}
               </div>
             </Grid>
-            <Grid xs={1} className="left-border">
+            <Grid xs={1} className="left-border bottom-border">
               <div className="pl-1">
                 <input
                   placeholder="Enter "
@@ -433,7 +440,7 @@ const ItemsSell = ({
                 />
               </div>
             </Grid>
-            <Grid xs={2} className="left-border right-border">
+            <Grid xs={2} className="left-border right-border bottom-border">
               <div className="pr-1 text-center">
                 <strong>{itemsSellForm.rowFields[index].amount}</strong>
               </div>
@@ -443,7 +450,7 @@ const ItemsSell = ({
       })}
       <Grid
         xs={7}
-        className="pl-1 pt-[2rem] form-border no-bottom-border no-right-border flex justify-between items-start gap-2"
+        className="pl-1 left-border flex justify-between items-start gap-2"
       >
         <div>
           <button onClick={handleAddField}>
@@ -463,75 +470,76 @@ const ItemsSell = ({
           </button>
         </div>
       </Grid>
-      <Grid
-        xs={5}
-        className="pl-1 h-[18rem] form-border no-bottom-border flex flex-col"
-      >
-        <div>
-          <div className="flex justify-between pr-1">
-            <div className="flex gap-3">
-              <input
-                type="text"
-                className="outline-none max-w-42 font-bold"
-                placeholder="Other Expenses (GST)..."
-                onChange={(e) => {
-                  handleChange(
-                    e,
-                    e?.target?.value,
-                    "otherExpensesGSTText",
-                    null,
-                  );
-                }}
-                value={itemsSellForm.otherExpensesGSTText}
-              />
-              -
-              <input
-                type="number"
-                className="outline-none w-28"
-                placeholder="0000"
-                value={itemsSellForm.otherExpensesGST}
-                onChange={(e) => {
-                  handleChange(e, e?.target?.value, "otherExpensesGST", null);
-                }}
-              />
-            </div>
-            <i>{itemsSellForm.otherExpensesGST}</i>
-          </div>
-          <div className="flex justify-between pr-1">
-            <strong>Taxable Value</strong>
-            <strong>
-              <i>
-                {(
-                  Number(itemsSellForm.totalProductAmount) +
-                  Number(itemsSellForm.otherExpensesGST)
-                ).toFixed(2)}
-              </i>
-            </strong>
-          </div>
-
-          {options.map((option) => (
-            <div
-              key={option.value}
-              className={cx(
-                "flex justify-between pr-1",
-                itemsSellForm?.gstType.type !== option.value &&
-                  "cursor-not-allowed opacity-50",
-              )}
-            >
-              <div className="flex gap-3 items-baseline">
+      {billType === "invoice" ? (
+        <Grid
+          xs={5}
+          className="pl-1 left-border right-border h-[18rem] flex flex-col"
+        >
+          <div>
+            <div className="flex justify-between pr-1">
+              <div className="flex gap-3">
                 <input
-                  type="radio"
-                  id={option.value}
-                  name="radioGroup"
-                  value={option.value}
-                  checked={itemsSellForm?.gstType.type === option.value}
+                  type="text"
+                  className="outline-none max-w-42 font-bold"
+                  placeholder="Other Expenses (GST)..."
                   onChange={(e) => {
-                    handleChange(e, e?.target?.value, "radioGST", null);
+                    handleChange(
+                      e,
+                      e?.target?.value,
+                      "otherExpensesGSTText",
+                      null,
+                    );
                   }}
-                  className="accent-primary"
+                  value={itemsSellForm.otherExpensesGSTText}
                 />
-                <label htmlFor={option.value}>{option.label}</label>
-                {/* <input
+                -
+                <input
+                  type="number"
+                  className="outline-none w-28"
+                  placeholder="0000"
+                  value={itemsSellForm.otherExpensesGST}
+                  onChange={(e) => {
+                    handleChange(e, e?.target?.value, "otherExpensesGST", null);
+                  }}
+                />
+              </div>
+              <i>{itemsSellForm.otherExpensesGST}</i>
+            </div>
+            <div className="flex justify-between pr-1">
+              <strong>Taxable Value</strong>
+              <strong>
+                <i>
+                  {(
+                    Number(itemsSellForm.totalProductAmount) +
+                    Number(itemsSellForm.otherExpensesGST)
+                  ).toFixed(2)}
+                </i>
+              </strong>
+            </div>
+
+            {options.map((option) => (
+              <div
+                key={option.value}
+                className={cx(
+                  "flex justify-between pr-1",
+                  itemsSellForm?.gstType.type !== option.value &&
+                    "cursor-not-allowed opacity-50",
+                )}
+              >
+                <div className="flex gap-3 items-baseline">
+                  <input
+                    type="radio"
+                    id={option.value}
+                    name="radioGroup"
+                    value={option.value}
+                    checked={itemsSellForm?.gstType.type === option.value}
+                    onChange={(e) => {
+                      handleChange(e, e?.target?.value, "radioGST", null);
+                    }}
+                    className="accent-primary"
+                  />
+                  <label htmlFor={option.value}>{option.label}</label>
+                  {/* <input
                   type="number"
                   value={itemsSellForm?.gstType.value || option.inputValue}
                   className="outline-none w-12"
@@ -539,63 +547,79 @@ const ItemsSell = ({
                     handleChange(e, e?.target?.value, option.value, null);
                   }}
                 /> */}
-                <div>
-                  <SearchableDD
-                    ddValue={itemsSellForm?.gstType.value || option.inputValue}
-                    onInputChangeDDSearch={(event, value) => {
-                      handleChange(event, value, option.value, null);
-                    }}
-                    ddOptions={gstDDOptions}
-                  />
-                </div>
-              </div>
-              {itemsSellForm?.gstType.type === option.value &&
-                itemsSellForm?.gstType.type === "igst" && (
-                  <i>{itemsSellForm?.gstType.gstAmount}</i>
-                )}
-              {itemsSellForm?.gstType.type === option.value &&
-                itemsSellForm?.gstType.type === "sgst" && (
-                  <div className="flex flex-col">
-                    <i>{itemsSellForm?.gstType.gstAmount / 2}</i>{" "}
-                    <i>{itemsSellForm?.gstType.gstAmount / 2}</i>
+                  <div>
+                    <SearchableDD
+                      ddValue={
+                        itemsSellForm?.gstType.value || option.inputValue
+                      }
+                      onInputChangeDDSearch={(event, value) => {
+                        handleChange(event, value, option.value, null);
+                      }}
+                      ddOptions={gstDDOptions}
+                    />
                   </div>
-                )}
+                </div>
+                {itemsSellForm?.gstType.type === option.value &&
+                  itemsSellForm?.gstType.type === "igst" && (
+                    <i>{itemsSellForm?.gstType.gstAmount}</i>
+                  )}
+                {itemsSellForm?.gstType.type === option.value &&
+                  itemsSellForm?.gstType.type === "sgst" && (
+                    <div className="flex flex-col">
+                      <i>{itemsSellForm?.gstType.gstAmount / 2}</i>{" "}
+                      <i>{itemsSellForm?.gstType.gstAmount / 2}</i>
+                    </div>
+                  )}
+              </div>
+            ))}
+            <div className="flex justify-between pr-1">
+              <div className="flex gap-3">
+                <input
+                  type="text"
+                  className="outline-none max-w-42 font-bold"
+                  placeholder="Other Expenses ..."
+                  onChange={(e) => {
+                    handleChange(
+                      e,
+                      e?.target?.value,
+                      "otherExpensesText",
+                      null,
+                    );
+                  }}
+                  value={itemsSellForm.otherExpensesText}
+                />
+                -
+                <input
+                  type="number"
+                  className="outline-none w-28"
+                  placeholder="0000"
+                  value={itemsSellForm.otherExpenses}
+                  onChange={(e) => {
+                    handleChange(e, e?.target?.value, "otherExpenses", null);
+                  }}
+                />
+              </div>
+              <i>{itemsSellForm.otherExpenses}</i>
             </div>
-          ))}
-          <div className="flex justify-between pr-1">
-            <div className="flex gap-3">
-              <input
-                type="text"
-                className="outline-none max-w-42 font-bold"
-                placeholder="Other Expenses ..."
-                onChange={(e) => {
-                  handleChange(e, e?.target?.value, "otherExpensesText", null);
-                }}
-                value={itemsSellForm.otherExpensesText}
-              />
-              -
-              <input
-                type="number"
-                className="outline-none w-28"
-                placeholder="0000"
-                value={itemsSellForm.otherExpenses}
-                onChange={(e) => {
-                  handleChange(e, e?.target?.value, "otherExpenses", null);
-                }}
-              />
-            </div>
-            <i>{itemsSellForm.otherExpenses}</i>
           </div>
-        </div>
-        <div className="flex justify-between pr-1">
-          <strong>Round Off</strong>
-          <span>
-            {itemsSellForm.roundOff.added ? "+" : "-"}
-            <i>{itemsSellForm.roundOff.amountInPaise}</i>
-          </span>
-        </div>
-      </Grid>
-
+          <div className="flex justify-between pr-1">
+            <strong>Round Off</strong>
+            <span>
+              {itemsSellForm.roundOff.added ? "+" : "-"}
+              <i>{itemsSellForm.roundOff.amountInPaise}</i>
+            </span>
+          </div>
+        </Grid>
+      ) : (
+        <Grid xs={5} className="left-border right-border">
+          <div className=" flex justify-between pr-1">
+            <strong>Total Value</strong>
+            <strong>
+              <i>{Number(itemsSellForm.totalProductAmount).toFixed(2)}</i>
+            </strong>
+          </div>
+        </Grid>
+      )}
       <Grid
         xs={7}
         className="pr-1 pb-1 form-border no-right-border flex justify-end"
@@ -603,13 +627,22 @@ const ItemsSell = ({
         <strong>Grand Total</strong>
       </Grid>
       <Grid xs={5} className="pr-1 pb-1 form-border  flex justify-end">
-        <strong>{itemsSellForm.grandTotal}</strong>
+        <strong>
+          {billType === "invoice"
+            ? itemsSellForm.grandTotal
+            : Number(itemsSellForm.totalProductAmount).toFixed(2)}
+        </strong>
       </Grid>
       <Grid xs={12} className="form-border no-top-border flex justify-between">
         <div className="pl-1 pb-1 flex flex-col">
           <span>Amount in words</span>
           <strong>
-            INDIAN RUPEE: {numberToWords(itemsSellForm.grandTotal)}
+            INDIAN RUPEE:{" "}
+            {billType === "invoice"
+              ? numberToWords(itemsSellForm.grandTotal)
+              : numberToWords(
+                  Number(itemsSellForm.totalProductAmount).toFixed(2),
+                )}
           </strong>
         </div>
         <span className="pr-1 pb-1">E. & O.E</span>

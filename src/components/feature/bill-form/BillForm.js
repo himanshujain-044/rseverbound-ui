@@ -4,6 +4,7 @@ import { useNavigate } from "react-router-dom";
 import Grid from "@mui/material/Grid";
 import cx from "classnames";
 import { Button, Checkbox } from "@mui/material";
+import logo from "../../../assets/logo/logo.png";
 import { saveAs } from "file-saver";
 import { pdf } from "@react-pdf/renderer";
 import SearchableDD from "../../common/SearchableDD/SearchableDD";
@@ -57,6 +58,9 @@ const BillForm = ({ data = null, className = "" }) => {
   const navigate = useNavigate();
   const [formValues, setFormValues] = useState(formInitValues);
   const [itemsSell, setItemsSell] = useState();
+  const [billType, setBillType] = useState(
+    data?.deliveryChNo ? "deliveryChallan" : "invoice",
+  );
   const { invoiceDetails, allBuyers, isInvoiceSave, isInvoiceUpdated } =
     useSelector((state) => state.api);
   const [buyersNameDDOptions, setBuyersNameDDOptions] = useState([]);
@@ -66,7 +70,7 @@ const BillForm = ({ data = null, className = "" }) => {
     useState([]);
 
   useEffect(() => {
-    if (data?.invoiceNo) {
+    if (data?.invoiceNo || data?.deliveryChNo) {
       setFormValues({
         buyerDetails: {
           name: data?.buyerDetails?.name,
@@ -225,11 +229,13 @@ const BillForm = ({ data = null, className = "" }) => {
   const handleGenerateInvoice = () => {
     payload = JSON.parse(
       JSON.stringify({
+        billType,
         ...formValues,
         shipToDetails: formValues?.isShiptoBDSame
           ? formValues?.buyerDetails
           : formValues?.shipToDetails,
-        invoiceNo: invoiceDetails?.nextInvoiceNo || 1,
+        invoiceNo: invoiceDetails?.nextInvoiceNo,
+        deliveryChNo: invoiceDetails?.nextDeliveryChNo,
         productsSellDetails: {
           productsSell: itemsSell?.rowFields,
           [itemsSell?.gstType?.type]: itemsSell["gstType"].value,
@@ -256,11 +262,13 @@ const BillForm = ({ data = null, className = "" }) => {
   const handleUpdateInvoice = () => {
     payload = JSON.parse(
       JSON.stringify({
+        billType,
         ...formValues,
         shipToDetails: formValues?.isShiptoBDSame
           ? formValues?.buyerDetails
           : formValues?.shipToDetails,
         invoiceNo: data?.invoiceNo,
+        deliveryChNo: data?.deliveryChNo,
         productsSellDetails: {
           productsSell: itemsSell?.rowFields,
           [itemsSell?.gstType?.type]: itemsSell["gstType"].value,
@@ -319,6 +327,11 @@ const BillForm = ({ data = null, className = "" }) => {
     );
   };
 
+  const onTypeChange = (e) => {
+    console.log("323", e?.target?.value);
+    setBillType(e?.target?.value);
+  };
+
   return (
     <div
       className={cx(
@@ -328,9 +341,16 @@ const BillForm = ({ data = null, className = "" }) => {
     >
       <Grid container className="bg-[#fff]">
         <Grid xs={12}>
-          <h2 className="form-border text-center py-1 underline underline-offset-2">
-            TAX INVOICE
-          </h2>
+          <div className="form-border text-center py-[20px] underline underline-offset-2 flex items-center">
+            <img
+              src={logo}
+              alt="logo"
+              className="absolute mx-[4px] w-[60px] mobile:w-[45px]"
+            />
+            <h2 className="w-full text-center">
+              {billType === "invoice" ? "TAX INVOICE" : "DELIVERY CHALLAN"}
+            </h2>
+          </div>
         </Grid>
         <Grid
           xs={6}
@@ -348,9 +368,9 @@ const BillForm = ({ data = null, className = "" }) => {
           <div className="pl-1 pb-1  bottom-border">
             <p>Invoice No.</p>
             <strong>
-              {data?.invoiceNo
-                ? data?.invoiceNo
-                : invoiceDetails?.nextInvoiceNo}
+              {billType === "invoice"
+                ? data?.invoiceNo || invoiceDetails?.nextInvoiceNo
+                : data?.deliveryChNo || invoiceDetails?.nextDeliveryChNo}
             </strong>
           </div>
           <div className="pl-1 pb-1">
@@ -577,50 +597,66 @@ const BillForm = ({ data = null, className = "" }) => {
           getUpdatedItemsSellValue={getUpdatedItemsSellValue}
           productsSellDetails={data?.productsSellDetails} // update invoice det
           formValues={formValues}
+          billType={billType}
         />
-        <Grid
-          xs={7}
-          className="pl-1 pb-1 form-border no-top-border flex flex-col justify-end"
-        >
-          <span>
-            {/* <u>Declaration</u> */}
-            <u>Terms and Condition</u>
-          </span>
-          <p>
-            a) This Bill is payable by Electronic transfer/ DD/ Cheque in favor
-            of Rocksunn Private Limited. Please make payment within 15
-            days of receipt of this invoice.
-          </p>
-          <p>
-            b) Bank Details: Central Bank Of India, Bus Stand, Shahgarh, Sagar,
-            Madhya Pradesh - 470339. Account Number: 5986045772, IFSC Code:
-            CBIN0282030
-          </p>
-          <p>
-            c) For payment made by electronic fund transfer, please send details
-            to receipt@rseverbound.com (Invoice number, Invoice amount, Rocksunn
-            Bank name and Account number, Payment date, Amount paid, TDS).
-            Queries can be sent to us at receipt@rseverbound.com.
-          </p>
-        </Grid>
-        <Grid xs={5} className="form-border no-left-border no-top-border">
-          <div className="pl-1 pb-1 flex flex-col">
-            <span>Company's Bank Details</span>
-            <strong>A/c Holder's Name: Rock Sunn</strong>
-            <strong>Bank Name: Central Bank of India</strong>
-            <strong>A/c No.: 5986045772</strong>
-            <strong>
-              Branch & IFSC Code: SHAHGARH, SAGAR (M.P.) & CBIN0282030
-            </strong>
-          </div>
-          <div className="pr-1 pb-1 flex flex-col text-right top-border">
-            <strong>for Rock Sunn</strong>
-            <div className="flex justify-end">
-              <img src={signature} width="100px" />
+        {billType === "invoice" ? (
+          <>
+            <Grid
+              xs={7}
+              className="pl-1 pb-1 form-border no-top-border flex flex-col justify-end"
+            >
+              <span>
+                {/* <u>Declaration</u> */}
+                <u>Terms and Condition</u>
+              </span>
+              <p>
+                a) This Bill is payable by Electronic transfer/ DD/ Cheque in
+                favor of Rocksunn Private Limited. Please make payment within 15
+                days of receipt of this invoice.
+              </p>
+              <p>
+                b) Bank Details: Central Bank Of India, Bus Stand, Shahgarh,
+                Sagar, Madhya Pradesh - 470339. Account Number: 5986045772, IFSC
+                Code: CBIN0282030
+              </p>
+              <p>
+                c) For payment made by electronic fund transfer, please send
+                details to receipt@rseverbound.com (Invoice number, Invoice
+                amount, Rocksunn Bank name and Account number, Payment date,
+                Amount paid, TDS). Queries can be sent to us at
+                receipt@rseverbound.com.
+              </p>
+            </Grid>
+            <Grid xs={5} className="form-border no-left-border no-top-border">
+              <div className="pl-1 pb-1 flex flex-col">
+                <span>Company's Bank Details</span>
+                <strong>A/c Holder's Name: Rock Sunn</strong>
+                <strong>Bank Name: Central Bank of India</strong>
+                <strong>A/c No.: 5986045772</strong>
+                <strong>
+                  Branch & IFSC Code: SHAHGARH, SAGAR (M.P.) & CBIN0282030
+                </strong>
+              </div>
+              <div className="pr-1 pb-1 flex flex-col text-right top-border">
+                <strong>for Rock Sunn</strong>
+                <div className="flex justify-end">
+                  <img src={signature} width="100px" />
+                </div>
+                <span>Authorised Signatory</span>
+              </div>
+            </Grid>
+          </>
+        ) : (
+          <Grid xs={12} className="form-border no-top-border">
+            <div className="pr-1 pb-1 flex flex-col text-right">
+              <strong>for Rock Sunn</strong>
+              <div className="flex justify-end">
+                <img src={signature} width="100px" />
+              </div>
+              <span>Authorised Signatory</span>
             </div>
-            <span>Authorised Signatory</span>
-          </div>
-        </Grid>
+          </Grid>
+        )}
         {/* <Grid
           xs={12}
           className="mt-2 mb-1 flex flex-col justify-center items-center"
@@ -630,19 +666,38 @@ const BillForm = ({ data = null, className = "" }) => {
         </Grid> */}
       </Grid>
       <div className="mt-2 flex flex-col gap-4">
-        <FormLabel id={`-label`}>Gender</FormLabel>
-        <RadioGroup defaultValue="invoice" name="radio-buttons-group">
-          <FormControlLabel
-            value="invoice"
-            control={<Radio />}
-            label="Invoice"
-          />
-          <FormControlLabel
-            value="deliveryChallan"
-            control={<Radio />}
-            label="Delivery Challan"
-          />
-        </RadioGroup>
+        <div className="mx-1 p-1 rounded form-border">
+          <strong>Type</strong>
+          <RadioGroup
+            sx={{
+              padding: "0",
+              "& .MuiRadio-root": {
+                color: "#5a298b",
+              },
+              "& .MuiRadio-root.Mui-checked": {
+                color: "#5a298b",
+              },
+            }}
+            // defaultValue="invoice"
+            value={billType}
+            name="radio-buttons-group"
+          >
+            <FormControlLabel
+              value="invoice"
+              control={<Radio />}
+              label="Invoice"
+              onChange={onTypeChange}
+              disabled={data?.invoiceNo || data?.deliveryChNo}
+            />
+            <FormControlLabel
+              value="deliveryChallan"
+              control={<Radio />}
+              label="Delivery Challan"
+              onChange={onTypeChange}
+              disabled={data?.invoiceNo || data?.deliveryChNo}
+            />
+          </RadioGroup>
+        </div>
         <Button
           variant="contained"
           className={cx(
@@ -652,10 +707,16 @@ const BillForm = ({ data = null, className = "" }) => {
           )}
           disabled={isDisabled(formValues)}
           onClick={
-            data?.invoiceNo ? handleUpdateInvoice : handleGenerateInvoice
+            data?.invoiceNo || data?.deliveryChNo
+              ? handleUpdateInvoice
+              : handleGenerateInvoice
           }
         >
-          {data?.invoiceNo ? "Update Invoice" : "Generate Invoice"}
+          {data?.invoiceNo
+            ? "Update Invoice"
+            : data?.deliveryChNo
+              ? "Update Delivery Challan"
+              : "Generate Invoice"}
         </Button>
         {(isInvoiceSave || isInvoiceUpdated) && (
           <>

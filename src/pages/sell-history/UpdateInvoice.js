@@ -17,7 +17,7 @@ const UpdateInvoice = (props) => {
   const [isEditClicked, setIsEditClicked] = useState(false);
 
   useEffect(() => {
-    if (sellData?.invoiceNo && isEditClicked) {
+    if ((sellData?.invoiceNo || sellData?.deliveryChNo) && isEditClicked) {
       navigate(ROUTES_LIST.dashboard);
     }
   }, [sellData]);
@@ -28,18 +28,22 @@ const UpdateInvoice = (props) => {
         method: "patch",
         endpoint: API_ENDPOINTS.updateInvoice,
         payload: { invoiceNo: value },
-      })
+      }),
     );
   };
 
   const onEditBtn = () => {
     setIsEditClicked(true);
+    console.log("row", row);
     dispatch(
       getSellData({
         method: "get",
         endpoint: API_ENDPOINTS.getSellData,
-        payload: { invoiceNo: row?.invoiceNo },
-      })
+        payload: {
+          invoiceNo: row?.invoiceNo ? row?.invoiceNo : "",
+          deliveryChNo: row?.deliveryChNo ? row?.deliveryChNo : "",
+        },
+      }),
     );
   };
 
@@ -49,7 +53,7 @@ const UpdateInvoice = (props) => {
         <CancelOutlinedIcon
           className={cx(
             "text-[22px]",
-            row?.isInvoiceCancel ? "fill-success" : "fill-error"
+            row?.isInvoiceCancel ? "fill-success" : "fill-error",
           )}
         />
       </strong>
