@@ -627,13 +627,22 @@ const ItemsSell = ({
         <strong>Grand Total</strong>
       </Grid>
       <Grid xs={5} className="pr-1 pb-1 form-border  flex justify-end">
-        <strong>{itemsSellForm.grandTotal}</strong>
+        <strong>
+          {billType === "invoice"
+            ? itemsSellForm.grandTotal
+            : Number(itemsSellForm.totalProductAmount).toFixed(2)}
+        </strong>
       </Grid>
       <Grid xs={12} className="form-border no-top-border flex justify-between">
         <div className="pl-1 pb-1 flex flex-col">
           <span>Amount in words</span>
           <strong>
-            INDIAN RUPEE: {numberToWords(itemsSellForm.grandTotal)}
+            INDIAN RUPEE:{" "}
+            {billType === "invoice"
+              ? numberToWords(itemsSellForm.grandTotal)
+              : numberToWords(
+                  Number(itemsSellForm.totalProductAmount).toFixed(2),
+                )}
           </strong>
         </div>
         <span className="pr-1 pb-1">E. & O.E</span>

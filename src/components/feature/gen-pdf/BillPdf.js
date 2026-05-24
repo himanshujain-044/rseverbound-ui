@@ -8,6 +8,7 @@ import {
   Image,
 } from "@react-pdf/renderer";
 import { numberToWords } from "../../../utils/helperFunction";
+import logo from "../../../assets/logo/logo.png";
 import cancelled from "../../../assets/images/cancelled.png";
 import signature from "../../../assets/images/signature.jpeg";
 
@@ -21,6 +22,7 @@ const styles = StyleSheet.create({
 });
 
 const BillPdfGen = ({ data = {} }) => {
+  console.log("25", data);
   const pdfTitle = `${data?.buyerDetails?.name}_${data?.invoiceDate}`;
   return (
     <Document title={pdfTitle} key={pdfTitle}>
@@ -36,16 +38,17 @@ const BillPdfGen = ({ data = {} }) => {
         key="pdf-page"
       >
         <View style={styles.section}>
+          <Image style={{ padding: "2px", width: "45px" }} src={logo} />
           <Text
             style={{
               textDecoration: "underline",
-              width: "100%",
+              width: "80%",
               textAlign: "center",
               padding: "4px",
-              paddingTop: "8px",
+              paddingTop: "14px",
             }}
           >
-            TAX INVOICE
+            {data?.billType === "invoice" ? "TAX INVOICE" : "DELIVERY CHALLAN"}
           </Text>
         </View>
 
@@ -73,7 +76,9 @@ const BillPdfGen = ({ data = {} }) => {
             <View style={{ paddingLeft: "2px" }}>
               <Text>Invoice No.</Text>
               <Text style={{ fontFamily: "Helvetica-Bold" }}>
-                {data?.invoiceNo}
+                {data?.billType === "invoice"
+                  ? data?.invoiceNo
+                  : data?.deliveryChNo}
               </Text>
             </View>
             <View style={{ borderBottom: "1px solid black" }}></View>
@@ -455,6 +460,11 @@ const BillPdfGen = ({ data = {} }) => {
                   Total Value
                 </Text>
               </View>
+              <View style={{ fontFamily: "Times-Italic", fontStyle: "italic" }}>
+                <Text style={{ marginTop: "2px" }}>
+                  {data?.productsSellDetails?.totalProductAmount}
+                </Text>
+              </View>
             </View>
           )}
         </View>
@@ -480,7 +490,11 @@ const BillPdfGen = ({ data = {} }) => {
               paddingTop: "5px",
             }}
           >
-            <Text>{data?.productsSellDetails?.grandTotal}</Text>
+            <Text>
+              {data?.billType === "invoice"
+                ? data?.productsSellDetails?.grandTotal
+                : data?.productsSellDetails?.totalProductAmount}
+            </Text>
           </View>
         </View>
 
@@ -489,7 +503,9 @@ const BillPdfGen = ({ data = {} }) => {
             <Text>Amount in words</Text>
             <Text style={{ fontFamily: "Helvetica-Bold" }}>
               INDIAN RUPEE:{" "}
-              {numberToWords(data?.productsSellDetails?.grandTotal)}
+              {data?.billType === "invoice"
+                ? numberToWords(data?.productsSellDetails?.grandTotal)
+                : numberToWords(data?.productsSellDetails?.totalProductAmount)}
             </Text>
           </View>
           <View
@@ -518,8 +534,8 @@ const BillPdfGen = ({ data = {} }) => {
               <Text>Terms and Condition</Text>
               <Text>
                 a) This Bill is payable by Electronic transfer/ DD/ Cheque in
-                favor of Rocksunn Touche Tohmatsu India LLP. Please make payment
-                within 15 days of receipt of this invoice.
+                favor of Rocksunn Private Limited. Please make payment within 15
+                days of receipt of this invoice.
               </Text>
               <Text>
                 b) Bank Details: Central Bank Of India, Bus Stand, Shahgarh,
@@ -576,20 +592,21 @@ const BillPdfGen = ({ data = {} }) => {
             </View>
           </View>
         ) : (
-          <View
-            style={{
-              width: "40%",
-              marginLeft: "20px",
-              borderLeft: "1px solid black",
+          <View style={styles.section}>
+            {/* <View
+              style={{
+                width: "40%",
+                marginLeft: "20px",
+                // borderLeft: "1px solid black",
 
-              paddingTop: "2px",
-            }}
-          >
+                paddingTop: "2px",
+              }}
+            > */}
             <View
               style={{
                 width: "100%",
                 textAlign: "right",
-                borderTop: "1px solid black",
+                // borderTop: "1px solid black",
                 paddingRight: "2px",
                 paddingTop: "2px",
                 justifyContent: "flex-end",
@@ -602,6 +619,7 @@ const BillPdfGen = ({ data = {} }) => {
               </Text>
               <Image style={{ width: "80px" }} src={signature} />
               <Text>Authorised Signatory</Text>
+              {/* </View> */}
             </View>
           </View>
         )}
