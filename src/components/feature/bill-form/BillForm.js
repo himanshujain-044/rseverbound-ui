@@ -234,8 +234,12 @@ const BillForm = ({ data = null, className = "" }) => {
         shipToDetails: formValues?.isShiptoBDSame
           ? formValues?.buyerDetails
           : formValues?.shipToDetails,
-        invoiceNo: invoiceDetails?.nextInvoiceNo,
-        deliveryChNo: invoiceDetails?.nextDeliveryChNo,
+        ...(billType === "invoice" && {
+          invoiceNo: invoiceDetails?.nextInvoiceNo,
+        }),
+        ...(billType !== "invoice" && {
+          deliveryChNo: invoiceDetails?.nextDeliveryChNo,
+        }),
         productsSellDetails: {
           productsSell: itemsSell?.rowFields,
           [itemsSell?.gstType?.type]: itemsSell["gstType"].value,
@@ -267,8 +271,8 @@ const BillForm = ({ data = null, className = "" }) => {
         shipToDetails: formValues?.isShiptoBDSame
           ? formValues?.buyerDetails
           : formValues?.shipToDetails,
-        invoiceNo: data?.invoiceNo,
-        deliveryChNo: data?.deliveryChNo,
+        ...(billType === "invoice" && { invoiceNo: data?.invoiceNo }),
+        ...(billType !== "invoice" && { deliveryChNo: data?.deliveryChNo }),
         productsSellDetails: {
           productsSell: itemsSell?.rowFields,
           [itemsSell?.gstType?.type]: itemsSell["gstType"].value,

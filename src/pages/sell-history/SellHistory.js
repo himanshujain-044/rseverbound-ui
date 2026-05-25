@@ -19,14 +19,14 @@ const SellHistory = () => {
         getSellsHistory({
           method: "get",
           endpoint: API_ENDPOINTS.getSellsHistoryData,
-        })
+        }),
       );
     }
     dispatch(clearSomeStates({ stateKeys: ["sellsReportsData"] }));
   }, [isInvoiceUpdated, isInvoiceSave]);
 
   useEffect(() => {
-    if (sellData?.invoiceNo && isRowClicked) {
+    if ((sellData?.invoiceNo || sellData?.deliveryChNo) && isRowClicked) {
       navigate(ROUTES_LIST.pdfViewer, { state: sellData });
     }
   }, [sellData]);
@@ -38,8 +38,15 @@ const SellHistory = () => {
         getSellData({
           method: "get",
           endpoint: API_ENDPOINTS.getSellData,
-          payload: { invoiceNo: cellParams?.id },
-        })
+          payload: {
+            invoiceNo: cellParams?.row?.invoiceNo
+              ? cellParams?.row?.invoiceNo
+              : "",
+            deliveryChNo: cellParams?.row?.deliveryChNo
+              ? cellParams?.row?.deliveryChNo
+              : "",
+          },
+        }),
       );
     }
   };

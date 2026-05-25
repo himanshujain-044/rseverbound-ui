@@ -48,7 +48,7 @@ const BillPdfGen = ({ data = {} }) => {
               paddingTop: "14px",
             }}
           >
-            {data?.billType === "invoice" ? "TAX INVOICE" : "DELIVERY CHALLAN"}
+            {data?.invoiceNo ? "TAX INVOICE" : "DELIVERY CHALLAN"}
           </Text>
         </View>
 
@@ -76,9 +76,7 @@ const BillPdfGen = ({ data = {} }) => {
             <View style={{ paddingLeft: "2px" }}>
               <Text>Invoice No.</Text>
               <Text style={{ fontFamily: "Helvetica-Bold" }}>
-                {data?.billType === "invoice"
-                  ? data?.invoiceNo
-                  : data?.deliveryChNo}
+                {data?.invoiceNo ? data?.invoiceNo : data?.deliveryChNo}
               </Text>
             </View>
             <View style={{ borderBottom: "1px solid black" }}></View>
@@ -370,7 +368,7 @@ const BillPdfGen = ({ data = {} }) => {
           >
             <Text></Text>
           </View>
-          {data?.billType === "invoice" ? (
+          {data?.invoiceNo ? (
             <View
               style={{
                 width: "38%",
@@ -491,7 +489,7 @@ const BillPdfGen = ({ data = {} }) => {
             }}
           >
             <Text>
-              {data?.billType === "invoice"
+              {data?.invoiceNo
                 ? data?.productsSellDetails?.grandTotal
                 : data?.productsSellDetails?.totalProductAmount}
             </Text>
@@ -503,7 +501,7 @@ const BillPdfGen = ({ data = {} }) => {
             <Text>Amount in words</Text>
             <Text style={{ fontFamily: "Helvetica-Bold" }}>
               INDIAN RUPEE:{" "}
-              {data?.billType === "invoice"
+              {data?.invoiceNo
                 ? numberToWords(data?.productsSellDetails?.grandTotal)
                 : numberToWords(data?.productsSellDetails?.totalProductAmount)}
             </Text>
@@ -520,7 +518,7 @@ const BillPdfGen = ({ data = {} }) => {
           </View>
         </View>
 
-        {data?.billType === "invoice" ? (
+        {data?.invoiceNo ? (
           <View style={styles.section}>
             <View
               style={{
