@@ -28,11 +28,8 @@ const UpdateInvoice = (props) => {
         method: "patch",
         endpoint: API_ENDPOINTS.updateInvoice,
         payload: {
-          ...(row?.invoiceNo &
-            { invoiceNo: row?.invoiceNo ? row?.invoiceNo : "" }),
-          ...(row?.deliveryChNo && {
-            deliveryChNo: row?.deliveryChNo ? row?.deliveryChNo : "",
-          }),
+          invoiceNo: row?.invoiceNo ? row?.invoiceNo : "",
+          deliveryChNo: row?.deliveryChNo ? row?.deliveryChNo : "",
         },
       }),
     );
@@ -45,11 +42,8 @@ const UpdateInvoice = (props) => {
         method: "get",
         endpoint: API_ENDPOINTS.getSellData,
         payload: {
-          ...(row?.invoiceNo &
-            { invoiceNo: row?.invoiceNo ? row?.invoiceNo : "" }),
-          ...(row?.deliveryChNo && {
-            deliveryChNo: row?.deliveryChNo ? row?.deliveryChNo : "",
-          }),
+          invoiceNo: row?.invoiceNo ? row?.invoiceNo : "",
+          deliveryChNo: row?.deliveryChNo ? row?.deliveryChNo : "",
         },
       }),
     );
