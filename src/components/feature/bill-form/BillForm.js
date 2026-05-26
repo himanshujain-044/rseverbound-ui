@@ -242,13 +242,13 @@ const BillForm = ({ data = null, className = "" }) => {
         productsSellDetails: {
           productsSell: itemsSell?.rowFields,
           [itemsSell?.gstType?.type]: itemsSell["gstType"].value,
-          gstAmount: Number(itemsSell["gstType"].gstAmount),
-          otherExpenses: Number(itemsSell.otherExpenses),
+          gstAmount: Number(itemsSell["gstType"].gstAmount).toFixed(2),
+          otherExpenses: Number(itemsSell.otherExpenses).toFixed(2),
           otherExpensesText: itemsSell.otherExpensesText,
-          otherExpensesGST: Number(itemsSell.otherExpensesGST),
+          otherExpensesGST: Number(itemsSell.otherExpensesGST).toFixed(2),
           otherExpensesGSTText: itemsSell.otherExpensesGSTText,
-          totalProductAmount: itemsSell.totalProductAmount,
-          grandTotal: Number(itemsSell.grandTotal),
+          totalProductAmount: Number(itemsSell.totalProductAmount).toFixed(2),
+          grandTotal: Number(itemsSell.grandTotal).toFixed(2),
           roundOff: itemsSell.roundOff,
         },
       }),
@@ -275,13 +275,13 @@ const BillForm = ({ data = null, className = "" }) => {
         productsSellDetails: {
           productsSell: itemsSell?.rowFields,
           [itemsSell?.gstType?.type]: itemsSell["gstType"].value,
-          gstAmount: Number(itemsSell["gstType"].gstAmount),
-          otherExpenses: Number(itemsSell.otherExpenses),
+          gstAmount: Number(itemsSell["gstType"].gstAmount).toFixed(2),
+          otherExpenses: Number(itemsSell.otherExpenses).toFixed(2),
           otherExpensesText: itemsSell.otherExpensesText,
-          otherExpensesGST: Number(itemsSell.otherExpensesGST),
+          otherExpensesGST: Number(itemsSell.otherExpensesGST).toFixed(2),
           otherExpensesGSTText: itemsSell.otherExpensesGSTText,
-          totalProductAmount: itemsSell.totalProductAmount,
-          grandTotal: Number(itemsSell.grandTotal),
+          totalProductAmount: Number(itemsSell.totalProductAmount).toFixed(2),
+          grandTotal: Number(itemsSell.grandTotal).toFixed(2),
           roundOff: itemsSell.roundOff,
         },
         isWholeInvoiceUpdate: true,
@@ -453,7 +453,7 @@ const BillForm = ({ data = null, className = "" }) => {
         <Grid xs={6} className="pl-1 pb-1 form-border no-top-border">
           <div className="flex items-center">
             <strong className="min-w-[7rem]">Buyer (Bill To) -</strong>
-            <strong className="w-[58%]">
+            <strong className="w-[50%]">
               <SearchableDD
                 onInputChangeDDSearch={(e, value) => {
                   handleChange(e, value, "name");
@@ -491,7 +491,7 @@ const BillForm = ({ data = null, className = "" }) => {
             onChange={(e) => {
               handleChange(e, e?.target?.value, "address");
             }}
-            className="outline-none pl-2"
+            className="w-[28rem] outline-none pl-2"
           />
 
           <div className="flex">
@@ -544,7 +544,7 @@ const BillForm = ({ data = null, className = "" }) => {
             onChange={(e) => {
               handleChange(e, e?.target?.value, "address", false);
             }}
-            className="outline-none pl-2"
+            className="w-[28rem] outline-none pl-2"
           />
 
           <div className="flex">

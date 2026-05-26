@@ -163,6 +163,7 @@ export const SIDEBAR_MENU_LIST = [
     icon: <PictureAsPdfOutlinedIcon />,
     text: "View PDF",
     route: ROUTES_LIST.pdfViewer,
+    isDisabled: true,
     active: false,
   },
 ];

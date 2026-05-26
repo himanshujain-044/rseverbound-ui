@@ -42,7 +42,11 @@ const Sidebar = () => {
           <ListItem
             key={index}
             disablePadding
+            className={cx(
+              menu?.isDisabled && "cursor-not-allowed pointer-events-none",
+            )}
             onClick={() => handleMenuClick(menu)}
+            disabled={menu?.isDisabled}
           >
             <ListItemButton
               className={cx(location.pathname === menu.route && "text-primary")}

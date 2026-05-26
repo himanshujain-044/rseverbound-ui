@@ -132,7 +132,7 @@ const BillPdfGen = ({ data = {} }) => {
           <View
             style={{
               borderLeft: "1px solid black",
-              width: "30%",
+              width: "50%",
               paddingLeft: "2px",
               paddingTop: "2px",
             }}
@@ -409,8 +409,10 @@ const BillPdfGen = ({ data = {} }) => {
                     : ""}
                 </Text>
                 <Text style={{ fontFamily: "Helvetica-Bold" }}>
-                  {data?.productsSellDetails?.totalProductAmount +
-                    data?.productsSellDetails?.otherExpensesGST}
+                  {Number(
+                    data?.productsSellDetails?.totalProductAmount +
+                      data?.productsSellDetails?.otherExpensesGST,
+                  ).toFixed(2)}
                 </Text>
 
                 {data?.productsSellDetails?.igst && (
