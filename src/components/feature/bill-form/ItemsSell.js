@@ -48,7 +48,6 @@ const ItemsSell = ({
   billType,
 }) => {
   const { invoiceDetails, isInvoiceSave } = useSelector((state) => state.api);
-  console.log("invoice det", invoiceDetails);
   const options = [
     {
       value: "igst",
@@ -83,11 +82,11 @@ const ItemsSell = ({
             // bagsCount: "",
             // bagWeight: "",
 
-            description: "",
+            description: invoiceDetails?.products[0],
             hsnCode:
               invoiceDetails?.hsnCodes[invoiceDetails?.hsnCodes?.length - 1],
             quantity: "",
-            unit: "",
+            unit: invoiceDetails?.units[0],
             ratePMT: "",
             amount: "",
           },
@@ -116,7 +115,7 @@ const ItemsSell = ({
 
   useEffect(() => {
     if (invoiceDetails?.nextInvoiceNo) {
-      const buyerGst = formValues?.buyerDetails?.gst;
+      // const buyerGst = formValues?.buyerDetails?.gst;
       setHsnCodeDDOptions(invoiceDetails?.hsnCodes);
       setProductsDDOptions(invoiceDetails?.products);
       setUnitsDDOptions(invoiceDetails?.units);
@@ -127,31 +126,53 @@ const ItemsSell = ({
           invoiceDetails?.hsnCodes?.[invoiceDetails?.hsnCodes?.length - 1];
       }
       if (!values.rowFields[0]["description"]) {
-        values.rowFields[0]["description"] = "";
+        values.rowFields[0]["description"] = invoiceDetails?.products[0];
       }
-      if (!values.rowFields[0]["amount"]) {
+      if (values.rowFields[0]["amount"]) {
         values.rowFields[0]["amount"] = "";
       }
-      if (!values.rowFields[0]["quantity"]) {
+      if (values.rowFields[0]["quantity"]) {
         values.rowFields[0]["quantity"] = "";
       }
-      if (!values.rowFields[0]["ratePMT"]) {
+      if (!values.rowFields[0]["unit"]) {
+        values.rowFields[0]["unit"] = invoiceDetails?.units[0];
+      }
+      if (values.rowFields[0]["ratePMT"]) {
         values.rowFields[0]["ratePMT"] = "";
       }
-      values.gstType = {
-        type:
-          buyerGst && buyerGst?.startsWith("23")
-            ? options[1].value
-            : options[0].value,
-        value:
-          buyerGst && buyerGst?.startsWith("23")
-            ? Number(invoiceDetails?.sgst) + Number(invoiceDetails?.cgst)
-            : Number(invoiceDetails?.igst),
-        gstAmount: values.gstType.gstAmount ? values.gstType.gstAmount : 0,
-      };
+      // values.gstType = {
+      //   type:
+      //     buyerGst && buyerGst?.startsWith("23")
+      //       ? options[1].value
+      //       : options[0].value,
+      //   value:
+      //     buyerGst && buyerGst?.startsWith("23")
+      //       ? Number(invoiceDetails?.sgst) + Number(invoiceDetails?.cgst)
+      //       : Number(invoiceDetails?.igst),
+      //   gstAmount: values.gstType.gstAmount ? values.gstType.gstAmount : 0,
+      // };
       setItemsSellForm(values);
     }
+  }, [invoiceDetails]);
+  useEffect(() => {
+    const values = { ...itemsSellForm };
+    const buyerGst = formValues?.buyerDetails?.gst;
+    values.gstType = {
+      type:
+        buyerGst && buyerGst?.startsWith("23")
+          ? options[1].value
+          : options[0].value,
+      value: values.gstType.value
+        ? values.gstType.value
+        : buyerGst && buyerGst?.startsWith("23")
+          ? Number(invoiceDetails?.sgst) + Number(invoiceDetails?.cgst)
+          : Number(invoiceDetails?.igst),
+      gstAmount: values.gstType.gstAmount ? values.gstType.gstAmount : 0,
+    };
+    console.log("171", values?.gstType);
+    setItemsSellForm(values);
   }, [invoiceDetails, formValues]);
+
   useEffect(() => {
     getUpdatedItemsSellValue(itemsSellForm);
   }, [itemsSellForm]);
@@ -202,7 +223,6 @@ const ItemsSell = ({
 
   const handleChange = (e, value, type, index) => {
     const values = { ...itemsSellForm };
-    console.log("201", itemsSellForm, type, value);
     if (index || index === 0) {
       values.rowFields[index][type] =
         typeof e?.target?.value === "string"
@@ -301,7 +321,6 @@ const ItemsSell = ({
       roundOff,
     ];
   };
-
   return (
     <>
       <Grid xs={1} className="left-border">
@@ -534,23 +553,30 @@ const ItemsSell = ({
                     value={option.value}
                     checked={itemsSellForm?.gstType.type === option.value}
                     onChange={(e) => {
+                      console.log(
+                        "554 gst",
+                        options,
+                        itemsSellForm?.gstType.type,
+                        option.value,
+                      );
                       handleChange(e, e?.target?.value, "radioGST", null);
                     }}
                     className="accent-primary"
                   />
-                  <label htmlFor={option.value}>{option.label}</label>
+                  <label>{option.label}</label>
                   {/* <input
-                  type="number"
-                  value={itemsSellForm?.gstType.value || option.inputValue}
-                  className="outline-none w-12"
-                  onChange={(e, value) => {
-                    handleChange(e, e?.target?.value, option.value, null);
-                  }}
-                /> */}
+                    type="number"
+                    value={itemsSellForm?.gstType.value || option.inputValue}
+                    className="outline-none w-12"
+                    onChange={(e, value) => {
+                      handleChange(e, e?.target?.value, option.value, null);
+                    }}
+                  /> */}
                   <div>
                     <SearchableDD
                       ddValue={
-                        itemsSellForm?.gstType.value || option.inputValue
+                        String(itemsSellForm?.gstType.value) ||
+                        String(option.inputValue)
                       }
                       onInputChangeDDSearch={(event, value) => {
                         handleChange(event, value, option.value, null);

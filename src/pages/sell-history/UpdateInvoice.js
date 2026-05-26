@@ -27,21 +27,29 @@ const UpdateInvoice = (props) => {
       updateInvoice({
         method: "patch",
         endpoint: API_ENDPOINTS.updateInvoice,
-        payload: { invoiceNo: value },
+        payload: {
+          ...(row?.invoiceNo &
+            { invoiceNo: row?.invoiceNo ? row?.invoiceNo : "" }),
+          ...(row?.deliveryChNo && {
+            deliveryChNo: row?.deliveryChNo ? row?.deliveryChNo : "",
+          }),
+        },
       }),
     );
   };
 
   const onEditBtn = () => {
     setIsEditClicked(true);
-    console.log("row", row);
     dispatch(
       getSellData({
         method: "get",
         endpoint: API_ENDPOINTS.getSellData,
         payload: {
-          invoiceNo: row?.invoiceNo ? row?.invoiceNo : "",
-          deliveryChNo: row?.deliveryChNo ? row?.deliveryChNo : "",
+          ...(row?.invoiceNo &
+            { invoiceNo: row?.invoiceNo ? row?.invoiceNo : "" }),
+          ...(row?.deliveryChNo && {
+            deliveryChNo: row?.deliveryChNo ? row?.deliveryChNo : "",
+          }),
         },
       }),
     );

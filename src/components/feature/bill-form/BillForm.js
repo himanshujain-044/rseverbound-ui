@@ -21,7 +21,7 @@ import {
   getStateNameByGstCode,
 } from "../../../utils/helperFunction";
 import ItemsSell from "./ItemsSell";
-import signature from "../../../assets/images/signature.jpeg";
+import signature from "../../../assets/images/signature.png";
 import Radio from "@mui/material/Radio";
 import RadioGroup from "@mui/material/RadioGroup";
 import FormControlLabel from "@mui/material/FormControlLabel";
@@ -102,7 +102,7 @@ const BillForm = ({ data = null, className = "" }) => {
   }, [data]);
 
   useEffect(() => {
-    if (!allBuyers?.length) {
+    if (!allBuyers?.length || isInvoiceSave) {
       dispatch(
         getAllBuyers({
           method: "get",
@@ -110,8 +110,7 @@ const BillForm = ({ data = null, className = "" }) => {
         }),
       );
     }
-  }, []);
-  console.log("101 form values", formValues);
+  }, [isInvoiceSave]);
   useEffect(() => {
     if (!invoiceDetails) {
       dispatch(
@@ -137,10 +136,10 @@ const BillForm = ({ data = null, className = "" }) => {
   }, [invoiceDetails]);
 
   useEffect(() => {
-    if (isInvoiceSave) {
+    if (isInvoiceSave || isInvoiceUpdated) {
       setFormValues(formInitValues);
     }
-  }, [isInvoiceSave]);
+  }, [isInvoiceSave, isInvoiceUpdated]);
 
   const handleChange = (e, value, type, isBillTo = true) => {
     const values = { ...formValues };
@@ -332,7 +331,6 @@ const BillForm = ({ data = null, className = "" }) => {
   };
 
   const onTypeChange = (e) => {
-    console.log("323", e?.target?.value);
     setBillType(e?.target?.value);
   };
 

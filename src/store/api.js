@@ -15,7 +15,7 @@ export const userLogin = createAsyncThunk(
     } catch (err) {
       return rejectWithValue(err?.response || err);
     }
-  }
+  },
 );
 
 export const logout = createAsyncThunk(
@@ -32,7 +32,7 @@ export const logout = createAsyncThunk(
     } catch (err) {
       return rejectWithValue(err?.response || err);
     }
-  }
+  },
 );
 
 export const getInvoiceDetails = createAsyncThunk(
@@ -49,7 +49,7 @@ export const getInvoiceDetails = createAsyncThunk(
     } catch (err) {
       return rejectWithValue(err?.response || err);
     }
-  }
+  },
 );
 
 export const getAllBuyers = createAsyncThunk(
@@ -66,7 +66,7 @@ export const getAllBuyers = createAsyncThunk(
     } catch (err) {
       return rejectWithValue(err?.response || err);
     }
-  }
+  },
 );
 
 export const saveInvoiceDetails = createAsyncThunk(
@@ -83,7 +83,7 @@ export const saveInvoiceDetails = createAsyncThunk(
     } catch (err) {
       return rejectWithValue(err?.response || err);
     }
-  }
+  },
 );
 
 export const getSellsHistory = createAsyncThunk(
@@ -100,7 +100,7 @@ export const getSellsHistory = createAsyncThunk(
     } catch (err) {
       return rejectWithValue(err?.response || err);
     }
-  }
+  },
 );
 
 export const getSellData = createAsyncThunk(
@@ -117,7 +117,7 @@ export const getSellData = createAsyncThunk(
     } catch (err) {
       return rejectWithValue(err?.response || err);
     }
-  }
+  },
 );
 
 export const getSellsReportsData = createAsyncThunk(
@@ -134,7 +134,7 @@ export const getSellsReportsData = createAsyncThunk(
     } catch (err) {
       return rejectWithValue(err?.response || err);
     }
-  }
+  },
 );
 
 export const updateInvoice = createAsyncThunk(
@@ -151,7 +151,7 @@ export const updateInvoice = createAsyncThunk(
     } catch (err) {
       return rejectWithValue(err?.response || err);
     }
-  }
+  },
 );
 
 export const getBuyerSellData = createAsyncThunk(
@@ -168,7 +168,7 @@ export const getBuyerSellData = createAsyncThunk(
     } catch (err) {
       return rejectWithValue(err?.response || err);
     }
-  }
+  },
 );
 
 export const saveBuyerCreditAmount = createAsyncThunk(
@@ -185,7 +185,7 @@ export const saveBuyerCreditAmount = createAsyncThunk(
     } catch (err) {
       return rejectWithValue(err?.response || err);
     }
-  }
+  },
 );
 
 export const getBuyerCreditDetails = createAsyncThunk(
@@ -202,7 +202,7 @@ export const getBuyerCreditDetails = createAsyncThunk(
     } catch (err) {
       return rejectWithValue(err?.response || err);
     }
-  }
+  },
 );
 
 export const getIndustryPerfReport = createAsyncThunk(
@@ -219,7 +219,7 @@ export const getIndustryPerfReport = createAsyncThunk(
     } catch (err) {
       return rejectWithValue(err?.response || err);
     }
-  }
+  },
 );
 
 export const getAllBuyersCredit = createAsyncThunk(
@@ -236,7 +236,7 @@ export const getAllBuyersCredit = createAsyncThunk(
     } catch (err) {
       return rejectWithValue(err?.response || err);
     }
-  }
+  },
 );
 
 const apiReducer = createSlice({

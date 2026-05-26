@@ -10,7 +10,7 @@ import {
 import { numberToWords } from "../../../utils/helperFunction";
 import logo from "../../../assets/logo/logo.png";
 import cancelled from "../../../assets/images/cancelled.png";
-import signature from "../../../assets/images/signature.jpeg";
+import signature from "../../../assets/images/signature.png";
 
 const styles = StyleSheet.create({
   section: {
@@ -22,7 +22,6 @@ const styles = StyleSheet.create({
 });
 
 const BillPdfGen = ({ data = {} }) => {
-  console.log("25", data);
   const pdfTitle = `${data?.buyerDetails?.name}_${data?.invoiceDate}`;
   return (
     <Document title={pdfTitle} key={pdfTitle}>
@@ -363,7 +362,7 @@ const BillPdfGen = ({ data = {} }) => {
             style={{
               width: "61.9%",
               paddingTop: "2px",
-              paddingBottom: "220px",
+              paddingBottom: `${220 - data?.productsSellDetails?.productsSell?.length * 10}px`,
             }}
           >
             <Text></Text>
