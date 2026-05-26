@@ -638,7 +638,7 @@ const ItemsSell = ({
         </Grid>
       ) : (
         <Grid xs={5} className="left-border right-border">
-          <div className=" flex justify-between pr-1">
+          <div className=" flex justify-between px-1">
             <strong>Total Value</strong>
             <strong>
               <i>{Number(itemsSellForm.totalProductAmount).toFixed(2)}</i>

@@ -496,7 +496,7 @@ const BillPdfGen = ({ data = {} }) => {
         </View>
 
         <View style={styles.section}>
-          <View style={{ width: "70%", paddingLeft: "2px", paddingTop: "2px" }}>
+          <View style={{ width: "85%", paddingLeft: "2px", paddingTop: "2px" }}>
             <Text>Amount in words</Text>
             <Text style={{ fontFamily: "Helvetica-Bold" }}>
               INDIAN RUPEE:{" "}
@@ -507,7 +507,7 @@ const BillPdfGen = ({ data = {} }) => {
           </View>
           <View
             style={{
-              width: "30%",
+              width: "15%",
               textAlign: "right",
               paddingRight: "2px",
               paddingTop: "2px",

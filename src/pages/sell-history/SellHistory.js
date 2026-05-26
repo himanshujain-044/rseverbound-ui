@@ -68,7 +68,7 @@ const SellHistory = () => {
             paginationModel: { page: 0, pageSize: 10 },
           },
           sorting: {
-            sortModel: [{ field: "invoiceNo", sort: "desc" }],
+            sortModel: [{ field: "invoiceDate", sort: "desc" }],
           },
         }}
       />

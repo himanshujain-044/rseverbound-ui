@@ -12,7 +12,7 @@ const Footer = () => {
       </div>
       <div className="flex items-center gap-4">
         <span className="mobile:text-[12px]">
-          &#169; 2024 All Rights Reserved.
+          &#169; {new Date().getFullYear()} All Rights Reserved.
         </span>
         <span className="flex items-center gap-2 mobile:hidden">
           <img

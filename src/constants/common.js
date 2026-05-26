@@ -3,6 +3,7 @@ import DashboardCustomizeOutlinedIcon from "@mui/icons-material/DashboardCustomi
 import AssessmentOutlinedIcon from "@mui/icons-material/AssessmentOutlined";
 import CreditScoreOutlinedIcon from "@mui/icons-material/CreditScoreOutlined";
 import SpeedOutlinedIcon from "@mui/icons-material/SpeedOutlined";
+import PictureAsPdfOutlinedIcon from "@mui/icons-material/PictureAsPdfOutlined";
 import { ROUTES_LIST } from "./routes";
 export const CURRENT_YEAR = new Date().getFullYear();
 
@@ -156,6 +157,12 @@ export const SIDEBAR_MENU_LIST = [
     icon: <SpeedOutlinedIcon />,
     text: "Industry Report",
     route: ROUTES_LIST.industryReport,
+    active: false,
+  },
+  {
+    icon: <PictureAsPdfOutlinedIcon />,
+    text: "View PDF",
+    route: ROUTES_LIST.pdfViewer,
     active: false,
   },
 ];

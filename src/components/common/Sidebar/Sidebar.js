@@ -21,7 +21,6 @@ const Sidebar = () => {
   const toggleDrawer = (newOpen) => () => {
     setOpen(newOpen);
   };
-
   useEffect(() => {
     navigate({
       pathname: location.pathname,
@@ -50,7 +49,7 @@ const Sidebar = () => {
             >
               <ListItemIcon
                 className={cx(
-                  location.pathname === menu.route && "text-primary"
+                  location.pathname === menu.route && "text-primary",
                 )}
               >
                 {menu.icon}
