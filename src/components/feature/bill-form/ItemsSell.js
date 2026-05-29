@@ -128,16 +128,16 @@ const ItemsSell = ({
       if (!values.rowFields[0]["description"]) {
         values.rowFields[0]["description"] = invoiceDetails?.products[0];
       }
-      if (values.rowFields[0]["amount"]) {
+      if (!values.rowFields[0]["amount"] || isInvoiceSave) {
         values.rowFields[0]["amount"] = "";
       }
-      if (values.rowFields[0]["quantity"]) {
+      if (!values.rowFields[0]["quantity"] || isInvoiceSave) {
         values.rowFields[0]["quantity"] = "";
       }
       if (!values.rowFields[0]["unit"]) {
         values.rowFields[0]["unit"] = invoiceDetails?.units[0];
       }
-      if (values.rowFields[0]["ratePMT"]) {
+      if (!values.rowFields[0]["ratePMT"] || isInvoiceSave) {
         values.rowFields[0]["ratePMT"] = "";
       }
       // values.gstType = {
@@ -153,7 +153,7 @@ const ItemsSell = ({
       // };
       setItemsSellForm(values);
     }
-  }, [invoiceDetails]);
+  }, [invoiceDetails, isInvoiceSave]);
   useEffect(() => {
     const values = { ...itemsSellForm };
     const buyerGst = formValues?.buyerDetails?.gst;
