@@ -239,6 +239,23 @@ export const getAllBuyersCredit = createAsyncThunk(
   },
 );
 
+export const getGSTVerification = createAsyncThunk(
+  "get-gst-verification",
+  async (apiData, { rejectWithValue }) => {
+    try {
+      const { method, endpoint, payload } = apiData;
+      const response = await apiReq({
+        method,
+        endpoint,
+        payload,
+      });
+      return response;
+    } catch (err) {
+      return rejectWithValue(err?.response || err);
+    }
+  },
+);
+
 const apiReducer = createSlice({
   name: "data",
   initialState: {
@@ -260,6 +277,7 @@ const apiReducer = createSlice({
     buyerCreditDetails: "",
     industryPerfReportData: "",
     allBuyersCredit: "",
+    verifiedGSTDetails: "",
   },
   reducers: {
     clearAPIState: (state, action) => {
@@ -278,6 +296,7 @@ const apiReducer = createSlice({
       state.buyerCreditDetails = "";
       state.industryPerfReportData = "";
       state.allBuyersCredit = "";
+      state.verifiedGSTDetails = "";
     },
     clearSomeStates: (state, action) => {
       action.payload.stateKeys.map((key) => {
@@ -545,6 +564,25 @@ const apiReducer = createSlice({
       .addCase(getAllBuyersCredit.rejected, (state, action) => {
         const { code, message } = action.payload?.data;
         state.allBuyersCredit = "";
+        state.statusCode = code;
+        state.message = message;
+        state.reqCount -= 1;
+        state.success = false;
+      })
+      .addCase(getGSTVerification.pending, (state, action) => {
+        state.reqCount += 1;
+        state.message = "Verifying GST Details !";
+        state.verifiedGSTDetails = "";
+      })
+      .addCase(getGSTVerification.fulfilled, (state, action) => {
+        const { data } = action.payload?.data;
+        state.reqCount -= 1;
+        state.success = true;
+        state.allBuyersCredit = data;
+      })
+      .addCase(getGSTVerification.rejected, (state, action) => {
+        const { code, message } = action.payload?.data;
+        state.verifiedGSTDetails = "";
         state.statusCode = code;
         state.message = message;
         state.reqCount -= 1;

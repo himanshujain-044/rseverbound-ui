@@ -10,6 +10,7 @@ import { pdf } from "@react-pdf/renderer";
 import SearchableDD from "../../common/SearchableDD/SearchableDD";
 import {
   getAllBuyers,
+  getGSTVerification,
   getInvoiceDetails,
   saveInvoiceDetails,
   updateInvoice,
@@ -64,6 +65,12 @@ const BillForm = ({ data = null, className = "" }) => {
   const { invoiceDetails, allBuyers, isInvoiceSave, isInvoiceUpdated } =
     useSelector((state) => state.api);
   const [buyersNameDDOptions, setBuyersNameDDOptions] = useState([]);
+  const [buyersGSTDDOptions, setBuyersGSTDDOptions] = useState([]);
+  const [verifyGSTDetails, setVerifyGSTDetails] = useState({
+    isGSTVerification: true,
+    type: "billTo",
+    gstNo: "",
+  });
   const [vehiclesDDOptions, setVehiclesDDOptions] = useState([]);
   const [destinationsDDOptions, setDestinationsDDOptions] = useState([]);
   const [transportCompaniesDDOptions, setTransportCompaniesDDOptions] =
@@ -123,10 +130,13 @@ const BillForm = ({ data = null, className = "" }) => {
 
     if (allBuyers?.length) {
       const buyersNames = [];
+      const buyersGST = [];
       allBuyers.forEach((buyer) => {
         buyersNames.push(buyer?.name);
+        buyersGST.push(buyer?.gst);
       });
       setBuyersNameDDOptions(buyersNames);
+      setBuyersGSTDDOptions(buyersGST);
     }
   }, [allBuyers]);
   useEffect(() => {
@@ -334,6 +344,16 @@ const BillForm = ({ data = null, className = "" }) => {
     setBillType(e?.target?.value);
   };
 
+  const onGSTVerification = () => {
+    dispatch(
+      getGSTVerification({
+        method: "post",
+        endpoint: API_ENDPOINTS.getGSTVerification,
+        payload: { GSTIN: verifyGSTDetails.gstNo },
+      }),
+    );
+  };
+
   return (
     <div
       className={cx(
@@ -451,21 +471,11 @@ const BillForm = ({ data = null, className = "" }) => {
           </div>
         </Grid>
         <Grid xs={6} className="pl-1 pb-1 form-border no-top-border">
-          <div className="flex items-center">
-            <strong className="min-w-[7rem]">Buyer (Bill To) -</strong>
-            <strong className="w-[50%]">
-              <SearchableDD
-                onInputChangeDDSearch={(e, value) => {
-                  handleChange(e, value, "name");
-                }}
-                ddValue={formValues?.buyerDetails.name}
-                ddOptions={buyersNameDDOptions}
-              />
-            </strong>
+          <div className="flex gap-[9px] items-center">
             <div className="flex">
-              <span>Keep Ship To as Bill To</span>
+              <span>Verify GST</span>
               <Checkbox
-                checked={formValues?.isShiptoBDSame}
+                checked={verifyGSTDetails.isGSTVerification}
                 sx={{
                   padding: "0",
                   color: "#5a298b",
@@ -474,48 +484,158 @@ const BillForm = ({ data = null, className = "" }) => {
                   },
                 }}
                 onChange={(e) => {
-                  handleChange(
-                    e,
-                    !formValues?.isShiptoBDSame,
-                    "isShiptoBDSame",
-                  );
+                  setVerifyGSTDetails((preVal) => {
+                    return {
+                      ...preVal,
+                      isGSTVerification: !preVal.isGSTVerification,
+                    };
+                  });
                 }}
               />
             </div>
+            <div className="flex">
+              <span>Enter GST</span>
+              <strong className="w-[10rem]">
+                <SearchableDD
+                  onInputChangeDDSearch={(e, value) => {
+                    setVerifyGSTDetails((preVal) => {
+                      return { ...preVal, gstNo: value };
+                    });
+                  }}
+                  ddValue={verifyGSTDetails.gstNo}
+                  ddOptions={buyersGSTDDOptions}
+                  placeholder="Enter you gst"
+                />
+              </strong>
+            </div>
+            <div className="flex">
+              <span>For</span>
+              <RadioGroup
+                sx={{
+                  display: "flex",
+                  flexDirection: "row",
+                  padding: "0",
+                  "& .MuiRadio-root": {
+                    color: "#5a298b",
+                    padding: "0",
+                  },
+                  "& .MuiRadio-root.Mui-checked": {
+                    color: "#5a298b",
+                    padding: "0",
+                  },
+                  "& label": {
+                    marginLeft: "0",
+                    marginRight: "4px",
+                  },
+                }}
+                // defaultValue="invoice"
+                value={verifyGSTDetails.type}
+                name="radio-buttons-group"
+              >
+                <FormControlLabel
+                  value="billTo"
+                  control={<Radio />}
+                  label="Bill To"
+                  onChange={(e) => {
+                    setVerifyGSTDetails((preVal) => {
+                      return { ...preVal, type: e?.target?.value };
+                    });
+                  }}
+                />
+                <FormControlLabel
+                  value="shipTo"
+                  control={<Radio />}
+                  label="Ship To"
+                  onChange={(e) => {
+                    setVerifyGSTDetails((preVal) => {
+                      return { ...preVal, type: e?.target?.value };
+                    });
+                  }}
+                />
+              </RadioGroup>
+            </div>
+            <Button
+              variant="contained"
+              className={cx(
+                "w-[50px] mt-[4px] text-[10px] mobile:text-[12px] mobile:h-[30px]",
+                "bg-primary hover:bg-primary",
+              )}
+              onClick={onGSTVerification}
+              disabled={
+                !verifyGSTDetails.isGSTVerification || !verifyGSTDetails.gstNo
+              }
+            >
+              Verify
+            </Button>
           </div>
-          <span className="min-w-[7.3rem]">Address -</span>
-          <input
-            type="text"
-            placeholder="Bill Address"
-            value={formValues?.buyerDetails?.address}
-            onChange={(e) => {
-              handleChange(e, e?.target?.value, "address");
-            }}
-            className="w-[28rem] outline-none pl-2"
-          />
-
-          <div className="flex">
-            <strong className="w-[3rem]">GST -</strong>
+          <div
+            className={
+              verifyGSTDetails.isGSTVerification &&
+              "cursor-no-drop pointer-events-none"
+            }
+          >
+            <div className="flex items-center">
+              <strong className="min-w-[7rem]">Buyer (Bill To) -</strong>
+              <strong className="w-[50%]">
+                <SearchableDD
+                  onInputChangeDDSearch={(e, value) => {
+                    handleChange(e, value, "name");
+                  }}
+                  ddValue={formValues?.buyerDetails.name}
+                  ddOptions={buyersNameDDOptions}
+                />
+              </strong>
+            </div>
+            <span className="min-w-[7.3rem]">Address -</span>
             <input
               type="text"
-              value={formValues?.buyerDetails?.gst}
+              placeholder="Bill Address"
+              value={formValues?.buyerDetails?.address}
               onChange={(e) => {
-                handleChange(e, e?.target?.value, "gst");
+                handleChange(e, e?.target?.value, "address");
               }}
-              className="outline-none font-bold"
+              className="w-[28rem] outline-none pl-2"
             />
-          </div>
-          <div className="flex">
-            <strong className="w-[3.4rem]">State -</strong>
-            <span>{formValues?.buyerDetails.state}</span>
-          </div>
 
-          <div className="flex">
-            <strong className="w-[7.8rem]">Place Of Supply - </strong>
-            <span>{formValues?.buyerDetails.placeOfSupply}</span>
+            <div className="flex">
+              <strong className="w-[3rem]">GST -</strong>
+              <input
+                type="text"
+                value={formValues?.buyerDetails?.gst}
+                onChange={(e) => {
+                  handleChange(e, e?.target?.value, "gst");
+                }}
+                className="outline-none font-bold"
+              />
+            </div>
+            <div className="flex">
+              <strong className="w-[3.4rem]">State -</strong>
+              <span>{formValues?.buyerDetails.state}</span>
+            </div>
+
+            <div className="flex">
+              <strong className="w-[7.8rem]">Place Of Supply - </strong>
+              <span>{formValues?.buyerDetails.placeOfSupply}</span>
+            </div>
           </div>
         </Grid>
         <Grid xs={6} className="pl-1  bottom-border right-border">
+          <div className="flex">
+            <span>Keep Ship To as Bill To</span>
+            <Checkbox
+              checked={formValues?.isShiptoBDSame}
+              sx={{
+                padding: "0",
+                color: "#5a298b",
+                "&.Mui-checked": {
+                  color: "#5a298b",
+                },
+              }}
+              onChange={(e) => {
+                handleChange(e, !formValues?.isShiptoBDSame, "isShiptoBDSame");
+              }}
+            />
+          </div>
           <div className="flex">
             <strong className="min-w-[3.5rem]">Consignee (Ship To) -</strong>
             <strong>

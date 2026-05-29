@@ -23,4 +23,5 @@ export const API_ENDPOINTS = {
   buyerCreditAmount: `${buyersBaseUrl}/buyer-credit-amount`,
   getIndustryPerfReportData: `${industry}/industry-perf-report`,
   getAllBuyersCredit: `${buyersBaseUrl}/all-buyer-credit`,
+  getGSTVerification: "https://api.cashfree.com/verification/marketing/gstin",
 };
