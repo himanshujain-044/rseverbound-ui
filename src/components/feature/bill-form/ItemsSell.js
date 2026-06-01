@@ -169,7 +169,6 @@ const ItemsSell = ({
           : Number(invoiceDetails?.igst),
       gstAmount: values.gstType.gstAmount ? values.gstType.gstAmount : 0,
     };
-    console.log("171", values?.gstType);
     setItemsSellForm(values);
   }, [invoiceDetails, formValues]);
 

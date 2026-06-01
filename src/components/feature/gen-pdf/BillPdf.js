@@ -22,7 +22,8 @@ const styles = StyleSheet.create({
 });
 
 const BillPdfGen = ({ data = {} }) => {
-  const pdfTitle = `${data?.buyerDetails?.name}_${data?.invoiceDate}`;
+  console.log("pdf data", data);
+  const pdfTitle = `${data?.invoiceNo ? data?.invoiceNo : data?.deliveryChNo}_${data?.invoiceDate}_${data?.buyerDetails?.name}`;
   return (
     <Document title={pdfTitle} key={pdfTitle}>
       <Page

@@ -27,7 +27,7 @@ const PdfViewer = () => {
     }
   }, [location.state]);
   const downloadPdf = async () => {
-    const fileName = `${data.buyerDetails.name}_${data.invoiceDate}.pdf`;
+    const fileName = `${data?.invoiceNo ? data?.invoiceNo : data?.deliveryChNo}_${data?.invoiceDate}_${data?.buyerDetails?.name}.pdf`;
     const blob = await pdf(<BillPdf data={data} />).toBlob();
     saveAs(blob, fileName);
   };
