@@ -390,7 +390,8 @@ const BillPdfGen = ({ data = {} }) => {
             style={{
               width: "61.9%",
               paddingTop: "2px",
-              paddingBottom: `${220 - data?.productsSellDetails?.productsSell?.length * 10}px`,
+              paddingBottom: `${20}px`,
+              marginBottom: "52px",
             }}
           >
             <Text></Text>
