@@ -38,37 +38,64 @@ const BillPdfGen = ({ data = {} }) => {
         key="pdf-page"
       >
         <View style={styles.section}>
-          <Image style={{ padding: "2px", width: "45px" }} src={logo} />
-          <Text
+          <Image
             style={{
-              textDecoration: "underline",
-              width: "80%",
+              padding: "2px",
+              // marginTop: "6px",
+              width: "88px",
+              height: "88px",
+            }}
+            src={logo}
+          />
+          <View
+            style={{
+              width: "76%",
               textAlign: "center",
               padding: "4px",
-              paddingTop: "14px",
+              // paddingTop: "14px",
             }}
           >
-            {data?.invoiceNo ? "TAX INVOICE" : "DELIVERY CHALLAN"}
-          </Text>
+            <Text style={{ textDecoration: "underline" }}>
+              {data?.invoiceNo ? "TAX INVOICE" : "DELIVERY CHALLAN"}
+            </Text>
+            <Text
+              style={{
+                fontFamily: "Times-Bold",
+                fontSize: "16px",
+                marginBottom: "4px",
+              }}
+            >
+              Rocksunn Private Limited
+            </Text>
+            <Text
+              style={{
+                // width: "76%",
+                // textAlign: "center",
+                lineHeight: 0.65,
+                // flexDirection: "column",
+              }}
+            >
+              <Text>NEAR VIVEKANAND COLLEGE, AMAMRMOU, SHAHGARH, {"\n"}</Text>
+              <Text> SAGAR, MADHYA PRADESH - 470339 {"\n"}</Text>
+              <Text>PAN : AAPCR7561K {"\n"}</Text>
+              <Text style={{ fontFamily: "Helvetica-Bold" }}>
+                GSTIN/UIN : 23AAPCR7561K1ZT
+              </Text>
+            </Text>
+            {/* <Text>State Name: Madhya Pradesh, Code: 23</Text>
+            <Text>Contact - 8349112391</Text> */}
+          </View>
+          <Text style={{ marginRight: "4px" }}>Original Copy</Text>
         </View>
 
         <View style={styles.section}>
-          <View style={{ width: "45%", paddingLeft: "2px", paddingTop: "2px" }}>
-            <Text style={{ fontFamily: "Times-Bold", fontSize: "13px" }}>
-              Rocksunn Private Limited
-            </Text>
-            <Text>NEAR VIVEKANAND COLLEGE,</Text>
-            <Text>AMAMRMOU, SHAHGARH, SAGAR - 470339, MP, INDIA</Text>
-            <Text style={{ fontFamily: "Helvetica-Bold" }}>
-              GSTIN/UIN: 23AAPCR7561K1ZT
-            </Text>
-            <Text>State Name: Madhya Pradesh, Code: 23</Text>
-            <Text>Contact - 8349112391</Text>
-          </View>
+          {/* <View
+            style={{ width: "45%", paddingLeft: "2px", paddingTop: "2px" }}
+          ></View> */}
           <View
             style={{
-              width: "30%",
-              borderLeft: "1px solid black",
+              width: "50%",
+              // borderLeft: "1px solid black",
 
               paddingTop: "2px",
             }}
@@ -93,7 +120,7 @@ const BillPdfGen = ({ data = {} }) => {
           <View
             style={{
               borderLeft: "1px solid black",
-              width: "25%",
+              width: "50%",
               paddingTop: "2px",
             }}
           >
@@ -119,7 +146,7 @@ const BillPdfGen = ({ data = {} }) => {
         </View>
 
         <View style={styles.section}>
-          <View style={{ width: "45%", paddingLeft: "2px", paddingTop: "2px" }}>
+          <View style={{ width: "50%", paddingLeft: "2px", paddingTop: "2px" }}>
             <Text style={{ fontFamily: "Helvetica-Bold" }}>
               Buyer (Bill To) - {data?.buyerDetails?.name}
             </Text>
