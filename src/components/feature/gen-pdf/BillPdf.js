@@ -42,7 +42,7 @@ const BillPdfGen = ({ data = {} }) => {
             style={{
               padding: "2px",
               // marginTop: "6px",
-              width: "88px",
+              width: "98px",
               height: "88px",
             }}
             src={logo}
