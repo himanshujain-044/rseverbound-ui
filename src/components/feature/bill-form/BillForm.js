@@ -347,7 +347,7 @@ const BillForm = ({ data = null, className = "" }) => {
           <img
             src={logo}
             alt="logo"
-            className=" mx-[4px] w-[98px] h-[88px] mobile:w-[45px]"
+            className=" mx-[4px] w-[182px] h-[162px] mobile:w-[45px]"
           />
           {/* </div> */}
         </Grid>
@@ -453,7 +453,10 @@ const BillForm = ({ data = null, className = "" }) => {
             />
           </div>
         </Grid>
-        <Grid xs={6} className="pl-1 pb-1 form-border no-top-border">
+        <Grid
+          xs={6}
+          className="pl-1 pb-1 form-border no-top-border no-right-border"
+        >
           <div className="flex items-center">
             <strong className="min-w-[7rem]">Buyer (Bill To) -</strong>
             <strong className="w-[50%]">
@@ -518,7 +521,7 @@ const BillForm = ({ data = null, className = "" }) => {
             <span>{formValues?.buyerDetails.placeOfSupply}</span>
           </div>
         </Grid>
-        <Grid xs={6} className="pl-1  bottom-border right-border">
+        <Grid xs={6} className="pl-1  form-border no-top-border">
           <div className="flex">
             <strong className="min-w-[3.5rem]">Consignee (Ship To) -</strong>
             <strong>
