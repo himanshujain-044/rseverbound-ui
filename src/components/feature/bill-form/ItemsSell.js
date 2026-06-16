@@ -491,7 +491,7 @@ const ItemsSell = ({
       {billType === "invoice" ? (
         <Grid
           xs={5}
-          className="pl-1 left-border right-border h-[18rem] flex flex-col"
+          className="pl-1 left-border right-border pb-[3rem] flex flex-col"
         >
           <div>
             <div className="flex justify-between pr-1">
@@ -636,7 +636,7 @@ const ItemsSell = ({
           </div>
         </Grid>
       ) : (
-        <Grid xs={5} className="left-border right-border">
+        <Grid xs={5} className="left-border right-border pb-[3rem]">
           <div className=" flex justify-between px-1">
             <strong>Total Value</strong>
             <strong>

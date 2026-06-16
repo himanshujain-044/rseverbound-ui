@@ -342,31 +342,34 @@ const BillForm = ({ data = null, className = "" }) => {
       )}
     >
       <Grid container className="bg-[#fff]">
-        <Grid xs={12}>
-          <div className="form-border text-center py-[20px] underline underline-offset-2 flex items-center">
-            <img
-              src={logo}
-              alt="logo"
-              className="absolute mx-[4px] w-[60px] mobile:w-[45px]"
-            />
-            <h2 className="w-full text-center">
-              {billType === "invoice" ? "TAX INVOICE" : "DELIVERY CHALLAN"}
-            </h2>
-          </div>
+        <Grid xs={3} className="form-border no-right-border">
+          {/* <div className="text-center py-[20px] flex items-center"> */}
+          <img
+            src={logo}
+            alt="logo"
+            className=" mx-[4px] w-[98px] h-[88px] mobile:w-[45px]"
+          />
+          {/* </div> */}
         </Grid>
         <Grid
           xs={6}
-          className="pl-1 pb-1 form-border no-top-border flex flex-col"
+          className="pl-1 pb-1 text-center form-border no-left-border no-right-border flex flex-col gap-0"
         >
+          <h2 className="underline underline-offset-2">
+            {billType === "invoice" ? "TAX INVOICE" : "DELIVERY CHALLAN"}
+          </h2>
           <strong className="text-[26px] font-serif font-extrabold">
             Rocksunn Private Limited
           </strong>
-          <span>NEAR VIVEKANAND COLLEGE,</span>
-          <span>AMAMRMOU, SHAHGARH, SAGAR - 470339, MP, INDIA</span>
+          <span>NEAR VIVEKANAND COLLEGE, AMAMRMOU, SHAHGARH,</span>
+          <span> SAGAR, MADHYA PRADESH - 470339</span>
+          <span>PAN: AAPCR7561K</span>
           <strong>GSTIN/UIN: 23AAPCR7561K1ZT</strong>
-          <span>Contact: 8349112391</span>
         </Grid>
-        <Grid xs={3} className="bottom-border">
+        <Grid xs={3} className="form-border no-left-border pr-[4px] text-right">
+          <span>Original Copy</span>
+        </Grid>
+        <Grid xs={6} className="left-border bottom-border">
           <div className="pl-1 pb-1  bottom-border">
             <p>Invoice No.</p>
             <strong>
@@ -408,7 +411,7 @@ const BillForm = ({ data = null, className = "" }) => {
           </div>
           {/* <div className="pl-1 pb-1">Dispatched through</div> */}
         </Grid>
-        <Grid xs={3} className="form-border no-top-border">
+        <Grid xs={6} className="form-border no-top-border">
           <div className="pb-[0.4rem] bottom-border">
             <p className="pl-1">Invoice Date</p>
             <div className="mx-1 flex">
