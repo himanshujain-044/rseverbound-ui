@@ -457,11 +457,7 @@ const BillPdfGen = ({ data = {} }) => {
                     </Text>
                   </>
                 )}
-                <Text>
-                  {data?.productsSellDetails?.otherExpenses > 0
-                    ? data?.productsSellDetails?.otherExpenses
-                    : ""}
-                </Text>
+                <Text>{data?.productsSellDetails?.otherExpenses}</Text>
 
                 <Text>
                   {data?.productsSellDetails?.roundOff?.added ? "+" : "-"}
