@@ -36,7 +36,7 @@ const PdfViewer = () => {
       <div>
         <PDFDownloadLink
           document={<BillPdf data={data} />}
-          fileName={`${data?.buyerDetails?.name}_${data?.invoiceDate}.pdf`}
+          fileName={`${data?.invoiceNo ? data?.invoiceNo : data?.deliveryChNo}_${data?.invoiceDate}_${data?.buyerDetails?.name}.pdf`}
         >
           {({ blob, url, loading, error }) =>
             loading ? (

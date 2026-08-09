@@ -32,7 +32,7 @@ export const sellHistoryCols = [
   {
     field: "_id",
     headerName: "Action",
-    width: 80,
+    width: 150,
     renderCell: UpdateInvoice,
   },
 ];
