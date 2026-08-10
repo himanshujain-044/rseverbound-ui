@@ -427,6 +427,7 @@ const BillPdfGen = ({ data = {} }) => {
                   </>
                 )}
                 <Text>{data?.productsSellDetails?.otherExpensesText}</Text>
+                <Text>{data?.productsSellDetails?.otherExpensesText2}</Text>
                 <Text>Round Off</Text>
               </View>
 
@@ -456,8 +457,16 @@ const BillPdfGen = ({ data = {} }) => {
                     </Text>
                   </>
                 )}
-                <Text>{data?.productsSellDetails?.otherExpenses}</Text>
-
+                <Text>
+                  {data?.productsSellDetails?.otherExpenses
+                    ? data?.productsSellDetails?.otherExpenses
+                    : ""}
+                </Text>
+                <Text>
+                  {data?.productsSellDetails?.otherExpenses2
+                    ? data?.productsSellDetails?.otherExpenses2
+                    : ""}
+                </Text>
                 <Text>
                   {data?.productsSellDetails?.roundOff?.added ? "+" : "-"}
                   {data?.productsSellDetails?.roundOff?.amountInPaise}

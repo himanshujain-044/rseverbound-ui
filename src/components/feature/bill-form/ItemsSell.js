@@ -32,6 +32,8 @@ const initVal = {
   otherExpensesGST: "",
   otherExpensesText: "",
   otherExpenses: "",
+  otherExpensesText2: "",
+  otherExpenses2: "",
   gstType: {
     type: "",
     value: "",
@@ -207,6 +209,8 @@ const ItemsSell = ({
         otherExpensesGST: productsSellDetails?.otherExpensesGST,
         otherExpensesText: productsSellDetails?.otherExpensesText,
         otherExpenses: productsSellDetails?.otherExpenses,
+        otherExpensesText2: productsSellDetails?.otherExpensesText2,
+        otherExpenses2: productsSellDetails?.otherExpenses2,
         gstType: {
           type: productsSellDetails?.igst ? options[0].value : options[1].value,
           value: productsSellDetails?.igst
@@ -273,7 +277,11 @@ const ItemsSell = ({
         values.roundOff = roundOff;
       } else {
         values[type] = value?.toUpperCase();
-        if (type === "otherExpenses" || type === "otherExpensesGST") {
+        if (
+          type === "otherExpenses" ||
+          type === "otherExpenses2" ||
+          type === "otherExpensesGST"
+        ) {
           const [gstType, grandTotal, roundOff] = updateGstType(
             values,
             values.gstType,
@@ -294,7 +302,8 @@ const ItemsSell = ({
     const grandTotalInDec = convertFixedDecimal(
       calculateGstAmount(gstVal.value, totalAmount) +
         Number(totalAmount) +
-        Number(values.otherExpenses) || 0,
+        Number(values.otherExpenses) +
+        Number(values.otherExpenses2) || 0,
     );
 
     const roundOff = { added: false, amountInPaise: 0 };
@@ -602,7 +611,7 @@ const ItemsSell = ({
                 <input
                   type="text"
                   className="outline-none max-w-42 font-bold"
-                  placeholder="Other Expenses ..."
+                  placeholder="Coupon ..."
                   onChange={(e) => {
                     handleChange(
                       e,
@@ -625,6 +634,35 @@ const ItemsSell = ({
                 />
               </div>
               <i>{itemsSellForm.otherExpenses}</i>
+            </div>
+            <div className="flex justify-between pr-1">
+              <div className="flex gap-3">
+                <input
+                  type="text"
+                  className="outline-none max-w-42 font-bold"
+                  placeholder="CD ..."
+                  onChange={(e) => {
+                    handleChange(
+                      e,
+                      e?.target?.value,
+                      "otherExpensesText2",
+                      null,
+                    );
+                  }}
+                  value={itemsSellForm.otherExpensesText2}
+                />
+                -
+                <input
+                  type="number"
+                  className="outline-none w-28"
+                  placeholder="0000"
+                  value={itemsSellForm.otherExpenses2}
+                  onChange={(e) => {
+                    handleChange(e, e?.target?.value, "otherExpenses2", null);
+                  }}
+                />
+              </div>
+              <i>{itemsSellForm.otherExpenses2}</i>
             </div>
           </div>
           <div className="flex justify-between pr-1">
