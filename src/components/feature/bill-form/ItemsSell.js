@@ -214,7 +214,9 @@ const ItemsSell = ({
         otherExpensesText2: productsSellDetails?.otherExpensesText2
           ? productsSellDetails?.otherExpensesText2
           : null,
-        otherExpenses2: productsSellDetails?.otherExpenses2,
+        otherExpenses2: productsSellDetails?.otherExpenses2
+          ? productsSellDetails?.otherExpenses2
+          : null,
         gstType: {
           type: productsSellDetails?.igst ? options[0].value : options[1].value,
           value: productsSellDetails?.igst
