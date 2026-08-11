@@ -208,8 +208,12 @@ const ItemsSell = ({
         otherExpensesGSTText: productsSellDetails?.otherExpensesGSTText,
         otherExpensesGST: productsSellDetails?.otherExpensesGST,
         otherExpensesText: productsSellDetails?.otherExpensesText,
-        otherExpenses: productsSellDetails?.otherExpenses,
-        otherExpensesText2: productsSellDetails?.otherExpensesText2,
+        otherExpenses: productsSellDetails?.otherExpenses
+          ? productsSellDetails?.otherExpenses
+          : null,
+        otherExpensesText2: productsSellDetails?.otherExpensesText2
+          ? productsSellDetails?.otherExpensesText2
+          : null,
         otherExpenses2: productsSellDetails?.otherExpenses2,
         gstType: {
           type: productsSellDetails?.igst ? options[0].value : options[1].value,
