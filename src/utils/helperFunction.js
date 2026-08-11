@@ -3,6 +3,7 @@ const {
   MONTH_NAMES,
   NUMBERS_DIGITS_UNITS,
   STATES_GST_CODE,
+  MONTH_NAMES_OBJ,
 } = require("../constants/common");
 
 const formatDate = (date) => {
@@ -126,6 +127,12 @@ const convertDDOptions = (list = []) => {
   });
   return ddOptionsList;
 };
+
+const parseStrDate = (dateStr) => {
+  const [day, month, year] = dateStr?.split("-");
+  return new Date(Number(year), MONTH_NAMES_OBJ[month], Number(day));
+};
+
 module.exports = {
   formatDate,
   calculateGstAmount,
@@ -138,4 +145,5 @@ module.exports = {
   clearLocalStorage,
   getStateNameByGstCode,
   convertDDOptions,
+  parseStrDate,
 };

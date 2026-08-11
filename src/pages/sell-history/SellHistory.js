@@ -6,13 +6,14 @@ import { sellHistoryCols } from "./sellHistoryCols";
 import { useDispatch, useSelector } from "react-redux";
 import { clearSomeStates, getSellData, getSellsHistory } from "../../store/api";
 import { API_ENDPOINTS } from "../../constants/apiEndPoints";
+import { parseStrDate } from "../../utils/helperFunction";
 const SellHistory = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const { allSellsHistory, isInvoiceSave, sellData, isInvoiceUpdated } =
     useSelector((state) => state.api);
-
   const [isRowClicked, setIsRowClicked] = useState(false);
+  const [sortedSellsHistoryData, setSortedSellsHistoryData] = useState();
   useEffect(() => {
     if (!allSellsHistory || isInvoiceSave || isInvoiceUpdated) {
       dispatch(
@@ -30,6 +31,16 @@ const SellHistory = () => {
       navigate(ROUTES_LIST.pdfViewer, { state: sellData });
     }
   }, [sellData]);
+
+  useEffect(() => {
+    if (allSellsHistory?.length) {
+      const sortedData = [...allSellsHistory]?.sort(
+        (a, b) => parseStrDate(b?.invoiceDate) - parseStrDate(a?.invoiceDate),
+      );
+      console.log(sortedData);
+      setSortedSellsHistoryData(sortedData);
+    }
+  }, [allSellsHistory]);
 
   const handleOnCellClick = (cellParams) => {
     if (cellParams.field !== "_id") {
@@ -56,19 +67,17 @@ const SellHistory = () => {
     }
     return "";
   };
+
   return (
     <div className="h-full items-center justify-center">
       <DataTable
         cols={sellHistoryCols}
-        data={allSellsHistory?.length ? allSellsHistory : []}
+        data={sortedSellsHistoryData?.length ? sortedSellsHistoryData : []}
         onCellClick={handleOnCellClick}
         tableProps={{ getRowClassName: getRowClassName }}
         initialState={{
           pagination: {
             paginationModel: { page: 0, pageSize: 10 },
-          },
-          sorting: {
-            sortModel: [{ field: "invoiceDate", sort: "desc" }],
           },
         }}
       />
