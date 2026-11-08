@@ -30,7 +30,7 @@ const BillPdfGen = ({ data = {} }) => {
         style={{
           flexDirection: "col",
           backgroundColor: "#fff",
-          padding: "8px",
+          padding: "20px",
           fontSize: "10px",
           lineHeight: "16px",
         }}
